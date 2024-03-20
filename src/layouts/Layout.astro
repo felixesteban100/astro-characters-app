@@ -1,0 +1,93 @@
+---
+import "@/styles/globals.css";
+import { ViewTransitions } from "astro:transitions";
+// import { ModeToggle } from "@/components/mode-toogle";
+import { SparklesCore } from "@/components/ui/sparkles";
+import { fade } from "astro:transitions";
+import NavLinks from "@/components/NavLinks.astro"
+
+// things to fix:
+/* 
+- dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
+- create fight page
+- create favorites page
+- the glitter (box characterComponent|characterId) is not in front of the image but behind :|
+CharacracterFeatures component works at times??? :-/
+*/
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+
+const propsParticles = {
+  id: "tsparticlesfullpage",
+  background: "transparent",
+  minSize: 0.6,
+  maxSize: 1.4,
+  particleDensity: 50,
+  particleColor: "#000000",
+};
+
+const propsParticlesDark = {
+  ...propsParticles,
+  particleColor: "#fff",
+  id: "tsparticlesfullpage2",
+};
+---
+
+<script is:inline>
+  const getThemePreference = () => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  };
+  const isDark = getThemePreference() === "dark";
+  document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+
+  if (typeof localStorage !== "undefined") {
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  }
+</script>
+
+<html lang="en">
+  <head transition:animate={fade({ duration: "5s" })}>
+    <ViewTransitions />
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="absolute inset-0 -z-10 min-h-screen">
+      <SparklesCore transition:persist client:visible {...propsParticles} />
+      <SparklesCore transition:persist client:visible {...propsParticlesDark} />
+    </div>
+    <main>
+      <nav class="bg-background w-full border-b border-foreground/40 mb-5">
+        <div class="flex flex-wrap items-center justify-start mx-auto p-4 gap-5 px-10">
+          <p class="text-primary font-bold text-stroke-custom">ASTRO 🚀</p>
+          <NavLinks title={title} />
+          <!-- <ModeToggle client:load /> -->
+        </div>
+      </nav>
+
+      <div class="w-[80vw] mx-auto">
+        <slot />
+      </div>
+    </main>
+  </body>
+</html>

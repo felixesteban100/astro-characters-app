@@ -1,0 +1,76 @@
+---
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { generatePagination } from "@/lib/utils";
+
+interface Props {
+    currentPage: string;
+    totalPages: number;
+    characterName: string | null;
+    gender: string | null;
+    side: string | null;
+    race: string | null;
+    universe: string | null;
+    team: string | null;
+}
+
+const { characterName, gender, side, race, universe, team, currentPage, totalPages } = Astro.props;
+
+
+function createPageURL(pageNumber: number) {
+  return `/characters?characterName=${(characterName ?? "")}&gender=${(gender ?? "both")}&side=${(side ?? "All")}&race=${(race ?? "All")}&universe=${(universe ?? "All")}&team=${(team ?? "All")}&currentPage=${pageNumber}`;
+}
+
+const allPages = generatePagination(parseInt(currentPage), totalPages);
+---
+
+<div class="inline-flex mt-4">
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            className={`${parseInt(currentPage) === 1 ? "hidden" : ""}`}
+            href={createPageURL(parseInt(currentPage) - 1)}
+          />
+        </PaginationItem>
+        {
+          allPages.map((page, index) => {
+            if (page === "...")
+              return (
+                <PaginationItem key={index}>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              );
+
+            return (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  isActive={currentPage === page.toString()}
+                  href={createPageURL(parseInt(page.toString()))}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            );
+          })
+        }
+        <PaginationItem>
+          <PaginationNext
+            hidden={parseInt(currentPage) >= totalPages}
+            *
+            className={`${parseInt(currentPage) >= totalPages ? "" : ""}`}
+            *
+            className={`${parseInt(currentPage) >= totalPages ? "hidden" : ""}`}
+            href={createPageURL(parseInt(currentPage) + 1)}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  </div>

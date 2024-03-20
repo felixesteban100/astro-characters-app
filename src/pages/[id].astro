@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+import "@/styles/globals.css";
+import { collectionCharacters } from "../lib/mongodb";
+import Image from "astro/components/Image.astro";
+import CharacterFeatures from "../components/tabs/CharacterFeatures";
+
+const { id } = Astro.params;
+if (!id) return Astro.redirect("/404");
+
+export async function getStaticPaths() {
+  const allCharacters = await collectionCharacters.find().toArray();
+
+  return allCharacters.filter((character: any) => {
+    if (character.id === id) {
+      return {
+        params: { id: character.id },
+      };
+    }
+  });
+}
+const selectedCharacter = await collectionCharacters.findOne({
+  id: parseInt(id),
+});
+---
+
+<Layout
+  title={`${selectedCharacter?.name ? selectedCharacter?.name : "unknown"}`}
+>
+  <main>
+    {
+      selectedCharacter ? (
+        <div class="flex flex-col xl:flex-row justify-center items-center gap-16 xl:h-[80vh]">
+          <Image
+            class={`object-cover h-[44rem] w-[40rem]`}
+            width={500}
+            height={500}
+            src={selectedCharacter?.images.md}
+            loading="eager"
+            transition:name={`media-image-${selectedCharacter?.id}`}
+            alt=""
+          />
+          <CharacterFeatures
+            selectedCharacter={selectedCharacter}
+            client:load
+          />
+        </div>
+      ) : null
+    }
+  </main>
+</Layout>

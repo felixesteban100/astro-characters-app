@@ -1,0 +1,58 @@
+---
+import Image from "astro/components/Image.astro";
+import Layout from "../layouts/Layout.astro";
+import { collectionCharacters } from "../lib/mongodb";
+import Stats from "../components/Stats";
+import { getRandomIdRecursively } from '../lib/charactersUtils'
+
+const first = Astro.url.searchParams.get("first");
+const second = Astro.url.searchParams.get("second");
+
+const selectedCharacters = await collectionCharacters
+  .find({
+    id: { $in: [parseInt(first ?? await getRandomIdRecursively()), parseInt(second ?? await getRandomIdRecursively())] },
+  })
+  .toArray();
+
+console.log(selectedCharacters[0]?.id, selectedCharacters[1]?.id);
+---
+
+<Layout title="Fight">
+  <div class="flex gap-10 items-center justify-center w-full">
+    {
+      selectedCharacters[0] ? (
+        <div class="flex flex-col justify-center items-center gap-16">
+          <div class="relative h-[34rem] w-[30rem] box characterId overflow-hidden ">
+            <Image
+              class={`object-cover h-[34rem] w-[30rem]`}
+              width={500}
+              height={500}
+              src={selectedCharacters[0]?.images.md}
+              loading="eager"
+              transition:name={`media-image-${selectedCharacters[0]?.id}`}
+              alt=""
+            />
+          </div>
+          <Stats selectedCharacter={selectedCharacters[0]} client:load />
+        </div>
+      ) : null
+    }
+
+    {
+      selectedCharacters[1] ? (
+        <div class="flex flex-col justify-center items-center gap-16">
+          <Image
+            class={`object-cover h-[34rem] w-[30rem]`}
+            width={500}
+            height={500}
+            src={selectedCharacters[1]?.images.md}
+            loading="eager"
+            transition:name={`media-image-${selectedCharacters[1]?.id}`}
+            alt=""
+          />
+          <Stats selectedCharacter={selectedCharacters[1]} client:load />
+        </div>
+      ) : null
+    }
+  </div>
+</Layout>

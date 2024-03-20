@@ -1,0 +1,225 @@
+---
+import Layout from "../layouts/Layout.astro";
+import "@/styles/globals.css";
+import { collectionCharacters } from "../lib/mongodb";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Button } from "../components/ui/button";
+
+import Image from "astro/components/Image.astro";
+import { SearchIcon } from "lucide-react";
+
+import SheetFilterCharacters from "../components/custom-ui/SheetFilterCharacters";
+import SelectFilterCharacters from "../components/custom-ui/SelectFilterCharacters";
+
+import {
+  ALLALIGMENTS,
+  ALLGENDERS,
+  ALLRACES,
+  ALLUNIVERSE,
+  getTeamByUniverse,
+} from "../lib/constants";
+import { publisherIMG, getQueryOptions } from "@/lib/charactersUtils";
+
+import PaginationCharacters from "../components/PaginationCharacters.astro";
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const characterName = data.get("characterName");
+    const gender = data.get("gender");
+    const side = data.get("side");
+    const race = data.get("race");
+    const universe = data.get("universe");
+    const team = data.get("team");
+
+    console.log(characterName);
+
+    return Astro.redirect(
+      `/characters?characterName=${characterName}&gender=${gender}&side=${side}&race=${race}${universe ? `&universe=${universe}&team=${team ?? "All"}` : `&universe="All"&team="All"`}&currentPage=${1}`
+    );
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
+
+const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
+const characterName = Astro.url.searchParams.get("characterName");
+// const characterName = "hulk, batman, spider-man, wolverine, flash ii, captain marvel, ironman, wonder woman, superman";
+const side = Astro.url.searchParams.get("side");
+const universe = Astro.url.searchParams.get("universe");
+const team = Astro.url.searchParams.get("team");
+const gender = Astro.url.searchParams.get("gender");
+const race = Astro.url.searchParams.get("race");
+const characterOrFullName =
+  Astro.url.searchParams.get("characterOrFullName") === "true";
+const includesOrExact =
+  Astro.url.searchParams.get("includesOrExact") === "true";
+
+const queryOptions: QueryOptions = getQueryOptions(
+  characterName,
+  side,
+  universe,
+  team,
+  gender,
+  race,
+  characterOrFullName,
+  includesOrExact
+);
+
+const CHARACTERS_PER_PAGE = 8;
+
+const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
+
+const characterdDisplayLenght =
+  await collectionCharacters.countDocuments(queryOptions);
+const totalPages = Math.ceil(characterdDisplayLenght / CHARACTERS_PER_PAGE);
+
+const someCharacters = await collectionCharacters
+  .find({ ...queryOptions })
+  .limit(CHARACTERS_PER_PAGE)
+  .sort({ id: "desc" })
+  .skip(offset)
+  .toArray();
+
+const teamByUniverse: { name: string; value: string; img: string }[] =
+  getTeamByUniverse(universe ?? "");
+
+const teamInfo = teamByUniverse.find((t) => t.value === team);
+---
+
+<Layout
+  title={team && team !== "All"
+    ? team
+    : universe && universe !== "All"
+      ? universe
+      : `Characters`}
+>
+  <main class="mb-32 flex flex-col justify-center items-center gap-5">
+    <div class="self-end">
+      <SheetFilterCharacters client:visible>
+        <h1 class="font-bold tet-5xl text-primary">Filters</h1>
+        <form method="POST">
+          <div class="w-full mb-10 flex flex-col gap-5 mt-10">
+            <Label className="flex flex-col gap-5">
+              CharacterName/s:
+              <Input
+                type="text"
+                name="characterName"
+                defaultValue={characterName ?? ""}
+              />
+            </Label>
+
+            <SelectFilterCharacters
+              options={ALLGENDERS}
+              placeholder="Gender"
+              defaultValue={gender ?? "both"}
+              paramName="gender"
+              client:load
+            />
+
+            <SelectFilterCharacters
+              options={ALLALIGMENTS}
+              placeholder="Aligment"
+              defaultValue={side ?? "All"}
+              paramName="side"
+              client:load
+            />
+
+            <SelectFilterCharacters
+              options={ALLRACES}
+              placeholder="Race"
+              defaultValue={race ?? "All"}
+              paramName="race"
+              client:load
+            />
+
+            <SelectFilterCharacters
+              options={ALLUNIVERSE}
+              placeholder="Universe"
+              defaultValue={universe ?? "All"}
+              paramName="universe"
+              client:load
+            />
+
+            {
+              teamByUniverse.length > 0 && (
+                <SelectFilterCharacters
+                  options={teamByUniverse}
+                  placeholder="Teams"
+                  defaultValue={team ?? "All"}
+                  paramName="team"
+                  client:load
+                />
+              )
+            }
+          </div>
+          <Button className="flex justify-center gap-2 items-center"
+            ><SearchIcon /> Filter</Button
+          >
+        </form>
+      </SheetFilterCharacters>
+    </div>
+
+    {
+      team && team !== "All" && teamInfo !== undefined ? (
+        <Image src={teamInfo.img} width={200} height={200} alt="" />
+      ) : universe && universe !== "All" ? (
+        <Image src={publisherIMG(universe)} width={200} height={200} alt="" />
+      ) : null
+    }
+
+    {
+      team && team !== "All"
+        ? team
+        : universe && universe !== "All"
+          ? universe
+          : null
+    }
+
+    <div
+      class={`grid 2xl:grid-cols-4  lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 justify-center items-center `}
+    >
+      {
+        someCharacters.map((c: any) => {
+          return (
+            <div class="flex flex-col justify-center items-center gap-5">
+              <a
+                href={`/${c.id}`}
+                class="uppercase font-medium hover:underline"
+              >
+                {c.slug}
+              </a>
+              <div class="relative box characterId h-96 w-80">
+                <Image
+                  // hover:blur-md
+                  // transition-all
+                  class={`object-cover h-96 w-80 `}
+                  width={70}
+                  height={80}
+                  src={c.images.md}
+                  loading="eager"
+                  transition:name={`media-image-${c.id}`}
+                  alt={c.name}
+                />
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+
+    <PaginationCharacters
+      currentPage={currentPage}
+      totalPages={totalPages}
+      characterName={characterName}
+      gender={gender}
+      side={side}
+      race={race}
+      universe={universe}
+      team={team}
+    />
+  </main>
+</Layout>
