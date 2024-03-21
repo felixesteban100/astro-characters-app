@@ -6,6 +6,8 @@ import Image from "astro/components/Image.astro";
 import CharacterFeatures from "../components/tabs/CharacterFeatures";
 
 const { id } = Astro.params;
+const tab = Astro.url.searchParams.get("tab")
+
 if (!id) return Astro.redirect("/404");
 
 export async function getStaticPaths() {
@@ -26,13 +28,21 @@ const selectedCharacter = await collectionCharacters.findOne({
 
 <Layout
   title={`${selectedCharacter?.name ? selectedCharacter?.name : "unknown"}`}
+  otherLink={{ url: `/fight?first=${selectedCharacter?.id}`, title: `Fight using ${selectedCharacter?.name}` }}
 >
   <main>
+    <div class="flex gap-2 justify-end">
+      <a class="hover:underline" href={`/${selectedCharacter?.id}?tab=Stats`}>Stats</a>
+      <a class="hover:underline" href={`/${selectedCharacter?.id}?tab=Appereance`}>Appereance</a>
+      <a class="hover:underline" href={`/${selectedCharacter?.id}?tab=Biography`}>Biography</a>
+      <a class="hover:underline" href={`/${selectedCharacter?.id}?tab=Teams`}>Teams</a>
+      <a class="hover:underline" href={`/${selectedCharacter?.id}?tab=Comics`}>Comics</a>
+    </div>
     {
       selectedCharacter ? (
         <div class="flex flex-col xl:flex-row justify-center items-center gap-16 xl:h-[80vh]">
           <Image
-            class={`object-cover h-[44rem] w-[40rem]`}
+            class={`object-cover h-[44rem] w-[40rem] rounded-md`}
             width={500}
             height={500}
             src={selectedCharacter?.images.md}
@@ -42,6 +52,7 @@ const selectedCharacter = await collectionCharacters.findOne({
           />
           <CharacterFeatures
             selectedCharacter={selectedCharacter}
+            tab={tab ?? "Stats"}
             client:load
           />
         </div>

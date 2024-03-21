@@ -276,6 +276,4 @@ export async function getRandomIdRecursively() {
     console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);
   }
-
-  
 }

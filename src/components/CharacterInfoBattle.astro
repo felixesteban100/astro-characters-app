@@ -1,0 +1,90 @@
+---
+import Stats from "./Stats";
+import { Button } from "../components/ui/button";
+import Image from "astro/components/Image.astro";
+
+type Character = {
+  powerstats: {
+    intelligence: number;
+    strength: number;
+    speed: number;
+    durability: number;
+    power: number;
+    combat: number;
+  };
+  appearance: {
+    gender: string;
+    race: string | null;
+    height: [string, string];
+    weight: [string, string];
+    eyeColor: string;
+    hairColor: string;
+  };
+  biography: {
+    fullName: string;
+    alterEgos: string;
+    aliases: string[];
+    placeOfBirth: string;
+    firstAppearance: string;
+    publisher: string;
+    alignment: string;
+  };
+  work: {
+    occupation: string;
+    base: string;
+  };
+  connections: {
+    groupAffiliation: string;
+    relatives: string;
+  };
+  images: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    // mdi?: string;
+    // md2?: string;
+    [key: string]: string;
+  };
+  _id: string;
+  id: number;
+  name: string;
+  slug: string;
+  comics?: string[];
+};
+
+interface Props {
+  selectedCharacter: Character;
+  classNames?: string;
+}
+
+const { selectedCharacter, classNames } = Astro.props;
+---
+
+<div
+  class={`flex-shrink flex flex-col justify-center items-center mb-10 ${classNames}`}
+>
+  <div class="flex flex-col gap-5">
+    <a href={`/${selectedCharacter.id}`}>
+      <Button variant={"link"} className="m-0 p-0">
+        <p class="text-lg md:text-2xl text-ellipsis">
+          {selectedCharacter.id} - {selectedCharacter.name}
+        </p>
+      </Button>
+    </a>
+    <div class="relative box characterId overflow-hidden">
+      <Image
+        width={500}
+        height={500}
+        class={`card-shine-effect rounded-md w-[10rem] h-[15rem] md:w-[35rem] md:h-[35rem] lg:w-[45rem] lg:h-[45rem] object-cover object-top`}
+        src={selectedCharacter.images.md /* selectedRandomImage */}
+        alt={selectedCharacter.name}
+        loading="eager"
+        transition:name={`media-image-${selectedCharacter.id}`}
+      />
+    </div>
+  </div>
+  <div class="w-[80%]">
+    <Stats selectedCharacter={selectedCharacter} client:load />
+  </div>
+</div>

@@ -5,18 +5,26 @@ const currentPath = Astro.url.pathname;
 
 interface Props {
   title: string;
+  otherLink?: {
+    url: string,
+    title: string
+  };
+  otherClassesContainer: string
 }
 
-const { title } = Astro.props;
+const { title, otherLink, otherClassesContainer } = Astro.props;
 ---
 
-<div class="items-center justify-between hidden w-full md:flex md:w-auto">
+<div class={`items-center justify-between ${otherClassesContainer} w-full  md:w-auto`}>
   <menu
     class="flex flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
   >
     <li>
       <Button variant={"link"} className="text-foreground"
-        ><a href="/" class="block py-2 px-3" aria-current="page">Home</a
+        ><a 
+          href="/" 
+          class={`block py-2 px-3 ${currentPath === "/" /* && title === "Characters" */ && "underline"}`} 
+          aria-current="page">Home</a
         ></Button>
     </li>
     <li>
@@ -37,7 +45,7 @@ const { title } = Astro.props;
         ></Button
       >
     </li>
-    <li>
+    <!-- <li>
       <Button variant={"link"} className="text-foreground"
         ><a
           href="/favorites"
@@ -45,6 +53,15 @@ const { title } = Astro.props;
           aria-current="page">Favorites</a
         ></Button
       >
-    </li>
+    </li> -->
+
+    {otherLink !== undefined ? <li>
+      <Button variant={"link"} className="text-foreground"
+        ><a
+          href={otherLink.url}
+          class={`block py-2 px-3 ${currentPath === otherLink.url && title === otherLink.title && "underline"}`}
+          aria-current="page">{otherLink.title}</a
+        ></Button>
+    </li> : null}
   </menu>
 </div>

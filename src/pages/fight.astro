@@ -1,58 +1,47 @@
 ---
-import Image from "astro/components/Image.astro";
 import Layout from "../layouts/Layout.astro";
 import { collectionCharacters } from "../lib/mongodb";
-import Stats from "../components/Stats";
-import { getRandomIdRecursively } from '../lib/charactersUtils'
+import { getRandomIdRecursively } from "../lib/charactersUtils";
+import { Separator } from '../components/ui/separator'
+import CharacterInfoBattle from "../components/CharacterInfoBattle.astro";
 
 const first = Astro.url.searchParams.get("first");
 const second = Astro.url.searchParams.get("second");
 
+const firstId = first ?? (await getRandomIdRecursively())
+const secondId = second ?? (await getRandomIdRecursively())
+
+if(!first || !second){
+    return Astro.redirect(`/fight?first=${firstId}&second=${secondId}`)
+}
+
 const selectedCharacters = await collectionCharacters
   .find({
-    id: { $in: [parseInt(first ?? await getRandomIdRecursively()), parseInt(second ?? await getRandomIdRecursively())] },
+    id: {
+      $in: [
+        parseInt(firstId),
+        parseInt(secondId),
+      ],
+    },
   })
   .toArray();
 
-console.log(selectedCharacters[0]?.id, selectedCharacters[1]?.id);
+// console.log(selectedCharacters[0]?.id, selectedCharacters[1]?.id);
 ---
 
 <Layout title="Fight">
-  <div class="flex gap-10 items-center justify-center w-full">
-    {
-      selectedCharacters[0] ? (
-        <div class="flex flex-col justify-center items-center gap-16">
-          <div class="relative h-[34rem] w-[30rem] box characterId overflow-hidden ">
-            <Image
-              class={`object-cover h-[34rem] w-[30rem]`}
-              width={500}
-              height={500}
-              src={selectedCharacters[0]?.images.md}
-              loading="eager"
-              transition:name={`media-image-${selectedCharacters[0]?.id}`}
-              alt=""
-            />
-          </div>
-          <Stats selectedCharacter={selectedCharacters[0]} client:load />
-        </div>
-      ) : null
-    }
-
-    {
-      selectedCharacters[1] ? (
-        <div class="flex flex-col justify-center items-center gap-16">
-          <Image
-            class={`object-cover h-[34rem] w-[30rem]`}
-            width={500}
-            height={500}
-            src={selectedCharacters[1]?.images.md}
-            loading="eager"
-            transition:name={`media-image-${selectedCharacters[1]?.id}`}
-            alt=""
-          />
-          <Stats selectedCharacter={selectedCharacters[1]} client:load />
-        </div>
-      ) : null
-    }
+  <div
+    class="h-full w-full flex justify-between items-start gap-2 md:gap-10 overflow-visible"
+  >
+    <CharacterInfoBattle
+      selectedCharacter={selectedCharacters[0]}
+    />
+    <Separator
+      className="min-h-[90vh] md:h-[100vh] w-[0.2rem]"
+      orientation="vertical"
+    />
+    <CharacterInfoBattle
+      selectedCharacter={selectedCharacters[1]}
+    />
   </div>
 </Layout>

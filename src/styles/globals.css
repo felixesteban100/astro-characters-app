@@ -1,10 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
-   /*  --background: 0 0% 100%;
+    /*  --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -33,28 +33,28 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem; */
-    --background: 236 10% 5%;
-  --foreground: 236 0% 90%;
-  --card: 236 0% 0%;
-  --card-foreground: 236 0% 90%;
-  --popover: 236 10% 5%;
-  --popover-foreground: 236 0% 90%;
-  --primary: 236 100% 47%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 236 10% 10%;
-  --secondary-foreground: 0 0% 100%;
-  --muted: 198 10% 15%;
-  --muted-foreground: 236 0% 60%;
-  --accent: 198 10% 15%;
-  --accent-foreground: 236 0% 90%;
-  --destructive: 0 50% 30%;
-  --destructive-foreground: 236 0% 90%;
-  --border: 236 20% 18%;
-  --input: 236 20% 18%;
-  --ring: 236 100% 47%;
-  --radius: 0.5rem;
+    --background: 74 10% 5%;
+    --foreground: 74 0% 90%;
+    --card: 74 0% 0%;
+    --card-foreground: 74 0% 90%;
+    --popover: 74 10% 5%;
+    --popover-foreground: 74 0% 90%;
+    --primary: 74 90% 76%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 74 10% 10%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 36 10% 15%;
+    --muted-foreground: 74 0% 60%;
+    --accent: 36 10% 15%;
+    --accent-foreground: 74 0% 90%;
+    --destructive: 0 50% 30%;
+    --destructive-foreground: 74 0% 90%;
+    --border: 74 20% 18%;
+    --input: 74 20% 18%;
+    --ring: 74 90% 76%;
+    --radius: 0.5rem;
   }
- 
+
   .dark {
     /* --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -85,7 +85,7 @@
     --ring: 212.7 26.8% 83.9%; */
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
@@ -199,7 +199,7 @@
     }
   } */
 
-  .box:before {
+  .box:after {
     content: "";
     position: absolute;
     top: 0;
@@ -211,12 +211,12 @@
     transition: 1s;
   }
 
-  .characterComponent:before {
+  .characterComponent:after {
     left: -400px;
     animation: characterComponent-animation 5s ease-in-out infinite;
   }
 
-  .characterId:before {
+  .characterId:after {
     left: -1000px;
     animation: characterId-animation 8s ease-in-out infinite;
   }

@@ -23,6 +23,8 @@ import { publisherIMG, getQueryOptions } from "@/lib/charactersUtils";
 
 import PaginationCharacters from "../components/PaginationCharacters.astro";
 
+import { atom } from 'nanostores';
+
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
@@ -31,12 +33,14 @@ if (Astro.request.method === "POST") {
     const side = data.get("side");
     const race = data.get("race");
     const universe = data.get("universe");
-    const team = data.get("team");
+    let team = data.get("team");
 
-    console.log(characterName);
+    if(!getTeamByUniverse(universe?.toString() ?? "").find(c => c.name === team)){
+      team = "All"
+    }
 
     return Astro.redirect(
-      `/characters?characterName=${characterName}&gender=${gender}&side=${side}&race=${race}${universe ? `&universe=${universe}&team=${team ?? "All"}` : `&universe="All"&team="All"`}&currentPage=${1}`
+      `/characters?characterName=${characterName}&gender=${gender}&side=${side}&race=${race}${universe ? `&universe=${universe}&team=${(team)}` : `&universe="All"&team="All"`}&currentPage=${1}`
     );
   } catch (error) {
     if (error instanceof Error) {
@@ -49,7 +53,7 @@ const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName");
 // const characterName = "hulk, batman, spider-man, wolverine, flash ii, captain marvel, ironman, wonder woman, superman";
 const side = Astro.url.searchParams.get("side");
-const universe = Astro.url.searchParams.get("universe");
+let universe = Astro.url.searchParams.get("universe");
 const team = Astro.url.searchParams.get("team");
 const gender = Astro.url.searchParams.get("gender");
 const race = Astro.url.searchParams.get("race");
@@ -88,7 +92,27 @@ const teamByUniverse: { name: string; value: string; img: string }[] =
   getTeamByUniverse(universe ?? "");
 
 const teamInfo = teamByUniverse.find((t) => t.value === team);
+
+const universeState = atom(universe);
+
+// if(universeState.value !== "All" && team !== "All"){
+//   return Astro.redirect(
+//       `/characters?characterName=${characterName}&gender=${gender}&side=${side}&race=${race}${`&universe=${universe}&team=${"All"}`}&currentPage=${1}`
+//     );
+// }
 ---
+
+<!-- <script>
+  import { isOpen } from '../store.js';
+
+  // Set the store to true when the button is clicked
+  function openDialog() {
+    isOpen.set(true);
+  }
+
+  // Add an event listener to the button
+  document.getElementById('openDialog').addEventListener('click', openDialog);
+</script> -->
 
 <Layout
   title={team && team !== "All"
@@ -97,7 +121,7 @@ const teamInfo = teamByUniverse.find((t) => t.value === team);
       ? universe
       : `Characters`}
 >
-  <main class="mb-32 flex flex-col justify-center items-center gap-5">
+  <main class="mb-32 flex flex-col justify-center items-center gap-5 ">
     <div class="self-end">
       <SheetFilterCharacters client:visible>
         <h1 class="font-bold tet-5xl text-primary">Filters</h1>
@@ -139,8 +163,9 @@ const teamInfo = teamByUniverse.find((t) => t.value === team);
             <SelectFilterCharacters
               options={ALLUNIVERSE}
               placeholder="Universe"
-              defaultValue={universe ?? "All"}
+              defaultValue={universeState.value ?? "All"}
               paramName="universe"
+              onChange={universeState.set}
               client:load
             />
 
@@ -156,9 +181,7 @@ const teamInfo = teamByUniverse.find((t) => t.value === team);
               )
             }
           </div>
-          <Button className="flex justify-center gap-2 items-center"
-            ><SearchIcon /> Filter</Button
-          >
+          <Button  className="flex justify-center gap-2 items-center"><SearchIcon /> Filter</Button>
         </form>
       </SheetFilterCharacters>
     </div>
@@ -180,25 +203,25 @@ const teamInfo = teamByUniverse.find((t) => t.value === team);
     }
 
     <div
-      class={`grid 2xl:grid-cols-4  lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 justify-center items-center `}
+      class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-10`}
     >
       {
         someCharacters.map((c: any) => {
           return (
-            <div class="flex flex-col justify-center items-center gap-5">
+            <div class="flex flex-col justify-center items-center gap-5 h-[30rem] w-[25rem]">
               <a
                 href={`/${c.id}`}
                 class="uppercase font-medium hover:underline"
               >
                 {c.slug}
               </a>
-              <div class="relative box characterId h-96 w-80">
+              <div class="relative box characterId">
                 <Image
-                  // hover:blur-md
-                  // transition-all
-                  class={`object-cover h-96 w-80 `}
-                  width={70}
-                  height={80}
+                  hover:blur-md
+                  transition-all
+                  class={`object-cover h-[25rem] w-[20rem] rounded-md`}
+                  width={800}
+                  height={800}
                   src={c.images.md}
                   loading="eager"
                   transition:name={`media-image-${c.id}`}

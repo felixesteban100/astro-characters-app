@@ -19,7 +19,7 @@ export default function SheetFilterCharacters({ children }: SheetFilterCharacter
     return (
         <Sheet>
             <SheetTrigger>
-                <Button><FilterX /></Button>
+                <Button variant={"ghost"}><FilterX /></Button>
             </SheetTrigger>
             <SheetContent>
                 {/* <SheetHeader>

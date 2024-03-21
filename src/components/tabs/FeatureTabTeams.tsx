@@ -1,7 +1,7 @@
 import FeatureTabContainer from "./FeatureTabContainer"
 import StatContainer from "../stats/StatContainer"
-// import { getTeamByUniverse } from "@/utilities/constants"
-// import { GetColorOfTheLogoByTeam } from "@/utilities/charactersUtils"
+import { getTeamByUniverse } from "../../lib/constants"
+import { GetColorOfTheLogoByTeam } from "../../lib/charactersUtils"
 
 type FeatureTabTeamsProps = {
     selectedCharacter: Character,
@@ -17,7 +17,7 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
             >
                 <StatContainer>
                     <div>Teams</div>
-                    {/* {
+                    {
                         getTeamsImagesByCharacter(selectedCharacter).length > 0 ?
                             <div
                                 className="w-full flex flex-col flex-wrap justify-center items-center gap-5 my-5 pb-10"
@@ -25,23 +25,21 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
                                 {
                                     getTeamsImagesByCharacter(selectedCharacter).map((teamFound) => {
                                         return (
-                                            <a
-                                                // href={`/characters?universe=${selectedCharacter.biography.publisher}&team=${teamFound.value}&howMany=700`}
-                                                href={`/characters?universe=${selectedCharacter.biography.publisher}&team=${teamFound.value}&howMany=700&pagination=${withPagination}`}
-                                                key={teamFound.name}
+                                            <div /* a */
+                                                // href={`/characters?universe=${selectedCharacter.biography.publisher}&team=${teamFound.value}&howMany=700&pagination=${withPagination}`}
+                                                // key={teamFound.name}
                                                 className="mt-5 mx-auto flex gap-1 flex-col cursor-pointer group/items"
-                                                data-tip={teamFound.name}
+                                                // data-tip={teamFound.name}
                                             >
-                                                <Image
+                                                <img
                                                     className={`${GetColorOfTheLogoByTeam(teamFound.name)}`}
                                                     width={500}
                                                     height={500}
                                                     src={teamFound?.img}
                                                     alt={teamFound?.name}
-                                                    
                                                 />
                                                 <p className="font-semibold text-primary text-xl group-hover/items:underline">{teamFound?.name}</p>
-                                            </a>
+                                            </div>
                                         )
                                     })
                                 }
@@ -50,7 +48,7 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
                             <div className="w-full flex flex-col flex-wrap justify-center items-center gap-5 my-5">
                                 <div className="text-xl font-bold text-center my-5">No teams</div>
                             </div>
-                    } */}
+                    }
                 </StatContainer>
             </FeatureTabContainer>
 
@@ -58,7 +56,7 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
     )
 }
 
-/* export function getTeamsImagesByCharacter(selectedCharacter: Character) {
+export function getTeamsImagesByCharacter(selectedCharacter: Character) {
     const imagesget = getTeamByUniverse(
         selectedCharacter.biography.publisher
     ).reduce((acc, teamToFind) => {
@@ -100,6 +98,6 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
     });
 
     return filteredArray;
-} */
+}
 
 export default FeatureTabTeams

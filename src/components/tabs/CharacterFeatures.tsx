@@ -9,15 +9,17 @@ import { GrGroup } from "react-icons/gr";
 
 type CharacterFeaturesProps = {
     selectedCharacter: Character,
+    tab: string;
 }
 
-export default function CharacterFeatures({ selectedCharacter }: CharacterFeaturesProps) {
+export default function CharacterFeatures({ selectedCharacter, tab }: CharacterFeaturesProps) {
     return (
         <Tabs
-            defaultValue={'Stats'}
+            // defaultValue={'Appereance'}
+            defaultValue={tab}
             //col-span-5
             // className="h-[80vh] w-full lg:w-[70%] md:flex-initial"
-            className="h-full w-full lg:w-[70%] md:flex-initial"
+            className="h-full w-full lg:w-[70%] md:flex-initial lg:mt-16"
         >
             <TabsList className={`grid w-full grid-cols-5 bg-accent`}>
                 <TabsTrigger className='text-base-content hidden md:block' value="Stats">Stats</TabsTrigger>
@@ -37,5 +39,18 @@ export default function CharacterFeatures({ selectedCharacter }: CharacterFeatur
             <FeatureTabTeams selectedCharacter={selectedCharacter}/>
             <FeatureTabComics selectedCharacter={selectedCharacter}  />
         </Tabs>
+        
     )
 }
+
+
+{/*  */}
+
+        /* <Tabs defaultValue="account" className="">
+  <TabsList>
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="password">Password</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">Make changes to your account here.</TabsContent>
+  <TabsContent value="password">Change your password here.</TabsContent>
+</Tabs> */

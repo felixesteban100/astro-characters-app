@@ -4,22 +4,27 @@ import { ViewTransitions } from "astro:transitions";
 // import { ModeToggle } from "@/components/mode-toogle";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { fade } from "astro:transitions";
-import NavLinks from "@/components/NavLinks.astro"
+import NavLinks from "@/components/NavLinks.astro";
+import SheetNav from "@/components/SheetNav";
 
 // things to fix:
 /* 
 - dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
-- create fight page
 - create favorites page
-- the glitter (box characterComponent|characterId) is not in front of the image but behind :|
-CharacracterFeatures component works at times??? :-/
+CharacterFeatures/Tabs (shadcn-ui) component works at times??? :-/
+make team change or appear when universe changes not when url is sended (in characters.astro form)
+discover a way to present webp images  
 */
 
 interface Props {
   title: string;
+  otherLink?: {
+    url: string;
+    title: string;
+  };
 }
 
-const { title } = Astro.props;
+const { title, otherLink } = Astro.props;
 
 const propsParticles = {
   id: "tsparticlesfullpage",
@@ -37,7 +42,7 @@ const propsParticlesDark = {
 };
 ---
 
-<script is:inline>
+<!-- <script is:inline>
   const getThemePreference = () => {
     if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
@@ -59,10 +64,9 @@ const propsParticlesDark = {
       attributeFilter: ["class"],
     });
   }
-</script>
-
+</script> -->
 <html lang="en">
-  <head transition:animate={fade({ duration: "5s" })}>
+  <head transition:animate={fade({ duration: "15s" })}>
     <ViewTransitions />
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -76,16 +80,31 @@ const propsParticlesDark = {
       <SparklesCore transition:persist client:visible {...propsParticles} />
       <SparklesCore transition:persist client:visible {...propsParticlesDark} />
     </div>
-    <main>
-      <nav class="bg-background w-full border-b border-foreground/40 mb-5">
-        <div class="flex flex-wrap items-center justify-start mx-auto p-4 gap-5 px-10">
-          <p class="text-primary font-bold text-stroke-custom">ASTRO 🚀</p>
-          <NavLinks title={title} />
-          <!-- <ModeToggle client:load /> -->
-        </div>
-      </nav>
-
-      <div class="w-[80vw] mx-auto">
+    <main class="w-[80vw] mx-auto">
+      <!-- <nav class="bg-background w-full border-b border-foreground/20 mb-5">
+        
+      </nav> -->
+      <div
+        class="flex items-center justify-between md:justify-start mx-auto py-4 gap-5"
+      >
+        <a href="/"
+          ><p class="text-primary font-bold text-stroke-custom">ASTRO 🚀</p></a
+        >
+        <NavLinks
+          otherClassesContainer="hidden md:flex"
+          title={title}
+          otherLink={otherLink}
+        />
+        <SheetNav client:load>
+          <NavLinks
+            otherClassesContainer="flex"
+            title={title}
+            otherLink={otherLink}
+          />
+        </SheetNav>
+        <!-- <ModeToggle client:load /> -->
+      </div>
+      <div class="mx-auto">
         <slot />
       </div>
     </main>

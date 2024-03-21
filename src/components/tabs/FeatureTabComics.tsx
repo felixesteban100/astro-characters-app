@@ -1,15 +1,15 @@
 import FeatureTabContainer from "./FeatureTabContainer"
 // import Image from "next/image"
 // import CarouselCharacterImages from "../CarouselCharacterImage"
-// import { getJustTheImagesFromTheImagesObject } from "@/utilities/charactersUtils"
-
+import { getJustTheImagesFromTheImagesObject } from "../../lib/charactersUtils"
 
 type FeatureTabComicsProps = {
     selectedCharacter: Character;
 }
 
 function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
-    /* const images = Object.entries(organizedComicsProperty(selectedCharacter.comics, selectedCharacter.biography.publisher).slice().sort(() => Math.random() - 0.5)).filter(([key, value]) => key !== "md" && value !== "-" && value !== "" && !value.includes('/api/images/xs/')).map(c => { return {key: c[0], value: c[1]} })
+    // const images = Object.entries(organizedComicsProperty(selectedCharacter.comics, selectedCharacter.biography.publisher).slice().sort(() => Math.random() - 0.5)).filter(([key, value]) => key !== "md" && value !== "-" && value !== "" && !value.includes('/api/images/xs/')).map(c => { return {key: c[0], value: c[1]} })
+    let image = "md"
 
     const allImages: { key: string, value: string }[] = [
         {
@@ -17,7 +17,7 @@ function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
             value: selectedCharacter.images[image],
         },
         ...getJustTheImagesFromTheImagesObject(selectedCharacter.images, image)
-    ] */
+    ]
 
     return (
         <FeatureTabContainer
@@ -25,6 +25,16 @@ function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
             extraClassNames="border-2"
         >
             <>
+            {allImages.map((c) => {
+                return (
+                    <img
+                        src={c.value}
+                        width={800}
+                        height={700}
+                        alt=""
+                    />
+                )
+            })}
                 {/* <CarouselCharacterImages
                     // allImagesInfo={allImagesInfo}
                     allImages={allImages}
