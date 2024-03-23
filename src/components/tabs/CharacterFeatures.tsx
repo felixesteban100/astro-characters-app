@@ -15,11 +15,9 @@ type CharacterFeaturesProps = {
 export default function CharacterFeatures({ selectedCharacter, tab }: CharacterFeaturesProps) {
     return (
         <Tabs
-            // defaultValue={'Appereance'}
             defaultValue={tab}
-            //col-span-5
-            // className="h-[80vh] w-full lg:w-[70%] md:flex-initial"
-            className="h-full w-full lg:w-[70%] md:flex-initial lg:mt-16"
+            className="h-full w-full "
+            // lg:w-[70%] md:flex-initial lg:mt-16
         >
             <TabsList className={`grid w-full grid-cols-5 bg-accent`}>
                 <TabsTrigger className='text-base-content hidden md:block' value="Stats">Stats</TabsTrigger>

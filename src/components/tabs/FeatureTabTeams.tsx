@@ -16,7 +16,7 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
                 extraClassNames="border-2"
             >
                 <StatContainer>
-                    <div>Teams</div>
+                    {/* <div>Teams</div> */}
                     {
                         getTeamsImagesByCharacter(selectedCharacter).length > 0 ?
                             <div
@@ -25,11 +25,9 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
                                 {
                                     getTeamsImagesByCharacter(selectedCharacter).map((teamFound) => {
                                         return (
-                                            <div /* a */
-                                                // href={`/characters?universe=${selectedCharacter.biography.publisher}&team=${teamFound.value}&howMany=700&pagination=${withPagination}`}
-                                                // key={teamFound.name}
+                                            <a
+                                                href={`/characters?universe=${selectedCharacter.biography.publisher}&team=${teamFound.value}`}
                                                 className="mt-5 mx-auto flex gap-1 flex-col cursor-pointer group/items"
-                                                // data-tip={teamFound.name}
                                             >
                                                 <img
                                                     className={`${GetColorOfTheLogoByTeam(teamFound.name)}`}
@@ -39,7 +37,7 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
                                                     alt={teamFound?.name}
                                                 />
                                                 <p className="font-semibold text-primary text-xl group-hover/items:underline">{teamFound?.name}</p>
-                                            </div>
+                                            </a>
                                         )
                                     })
                                 }

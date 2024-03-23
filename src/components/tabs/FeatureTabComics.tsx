@@ -25,16 +25,18 @@ function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
             extraClassNames="border-2"
         >
             <>
-            {allImages.map((c) => {
-                return (
-                    <img
-                        src={c.value}
-                        width={800}
-                        height={700}
-                        alt=""
-                    />
-                )
-            })}
+                <div className="flex flex-col gap-5 justify-center items-center">
+                    {allImages.map((c) => {
+                        return (
+                            <img
+                                src={c.value}
+                                width={800}
+                                height={700}
+                                alt=""
+                            />
+                        )
+                    })}
+                </div>
                 {/* <CarouselCharacterImages
                     // allImagesInfo={allImagesInfo}
                     allImages={allImages}

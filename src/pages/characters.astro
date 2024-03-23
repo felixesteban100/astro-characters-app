@@ -2,15 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import "@/styles/globals.css";
 import { collectionCharacters } from "../lib/mongodb";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
 
 import Image from "astro/components/Image.astro";
 import { SearchIcon } from "lucide-react";
 
 import SheetFilterCharacters from "../components/custom-ui/SheetFilterCharacters";
-import SelectFilterCharacters from "../components/custom-ui/SelectFilterCharacters";
 
 import {
   ALLALIGMENTS,
@@ -23,24 +20,38 @@ import { publisherIMG, getQueryOptions } from "@/lib/charactersUtils";
 
 import PaginationCharacters from "../components/PaginationCharacters.astro";
 
-import { atom } from 'nanostores';
+import FilterForm from "../components/custom-ui/FilterForm";
+// import FilterCharacters from "../components/custom-ui/FilterCharacters";
+// import FormSvelte from "../components/custom-ui/FormSvelte.svelte";
+import SelectFilterCharacters from "@/components/custom-ui/SelectFilterCharacters";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+
+const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
+const characterName = Astro.url.searchParams.get("characterName") ?? "";
+// const characterName = "hulk, batman, spider-man, wolverine, flash ii, captain marvel, ironman, wonder woman, superman";
+const side = Astro.url.searchParams.get("side") ?? "All";
+const universe = Astro.url.searchParams.get("universe") ?? "All";
+const team = Astro.url.searchParams.get("team") ?? "All";
+const gender = Astro.url.searchParams.get("gender") ?? "both";
+const race = Astro.url.searchParams.get("race") ?? "All";
+const characterOrFullName =
+  Astro.url.searchParams.get("characterOrFullName") === "true";
+const includesOrExact =
+  Astro.url.searchParams.get("includesOrExact") === "true";
 
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
-    const characterName = data.get("characterName");
-    const gender = data.get("gender");
-    const side = data.get("side");
-    const race = data.get("race");
-    const universe = data.get("universe");
-    let team = data.get("team");
-
-    if(!getTeamByUniverse(universe?.toString() ?? "").find(c => c.name === team)){
-      team = "All"
-    }
+    const characterNameForm = data.get("characterName");
+    const genderForm = data.get("gender");
+    const sideForm = data.get("side");
+    const raceForm = data.get("race");
+    const universeForm = data.get("universe");
+    const teamForm = data.get("team");
 
     return Astro.redirect(
-      `/characters?characterName=${characterName}&gender=${gender}&side=${side}&race=${race}${universe ? `&universe=${universe}&team=${(team)}` : `&universe="All"&team="All"`}&currentPage=${1}`
+      `/characters?characterName=${characterNameForm}&gender=${genderForm}&side=${sideForm}&race=${raceForm}${universeForm ? `&universe=${universeForm}&team=${universeForm === universe ? teamForm : "All"}` : `&universe="All"&team="All"`}&currentPage=${1}`
     );
   } catch (error) {
     if (error instanceof Error) {
@@ -49,18 +60,6 @@ if (Astro.request.method === "POST") {
   }
 }
 
-const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
-const characterName = Astro.url.searchParams.get("characterName");
-// const characterName = "hulk, batman, spider-man, wolverine, flash ii, captain marvel, ironman, wonder woman, superman";
-const side = Astro.url.searchParams.get("side");
-let universe = Astro.url.searchParams.get("universe");
-const team = Astro.url.searchParams.get("team");
-const gender = Astro.url.searchParams.get("gender");
-const race = Astro.url.searchParams.get("race");
-const characterOrFullName =
-  Astro.url.searchParams.get("characterOrFullName") === "true";
-const includesOrExact =
-  Astro.url.searchParams.get("includesOrExact") === "true";
 
 const queryOptions: QueryOptions = getQueryOptions(
   characterName,
@@ -88,31 +87,13 @@ const someCharacters = await collectionCharacters
   .skip(offset)
   .toArray();
 
-const teamByUniverse: { name: string; value: string; img: string }[] =
-  getTeamByUniverse(universe ?? "");
+const teamsByUniverse: { name: string; value: string; img: string }[] = getTeamByUniverse(universe ?? "")
 
-const teamInfo = teamByUniverse.find((t) => t.value === team);
+const teamInfo = getTeamByUniverse(universe ?? "").find(
+  (t) => t.value === team
+);
 
-const universeState = atom(universe);
-
-// if(universeState.value !== "All" && team !== "All"){
-//   return Astro.redirect(
-//       `/characters?characterName=${characterName}&gender=${gender}&side=${side}&race=${race}${`&universe=${universe}&team=${"All"}`}&currentPage=${1}`
-//     );
-// }
 ---
-
-<!-- <script>
-  import { isOpen } from '../store.js';
-
-  // Set the store to true when the button is clicked
-  function openDialog() {
-    isOpen.set(true);
-  }
-
-  // Add an event listener to the button
-  document.getElementById('openDialog').addEventListener('click', openDialog);
-</script> -->
 
 <Layout
   title={team && team !== "All"
@@ -121,25 +102,34 @@ const universeState = atom(universe);
       ? universe
       : `Characters`}
 >
-  <main class="mb-32 flex flex-col justify-center items-center gap-5 ">
+  <main class="mb-32 flex flex-col justify-center items-center gap-5">
     <div class="self-end">
-      <SheetFilterCharacters client:visible>
+      <SheetFilterCharacters client:load>
         <h1 class="font-bold tet-5xl text-primary">Filters</h1>
         <form method="POST">
+          <!-- <FilterForm
+            characterName={characterName ?? ""}
+            gender={gender}
+            side={side}
+            race={race}
+            universe={universe}
+            team={team}
+            client:load
+          /> -->
           <div class="w-full mb-10 flex flex-col gap-5 mt-10">
             <Label className="flex flex-col gap-5">
               CharacterName/s:
               <Input
                 type="text"
                 name="characterName"
-                defaultValue={characterName ?? ""}
+                defaultValue={characterName}
               />
             </Label>
 
             <SelectFilterCharacters
               options={ALLGENDERS}
               placeholder="Gender"
-              defaultValue={gender ?? "both"}
+              defaultValue={gender}
               paramName="gender"
               client:load
             />
@@ -147,7 +137,7 @@ const universeState = atom(universe);
             <SelectFilterCharacters
               options={ALLALIGMENTS}
               placeholder="Aligment"
-              defaultValue={side ?? "All"}
+              defaultValue={side}
               paramName="side"
               client:load
             />
@@ -155,7 +145,7 @@ const universeState = atom(universe);
             <SelectFilterCharacters
               options={ALLRACES}
               placeholder="Race"
-              defaultValue={race ?? "All"}
+              defaultValue={race}
               paramName="race"
               client:load
             />
@@ -163,26 +153,36 @@ const universeState = atom(universe);
             <SelectFilterCharacters
               options={ALLUNIVERSE}
               placeholder="Universe"
-              defaultValue={universeState.value ?? "All"}
+              defaultValue={universe}
               paramName="universe"
-              onChange={universeState.set}
               client:load
             />
 
             {
-              teamByUniverse.length > 0 && (
+              (teamsByUniverse.length > 0) && (
                 <SelectFilterCharacters
-                  options={teamByUniverse}
+                  options={teamsByUniverse}
                   placeholder="Teams"
-                  defaultValue={team ?? "All"}
+                  defaultValue={team}
                   paramName="team"
                   client:load
                 />
               )
             }
           </div>
-          <Button  className="flex justify-center gap-2 items-center"><SearchIcon /> Filter</Button>
+
+          <Button className="flex justify-center gap-2 items-center w-full text-2xl"><SearchIcon /> Filter</Button>
         </form>
+        <!-- <FilterCharacters
+          characterName={characterName ?? ""}
+          gender={gender}
+          side={side}
+          race={race}
+          universe={universe}
+          team={team}
+          client:load
+        /> -->
+        <!-- <FormSvelte client:load /> -->
       </SheetFilterCharacters>
     </div>
 

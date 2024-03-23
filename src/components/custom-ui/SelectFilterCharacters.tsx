@@ -7,20 +7,20 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 
-type SelectFilterCharactersProps = {
+type SelectFilterCharactersProps<T> = {
     defaultValue: string;
-    options: { value: string, name: string }[] ;
+    options: { value: string, name: string }[];
     placeholder: string;
     paramName: string;
-    onChange?: (value: string) => void;
+    onChange?: (value: string) => void
 }
 
-export default function SelectFilterCharacters({ defaultValue, options, placeholder, paramName, onChange }: SelectFilterCharactersProps) {
+export default function SelectFilterCharacters({ defaultValue, options, placeholder, paramName, onChange}: SelectFilterCharactersProps<{ name: string; value: string; img: string;}[]>) {
     return (
         <Label className="flex flex-col gap-5">
               {placeholder}:
-        <Select name={paramName} defaultValue={defaultValue ?? "light"} onValueChange={onChange}>
-            <SelectTrigger className="w-[180px]">
+        <Select name={paramName} defaultValue={defaultValue} onValueChange={onChange}>
+            <SelectTrigger className="">
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
