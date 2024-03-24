@@ -1,9 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { collectionCharacters } from "../lib/mongodb";
-import Image from "astro/components/Image.astro";
-import HeroCard from "../components/hero/HeroCard.astro";
-import { Atom } from "lucide-react";
+import HeroCard from "../components/HeroCard.astro";
+import { Atom } from "lucide-astro";
 
 const randomCharacters = await collectionCharacters
   // .aggregate([{ $match: {} }, { $sample: { size: 50 } }])
@@ -12,21 +11,6 @@ const randomCharacters = await collectionCharacters
   .limit(50)
   .toArray();
 
-type CharacterLink = {
-  id: number;
-  title: string;
-  link: string;
-  thumbnail: string;
-};
-
-const charactersLinks = randomCharacters.map((c: any) => {
-  return {
-    id: c.id,
-    title: c.name,
-    link: `/${c.id}`,
-    thumbnail: c.images.md,
-  };
-});
 
 const firstRow = randomCharacters.slice(0, 15);
 const secondRow = randomCharacters.slice(15, 35);

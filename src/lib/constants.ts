@@ -1,3 +1,5 @@
+export const CHARACTERS_PER_PAGE = 8;
+
 export const ALLRACES = [
   { value: "All", name: "All races" },
   { value: "Human", name: "Human 🌎" },

@@ -1,11 +1,15 @@
 ---
-import "@/styles/globals.css";
+import { Button } from "$lib/components/ui/button";
+import "../styles/globals.css";
 import { ViewTransitions } from "astro:transitions";
-// import { ModeToggle } from "@/components/mode-toogle";
-import { SparklesCore } from "@/components/ui/sparkles";
+// import { SparklesCore } from "@/components/ui/sparkles";
 import { fade } from "astro:transitions";
-import NavLinks from "@/components/NavLinks.astro";
-import SheetNav from "@/components/SheetNav";
+import NavLinks from "src/components/NavLinks.astro";
+import Sheet from "src/components/Sheet.svelte";
+
+// import * as Sheet from "$lib/components/ui/sheet";
+import { Menu } from "lucide-astro";
+
 
 // things to fix:
 /* 
@@ -77,8 +81,8 @@ const propsParticlesDark = {
   </head>
   <body>
     <div class="absolute inset-0 -z-10 min-h-screen">
-      <SparklesCore transition:persist client:visible {...propsParticles} />
-      <SparklesCore transition:persist client:visible {...propsParticlesDark} />
+      <!-- <SparklesCore transition:persist client:visible {...propsParticles} /> -->
+      <!-- <SparklesCore transition:persist client:visible {...propsParticlesDark} /> -->
     </div>
     <main class="w-[80vw] mx-auto">
       <!-- <nav class="bg-background w-full border-b border-foreground/20 mb-5">
@@ -95,14 +99,27 @@ const propsParticlesDark = {
           title={title}
           otherLink={otherLink}
         />
-        <SheetNav client:load>
+        <Sheet ButtonClassName="flex md:hidden" client:load>
+          <Menu slot="trigger" className="text-foreground" />
           <NavLinks
+            slot="content"
             otherClassesContainer="flex"
             title={title}
             otherLink={otherLink}
           />
-        </SheetNav>
-        <!-- <ModeToggle client:load /> -->
+        </Sheet>
+        <!-- <Button size={"icon"} variant={"ghost"}><Menu className="text-foreground" /></Button> -->
+        <!-- <Sheet.Root>
+          <Sheet.Trigger><Button size={"icon"} variant={"ghost"}><Menu className="text-foreground" /></Button></Sheet.Trigger>
+          <Sheet.Content>
+            <NavLinks
+            otherClassesContainer="flex"
+            title={title}
+            otherLink={otherLink}
+            client:load
+          />
+          </Sheet.Content>
+        </Sheet.Root> -->
       </div>
       <div class="mx-auto">
         <slot />

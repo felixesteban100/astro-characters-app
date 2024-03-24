@@ -1,31 +1,21 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import "@/styles/globals.css";
+import "../styles/globals.css";
 import { collectionCharacters } from "../lib/mongodb";
-import { Button } from "../components/ui/button";
 
 import Image from "astro/components/Image.astro";
-import { SearchIcon } from "lucide-react";
-
-import SheetFilterCharacters from "../components/custom-ui/SheetFilterCharacters";
 
 import {
-  ALLALIGMENTS,
-  ALLGENDERS,
-  ALLRACES,
-  ALLUNIVERSE,
   getTeamByUniverse,
 } from "../lib/constants";
-import { publisherIMG, getQueryOptions } from "@/lib/charactersUtils";
+import { publisherIMG, getQueryOptions } from "../lib/charactersUtils";
+import { CHARACTERS_PER_PAGE } from "../lib/constants";
 
-import PaginationCharacters from "../components/PaginationCharacters.astro";
+import Pagination from "../components/Pagination.svelte";
+import FilterCharacters from "../components/FilterCharacters.svelte";
+import Sheet from "src/components/Sheet.svelte";
+import { Filter } from "lucide-astro";
 
-import FilterForm from "../components/custom-ui/FilterForm";
-// import FilterCharacters from "../components/custom-ui/FilterCharacters";
-// import FormSvelte from "../components/custom-ui/FormSvelte.svelte";
-import SelectFilterCharacters from "@/components/custom-ui/SelectFilterCharacters";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName") ?? "";
@@ -60,7 +50,6 @@ if (Astro.request.method === "POST") {
   }
 }
 
-
 const queryOptions: QueryOptions = getQueryOptions(
   characterName,
   side,
@@ -72,13 +61,10 @@ const queryOptions: QueryOptions = getQueryOptions(
   includesOrExact
 );
 
-const CHARACTERS_PER_PAGE = 8;
-
 const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
 const characterdDisplayLenght =
   await collectionCharacters.countDocuments(queryOptions);
-const totalPages = Math.ceil(characterdDisplayLenght / CHARACTERS_PER_PAGE);
 
 const someCharacters = await collectionCharacters
   .find({ ...queryOptions })
@@ -87,12 +73,10 @@ const someCharacters = await collectionCharacters
   .skip(offset)
   .toArray();
 
-const teamsByUniverse: { name: string; value: string; img: string }[] = getTeamByUniverse(universe ?? "")
 
 const teamInfo = getTeamByUniverse(universe ?? "").find(
   (t) => t.value === team
 );
-
 ---
 
 <Layout
@@ -103,87 +87,21 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
       : `Characters`}
 >
   <main class="mb-32 flex flex-col justify-center items-center gap-5">
-    <div class="self-end">
-      <SheetFilterCharacters client:load>
-        <h1 class="font-bold tet-5xl text-primary">Filters</h1>
-        <form method="POST">
-          <!-- <FilterForm
-            characterName={characterName ?? ""}
+    <div class="w-full flex justify-end">
+      <Sheet client:load ButtonClassName="">
+        <Filter slot="trigger" />
+        <div slot="content">
+          <FilterCharacters
+            characterName={characterName}
             gender={gender}
             side={side}
             race={race}
             universe={universe}
             team={team}
             client:load
-          /> -->
-          <div class="w-full mb-10 flex flex-col gap-5 mt-10">
-            <Label className="flex flex-col gap-5">
-              CharacterName/s:
-              <Input
-                type="text"
-                name="characterName"
-                defaultValue={characterName}
-              />
-            </Label>
-
-            <SelectFilterCharacters
-              options={ALLGENDERS}
-              placeholder="Gender"
-              defaultValue={gender}
-              paramName="gender"
-              client:load
-            />
-
-            <SelectFilterCharacters
-              options={ALLALIGMENTS}
-              placeholder="Aligment"
-              defaultValue={side}
-              paramName="side"
-              client:load
-            />
-
-            <SelectFilterCharacters
-              options={ALLRACES}
-              placeholder="Race"
-              defaultValue={race}
-              paramName="race"
-              client:load
-            />
-
-            <SelectFilterCharacters
-              options={ALLUNIVERSE}
-              placeholder="Universe"
-              defaultValue={universe}
-              paramName="universe"
-              client:load
-            />
-
-            {
-              (teamsByUniverse.length > 0) && (
-                <SelectFilterCharacters
-                  options={teamsByUniverse}
-                  placeholder="Teams"
-                  defaultValue={team}
-                  paramName="team"
-                  client:load
-                />
-              )
-            }
-          </div>
-
-          <Button className="flex justify-center gap-2 items-center w-full text-2xl"><SearchIcon /> Filter</Button>
-        </form>
-        <!-- <FilterCharacters
-          characterName={characterName ?? ""}
-          gender={gender}
-          side={side}
-          race={race}
-          universe={universe}
-          team={team}
-          client:load
-        /> -->
-        <!-- <FormSvelte client:load /> -->
-      </SheetFilterCharacters>
+          />
+        </div>
+      </Sheet>
     </div>
 
     {
@@ -233,16 +151,16 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
         })
       }
     </div>
-
-    <PaginationCharacters
+    <Pagination
       currentPage={currentPage}
-      totalPages={totalPages}
+      countCharacters={characterdDisplayLenght}
       characterName={characterName}
       gender={gender}
       side={side}
       race={race}
       universe={universe}
       team={team}
+      client:only
     />
   </main>
 </Layout>
