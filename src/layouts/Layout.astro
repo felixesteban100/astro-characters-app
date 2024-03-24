@@ -1,22 +1,22 @@
 ---
-import { Button } from "$lib/components/ui/button";
 import "../styles/globals.css";
 import { ViewTransitions } from "astro:transitions";
-// import { SparklesCore } from "@/components/ui/sparkles";
-import { fade } from "astro:transitions";
+// import { fade } from "astro:transitions";
 import NavLinks from "src/components/NavLinks.astro";
 import Sheet from "src/components/Sheet.svelte";
 
 // import * as Sheet from "$lib/components/ui/sheet";
 import { Menu } from "lucide-astro";
+// import Sparkles from "src/components/Sparkles.astro";
+import Sparkles from "src/components/Sparkles.svelte";
 
 
 // things to fix:
 /* 
+- use astro-particles
 - dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
 - create favorites page
 CharacterFeatures/Tabs (shadcn-ui) component works at times??? :-/
-make team change or appear when universe changes not when url is sended (in characters.astro form)
 discover a way to present webp images  
 */
 
@@ -70,7 +70,9 @@ const propsParticlesDark = {
   }
 </script> -->
 <html lang="en">
-  <head transition:animate={fade({ duration: "15s" })}>
+  <!-- the following line doesn't work, so I don't even bother using it -->
+  <!-- transition:animate={fade({ duration: "15s" })} -->
+  <head  >
     <ViewTransitions />
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -81,13 +83,11 @@ const propsParticlesDark = {
   </head>
   <body>
     <div class="absolute inset-0 -z-10 min-h-screen">
-      <!-- <SparklesCore transition:persist client:visible {...propsParticles} /> -->
-      <!-- <SparklesCore transition:persist client:visible {...propsParticlesDark} /> -->
+      <!-- <Sparkles/> -->
+      <Sparkles client:only/>
     </div>
-    <main class="w-[80vw] mx-auto">
-      <!-- <nav class="bg-background w-full border-b border-foreground/20 mb-5">
-        
-      </nav> -->
+    
+    <main class="w-[90vw] md:w-[80vw] mx-auto">
       <div
         class="flex items-center justify-between md:justify-start mx-auto py-4 gap-5"
       >
@@ -108,18 +108,6 @@ const propsParticlesDark = {
             otherLink={otherLink}
           />
         </Sheet>
-        <!-- <Button size={"icon"} variant={"ghost"}><Menu className="text-foreground" /></Button> -->
-        <!-- <Sheet.Root>
-          <Sheet.Trigger><Button size={"icon"} variant={"ghost"}><Menu className="text-foreground" /></Button></Sheet.Trigger>
-          <Sheet.Content>
-            <NavLinks
-            otherClassesContainer="flex"
-            title={title}
-            otherLink={otherLink}
-            client:load
-          />
-          </Sheet.Content>
-        </Sheet.Root> -->
       </div>
       <div class="mx-auto">
         <slot />
