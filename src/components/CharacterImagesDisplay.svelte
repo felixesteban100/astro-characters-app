@@ -113,11 +113,12 @@
   
 </script>
 
+<!-- rounded-md border -->
 <ScrollArea
-  class="w-[500px] lg:w-[800px] h-[660px] whitespace-nowrap rounded-md border"
-  orientation="horizontal"
+  class="w-[500px] md:w-[500px] lg:w-[800px] h-[630px] whitespace-nowrap "
+  orientation="vertical"
 >
-  <div class="flex w-max space-x-4 p-4">
+  <div class="flex flex-col justify-center items-center gap-5 p-4">
     {#each images as image}
       <figure class="shrink-0">
         <div class="overflow-hidden rounded-md">
@@ -125,8 +126,8 @@
             src={image}
             alt={`Photo by`}
             class="h-[600px] w-[400px] object-cover"
-            width={300}
-            height={400}
+            width={800}
+            height={800}
           />
         </div>
         <figcaption class="pt-2 text-xs text-muted-foreground">

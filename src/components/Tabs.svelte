@@ -11,6 +11,8 @@
   import Stats from "./stats/Stats.svelte";
   import CharacterImagesDisplay from "./CharacterImagesDisplay.svelte";
   import CharacterTeamsDisplay from "./CharacterTeamsDisplay.svelte";
+  import Appereance from "./stats/Appereance.svelte";
+  import Biography from "./stats/Biography.svelte";
   //   import {organizedComicsProperty} from '../lib/charactersUtils'
 
   export let characterInfo: Character;
@@ -18,7 +20,7 @@
 
 <Tabs.Root
   value="Stats"
-  class="h-[80vh] w-full lg:w-[100%] md:flex-initial flex justify-start flex-col items-center gap-5"
+  class="h-[44rem] w-full flex justify-start flex-col items-center gap-5"
 >
   <Tabs.List class="grid w-full grid-cols-5 bg-accent">
     <Tabs.Trigger class="text-base-content hidden md:block" value="Stats"
@@ -57,13 +59,13 @@
       value="Comics"><PictureInPicture size={20} /></Tabs.Trigger
     >
   </Tabs.List>
-  <Tabs.Content class="w-[90%]" value="Stats">
+  <Tabs.Content class="h-full w-[90%]" value="Stats">
     <Stats powerstats={characterInfo.powerstats} />
   </Tabs.Content>
-  <Tabs.Content value="Appereance">Change your password here.</Tabs.Content>
-  <Tabs.Content value="Biography">Change your Biography here.</Tabs.Content>
-  <Tabs.Content value="Teams"><CharacterTeamsDisplay {characterInfo} /></Tabs.Content>
-  <Tabs.Content value="Comics">
+  <Tabs.Content class="h-full w-[90%]" value="Appereance"><Appereance appereance={characterInfo.appearance} /></Tabs.Content>
+  <Tabs.Content class="h-full w-[90%]" value="Biography"><Biography biography={characterInfo.biography} connections={characterInfo.connections} /></Tabs.Content>
+  <Tabs.Content  value="Teams"><CharacterTeamsDisplay {characterInfo} /></Tabs.Content>
+  <Tabs.Content  value="Comics">
     <CharacterImagesDisplay
       characterInfoComics={characterInfo.comics}
       characterInfoPublisher={characterInfo.biography.publisher}

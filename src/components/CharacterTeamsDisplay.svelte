@@ -70,8 +70,9 @@
   }
 </script>
 
+<!-- rounded-md border -->
 <ScrollArea
-  class="w-[500px] lg:w-[800px] h-[660px] whitespace-nowrap rounded-md border"
+  class="w-[500px] md:w-[500px] lg:w-[800px] h-[630px] whitespace-nowrap "
   orientation="vertical"
 >
   <div class="flex flex-col gap-5 justify-center items-center my-5">

@@ -34,10 +34,10 @@ const selectedCharacter = await collectionCharacters.findOne({
     title: `Fight using ${selectedCharacter?.name}`,
   }}
 >
-  <main>
+  <main class="mt-16">
     {
       selectedCharacter ? (
-        <div class="flex flex-col xl:flex-row justify-center items-center gap-16 xl:h-[80vh]">
+        <div class="flex flex-col xl:flex-row justify-center items-center gap-16">
           <div class="relative box characterId overflow-hidden">
             <Image
               class={`object-cover h-[44rem] w-[40rem] rounded-md`}
@@ -49,8 +49,7 @@ const selectedCharacter = await collectionCharacters.findOne({
               alt=""
             />
           </div>
-          <div class="h-full w-full lg:w-[70%] md:flex-initial lg:mt-16">
-            
+          <div class="h-[44rem] w-full lg:w-[70%]">
             <Tabs characterInfo={selectedCharacter} client:load />
           </div>
         </div>
