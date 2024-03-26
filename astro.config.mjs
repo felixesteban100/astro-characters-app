@@ -10,8 +10,14 @@ import svelte from "@astrojs/svelte";
 export default defineConfig({
   output: "server",
   // output: "hybrid",
+  server: {
+    headers: {
+      "Access-Control-Allow-Origin": "*"
+  }
+  },
   // adapter: node({mode: 'standalone',}),
   adapter: vercelServerless(),
+  
   integrations: [/* react(),  */tailwind({
     applyBaseStyles: false
   }), svelte()],

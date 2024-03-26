@@ -78,6 +78,7 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
   (t) => t.value === team
 );
 
+
 ---
 
 <Layout
@@ -107,9 +108,9 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
 
     {
       team && team !== "All" && teamInfo !== undefined ? (
-        <Image class={`${GetColorOfTheLogoByTeam(teamInfo.name)}`} src={teamInfo.img} width={200} height={200} alt="" />
+        <Image class={`${GetColorOfTheLogoByTeam(teamInfo.name)}`} src={teamInfo.img} width={200} height={200} alt="" transition:name={`media-image-${teamInfo.value}`}/>
       ) : universe && universe !== "All" ? (
-        <Image class={`${GetColorLogosByPublisher(universe)}`} src={publisherIMG(universe)} width={200} height={200} alt="" />
+        <Image class={`${GetColorLogosByPublisher(universe)}`} src={publisherIMG(universe)} width={200} height={200} alt="" transition:name={`media-image-${universe}`}/>
       ) : null
     }
 
@@ -137,8 +138,8 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
               <div class="relative box characterId">
                 <Image
                   class={`object-cover h-[25rem] w-[20rem] rounded-md`}
-                  width={800}
-                  height={800}
+                  width={10000}
+                  height={10000}
                   src={c.images.md}
                   loading="eager"
                   transition:name={`media-image-${c.id}`}

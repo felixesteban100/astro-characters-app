@@ -11,12 +11,13 @@
       return () => clearTimeout(timer);
     });
   </script>
-   
-  <div class="w-full flex justify-between items-center gap-10 my-5 ">
+   <!-- grid grid-cols-6 -->
+   <!-- flex justify-between -->
+  <div class="w-full grid grid-cols-[100px_1fr_25px] items-center gap-10 my-5 ">
     <div class="flex items-center gap-2 ">
         <p class='text-xl lg:text-3xl'><slot name="icon"/></p>
-        <div class="fond-bold hidden lg:block">{statName}</div>
+        <div class="fond-bold ">{statName}</div>
     </div>
-    <Progress {value} class=" ml-5 " />
-    <p class="font-bold ">{value}</p>
+    <Progress {value} class="w-full " />
+    <p class="font-bold flex justify-end">{value}</p>
 </div>

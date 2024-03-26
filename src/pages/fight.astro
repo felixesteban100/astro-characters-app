@@ -26,10 +26,29 @@ const selectedCharacters = await collectionCharacters
   })
   .toArray();
 
-// console.log(selectedCharacters[0]?.id, selectedCharacters[1]?.id);
+// const otherLinks = [{
+//     url: `/${selectedCharacters[0].id}`,
+//     title: `Fight using ${selectedCharacters[0].name}`,
+//   },
+//   {
+//     url: `/${selectedCharacters[1].id}`,
+//     title: `Fight using ${selectedCharacters[1].name}`,
+//   }]
+
+const otherLinks = [{
+  href: `/fight?first=${selectedCharacters[0].id}`,
+    title: `Fight using ${selectedCharacters[0].name}`,
+  },
+  {
+    href: `/fight?first=${selectedCharacters[1].id}`,
+    title: `Fight using ${selectedCharacters[1].name}`,
+  }]
 ---
 
-<Layout title="Fight">
+<Layout 
+  title="Fight"
+  otherLinks={otherLinks}
+  >
   <div
     class="h-full w-full flex justify-between items-start gap-2 md:gap-10 overflow-visible"
   >

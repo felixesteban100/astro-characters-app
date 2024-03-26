@@ -1,0 +1,86 @@
+---
+import {
+  GetColorLogosByPublisher,
+  GetColorOfTheLogoByTeam,
+  publisherIMG,
+} from "$lib/charactersUtils";
+import { getTeamByUniverse } from "$lib/constants";
+import { ALLUNIVERSE, UNIVERSES_WITH_TEAMS } from "$lib/constants";
+import { cn } from "$lib/utils";
+import Layout from "src/layouts/Layout.astro";
+
+export type UniversesWithItsTeams = {
+  info: {
+    name: string;
+    value: string;
+  };
+  img: string;
+  teams: { name: string; value: string; img: string }[];
+};
+
+const allUniversesWithItsTeams: UniversesWithItsTeams[] = ALLUNIVERSE.slice(
+  1,
+  ALLUNIVERSE.length - 1
+).reduce((allUniverses, universe) => {
+
+  if (UNIVERSES_WITH_TEAMS.includes(universe.value)) {
+    allUniverses.push({
+      info: universe,
+      img: publisherIMG(universe.value),
+      teams: getTeamByUniverse(universe.value).filter((team) => team.value !== "All"),
+    });
+  }
+
+  return allUniverses;
+}, new Array());
+---
+
+<Layout title="Teams">
+  <div class="w-full flex flex-col justify-center">
+    {
+      allUniversesWithItsTeams.map((universe) => {
+        return (
+          <div class="border my-5 p-5 rounded-md">
+            <a
+              href={`/characters?universe=${universe.info.value}&team=${'All'}`}
+              class="group/publisher"
+            >
+              <img
+                src={universe.img}
+                width={500}
+                height={500}
+                alt={universe.info.value}
+                class={cn(
+                  `w-[20%] h-auto mx-auto ${GetColorLogosByPublisher(universe.info.value)}`
+                )}
+                transition:name={`media-image-${universe.info.value}`}
+              />
+            </a>
+            <div>
+              <div class="grid grid-cols-3 items-center">
+                {universe.teams.map((team) => {
+                  return (
+                    <a
+                      href={`/characters?universe=${universe.info.value}&team=${team.value}`}
+                      class="group/publisher"
+                    >
+                      <img
+                        src={team.img}
+                        height={500}
+                        width={500}
+                        alt={team.name}
+                        class={`w-[80%] h-auto col-span-1 ${GetColorOfTheLogoByTeam(team.value)}`}
+                        transition:name={`media-image-${team.value}`}
+                      />
+                      <p class="group-hover/publisher:underline">{team.name}</p>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</Layout>

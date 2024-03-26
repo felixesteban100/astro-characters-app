@@ -2,17 +2,18 @@
 import "../styles/globals.css";
 import { ViewTransitions } from "astro:transitions";
 // import { fade } from "astro:transitions";
-import NavLinks from "src/components/NavLinks.astro";
 import Sheet from "src/components/Sheet.svelte";
 
 // import * as Sheet from "$lib/components/ui/sheet";
 import { Menu } from "lucide-astro";
 // import Sparkles from "src/components/Sparkles.astro";
 import Sparkles from "src/components/Sparkles.svelte";
+import Button from "node_modules/bits-ui/dist/bits/button/components/button.svelte";
 
 
 // things to fix:
 /* 
+- some images are not displaying (because are from a CORS site i guess or webp files) :/
 - use astro-particles
 - dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
 - create favorites page
@@ -20,30 +21,54 @@ CharacterFeatures/Tabs (shadcn-ui) component works at times??? :-/
 discover a way to present webp images  
 */
 
+const currentPath = Astro.url.pathname;
+
 interface Props {
   title: string;
-  otherLink?: {
-    url: string;
+  otherLinks?: {
+    href: string;
     title: string;
-  };
+  }[];
 }
 
-const { title, otherLink } = Astro.props;
+const { title, otherLinks } = Astro.props;
 
-const propsParticles = {
-  id: "tsparticlesfullpage",
-  background: "transparent",
-  minSize: 0.6,
-  maxSize: 1.4,
-  particleDensity: 50,
-  particleColor: "#000000",
-};
+// const propsParticles = {
+//   id: "tsparticlesfullpage",
+//   background: "transparent",
+//   minSize: 0.6,
+//   maxSize: 1.4,
+//   particleDensity: 50,
+//   particleColor: "#000000",
+// };
 
-const propsParticlesDark = {
-  ...propsParticles,
-  particleColor: "#fff",
-  id: "tsparticlesfullpage2",
-};
+// const propsParticlesDark = {
+//   ...propsParticles,
+//   particleColor: "#fff",
+//   id: "tsparticlesfullpage2",
+// };
+
+const links = [
+  {
+    href: "/",
+    title: "Home",
+  },
+  {
+    href: "/characters",
+    title: "Characters",
+  },
+  {
+    href: "/fight",
+    title: "Fight",
+  },
+  {
+    href: "/teams",
+    title: "Teams",
+  },
+]
+
+if(otherLinks) links.push(...otherLinks)
+
 ---
 
 <!-- <script is:inline>
@@ -83,7 +108,6 @@ const propsParticlesDark = {
   </head>
   <body>
     <div class="absolute inset-0 -z-10 min-h-screen">
-      <!-- <Sparkles/> -->
       <Sparkles client:only/>
     </div>
     
@@ -91,22 +115,49 @@ const propsParticlesDark = {
       <div
         class="flex items-center justify-between md:justify-start mx-auto py-4 gap-5"
       >
-        <a href="/"
-          ><p class="text-primary font-bold text-stroke-custom">ASTRO 🚀</p></a
-        >
-        <NavLinks
-          otherClassesContainer="hidden md:flex"
-          title={title}
-          otherLink={otherLink}
-        />
+        <a href="/"><p class="text-primary font-bold text-stroke-custom">ASTRO 🚀</p></a>
+        <div class={`items-center justify-between hidden md:flex w-full  md:w-auto`}>
+          <menu
+            class="flex flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
+          >
+            {links.map((link) => (
+              <li>
+                <Button variant={"link"} class="hover:underline text-foreground">
+                  <a
+                    href={link.href}
+                    class={`block py-2 px-3 ${(currentPath.includes(link.href) && title === link.title) && "underline"}`}
+                    aria-current="page"
+                    >
+                      {link.title}
+                  </a>
+                </Button>
+              </li>
+            ))}
+          </menu>
+        </div>
+        
         <Sheet ButtonClassName="flex md:hidden" client:load>
           <Menu slot="trigger" className="text-foreground" />
-          <NavLinks
-            slot="content"
-            otherClassesContainer="flex"
-            title={title}
-            otherLink={otherLink}
-          />
+          <div class={`items-center justify-between flex w-full  md:w-auto`}>
+            <menu
+              class="flex flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
+            >
+              {links.map((link) => (
+                <li>
+                  <Button variant={"link"} class="text-foreground">
+                    <a 
+                      href="/" 
+                      class={`block py-2 px-3 ${(currentPath.includes(link.href) && title === link.title) && "underline"}`} 
+                      aria-current="page"
+                      >
+                        {link.title}
+                    </a>
+                  </Button>
+                </li>
+              ))}
+            </menu>
+          </div>
+          
         </Sheet>
       </div>
       <div class="mx-auto">

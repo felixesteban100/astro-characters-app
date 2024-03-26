@@ -55,7 +55,7 @@ export const ALLGENDERS = [
   },
 ] /* as const; */
 
-//   export const UNIVERSES_WITH_TEAMS = ["Marvel Comics", "DC Comics", "Dark Horse Comics", "IDW Publishing", "Shueisha", "Warner Bros", "Super Sentai", "SEGA"] /* as const */
+  export const UNIVERSES_WITH_TEAMS = ["Marvel Comics", "DC Comics", "Dark Horse Comics", "IDW Publishing", "Shueisha", "Warner Bros", "Super Sentai", "SEGA"] /* as const */
 
 export const ALLUNIVERSE = [
   { value: "All", name: "All universes" },
@@ -118,7 +118,7 @@ export function getTeamByUniverse(universe: string): { name: string, value: stri
         {
           name: "Agents of Atlas",
           value: "Agents of Atlas",
-          img: "https://static.wikia.nocookie.net/marveldatabase/images/7/7c/Agents_of_Atlas_Vol_3_4_Logo.png/revision/latest?cb=20200831062302",
+          img: "https://static.wikia.nocookie.net/marveldatabase/images/7/7c/Agents_of_Atlas_Vol_3_4_Logo.png",
         },
         {
           name: "Avengers",
@@ -133,7 +133,7 @@ export function getTeamByUniverse(universe: string): { name: string, value: stri
         {
           name: "Black Order",
           value: "Black Order",
-          img: "https://static.wikia.nocookie.net/marveldatabase/images/0/0a/Black_Order_Vol_1_Logo.png/revision/latest/scale-to-width-down/908?cb=20200419201606",
+          img: "https://static.wikia.nocookie.net/marveldatabase/images/0/0a/Black_Order_Vol_1_Logo.png",
         },
         {
           name: "Brotherhood of Evil Mutants",
@@ -173,7 +173,7 @@ export function getTeamByUniverse(universe: string): { name: string, value: stri
         {
           name: "Guardians of the Galaxy",
           value: "Guardians of the Galaxy",
-          img: "https://static.wikia.nocookie.net/logopedia/images/2/2d/GOTG_merch_logo.png/revision/latest/scale-to-width-down/1200?cb=20190430131028",
+          img: "https://static.wikia.nocookie.net/logopedia/images/2/2d/GOTG_merch_logo.png",
         },
         {
           name: "Heroes For Hire",
@@ -265,7 +265,7 @@ export function getTeamByUniverse(universe: string): { name: string, value: stri
         {
           name: "Ultimates",
           value: "Ultimates",
-          img: "https://static.wikia.nocookie.net/marvelcrossroads/images/2/25/Ultimates_%285641%29.png/revision/latest?cb=20161227151528",
+          img: "https://static.wikia.nocookie.net/marvelcrossroads/images/2/25/Ultimates_%285641%29.png",
         },
         {
           name: "Warriors of the Sky",
@@ -275,12 +275,12 @@ export function getTeamByUniverse(universe: string): { name: string, value: stri
         {
           name: "Weapon X",
           value: "Weapon X",
-          img: "https://static.wikia.nocookie.net/logocomics/images/6/6c/Weapon-X_%281995%29-2.png/revision/latest/scale-to-width-down/250?cb=20230614094025",
+          img: "https://static.wikia.nocookie.net/logocomics/images/6/6c/Weapon-X_%281995%29-2.png",
         },
         {
           name: "X-Force",
           value: "X-Force",
-          img: "https://static.wikia.nocookie.net/logocomics/images/b/b4/X-Force%281991-2002%29.png/revision/latest?cb=20210914180116",
+          img: "https://static.wikia.nocookie.net/logocomics/images/b/b4/X-Force%281991-2002%29.png",
         },
         {
           name: "X-Men",
@@ -402,7 +402,7 @@ export function getTeamByUniverse(universe: string): { name: string, value: stri
         {
           name: "Secret Society of Super Villains",
           value: "Secret Society of Super Villains",
-          img: "https://static.wikia.nocookie.net/comicbookuniverse/images/f/f4/Villians.png/revision/latest?cb=20181017080909",
+          img: "https://static.wikia.nocookie.net/comicbookuniverse/images/f/f4/Villians.png",
         },
         {
           name: "Suicide Squad",
@@ -542,7 +542,7 @@ export function getTeamByUniverse(universe: string): { name: string, value: stri
         {
           name: 'Power Rangers',
           value: 'Power Rangers',
-          img: 'https://static.wikia.nocookie.net/logopedia/images/7/71/MMPR_Era_Logo.png/revision/latest?cb=20140212040130'
+          img: 'https://static.wikia.nocookie.net/logopedia/images/7/71/MMPR_Era_Logo.png'
         }
       ]
 
@@ -556,7 +556,7 @@ export function getTeamByUniverse(universe: string): { name: string, value: stri
         {
           name: 'Sonic Universe',
           value: 'Sonic Universe',
-          img: 'https://static.wikia.nocookie.net/sonic/images/9/95/Sonic_Universe_Logo.png/revision/latest?cb=20140717161343'
+          img: 'https://static.wikia.nocookie.net/sonic/images/9/95/Sonic_Universe_Logo.png'
         },
         {
           name: 'Mario Universe',

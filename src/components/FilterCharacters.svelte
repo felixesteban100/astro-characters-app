@@ -88,13 +88,15 @@
         <option value={team.value}>{team.name}</option>
       {/each}
     </select>
-  </Label>
+
+
+      </Label>
   {/if}
 
   <!-- <p>name: {characterNameState}</p> -->
   <!-- <p>gender: {genderState}</p> -->
   <!-- <p>side: {sideState}</p> -->
   <a href={`/characters?characterName=${characterNameState}&gender=${genderState}&side=${sideState}&race=${raceState}&universe=${universeState}&team=${teamState}&currentPage=${1}`}>
-    <Button>Submit</Button>
+    <Button type="submit">Submit</Button>
   </a>
 </div>

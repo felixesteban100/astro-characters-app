@@ -374,7 +374,7 @@ export function organizedComicsProperty(
                   "https://rangercentral.com/database/2003_ninjastorm/images/data-top-prns.jpg",
                   "https://down-id.img.susercontent.com/file/3ea0350a8f5740d63c9b52baa23df007",
                   "https://preview.redd.it/so-spd-takes-place-in-2025-which-is-just-a-couple-years-v0-64wq5od2e5qa1.jpg?width=640&crop=smart&auto=webp&s=e28cbbb3a9f98c7e661efdda388dcf4a940b80ec",
-                  "https://static.wikia.nocookie.net/maswartz-powerverse/images/1/13/MysticForce.jpg/revision/latest?cb=20180815215643",
+                  "https://static.wikia.nocookie.net/maswartz-powerverse/images/1/13/MysticForce.jpg",
                   "https://2.bp.blogspot.com/-mQYRzr3fJhU/T15nTBfC_5I/AAAAAAAAC8c/UOGc53cQcUA/s1600/Power+Rangers+Operation+Overdrive.jpg",
                   "https://3.bp.blogspot.com/-n0hYRpfNkpY/TdOuacfwnfI/AAAAAAAABcs/dou6CuqyW8E/s1600/PowerRangersJungleWallpaper800.jpg",
                   "https://images.purexbox.com/a24c51835112f/1280x720.jpg",

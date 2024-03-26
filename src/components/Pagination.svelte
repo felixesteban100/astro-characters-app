@@ -33,10 +33,12 @@
 >
   <Pagination.Content>
     <Pagination.Item>
-      <Pagination.PrevButton>
-        <ChevronLeft class="h-4 w-4" />
-        <span class="hidden sm:block">Previous</span>
-      </Pagination.PrevButton>
+      <a href={`${createPageURL(parseInt(currentPage) - 1)}`}>
+        <Pagination.PrevButton>
+          <ChevronLeft class="h-4 w-4" />
+          <span class="hidden sm:block">Previous</span>
+        </Pagination.PrevButton>
+      </a>
     </Pagination.Item>
     {#each pages as page (page.key)}
       {#if page.type === "ellipsis"}
@@ -57,10 +59,12 @@
       {/if}
     {/each}
     <Pagination.Item>
-      <Pagination.NextButton>
-        <span class="hidden sm:block">Next</span>
-        <ChevronRight class="h-4 w-4" />
-      </Pagination.NextButton>
+      <a href={`${createPageURL(parseInt(currentPage) + 1)}`}>
+        <Pagination.NextButton>
+          <span class="hidden sm:block">Next</span>
+          <ChevronRight class="h-4 w-4" />
+        </Pagination.NextButton>
+      </a>
     </Pagination.Item>
   </Pagination.Content>
 </Pagination.Root>
