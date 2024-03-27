@@ -10,10 +10,11 @@
   import { type Character } from "$lib/types";
   import Stats from "./stats/Stats.svelte";
   import CharacterImagesDisplay from "./CharacterImagesDisplay.svelte";
-  import CharacterTeamsDisplay from "./CharacterTeamsDisplay.svelte";
+  // import CharacterTeamsDisplay from "./CharacterTeamsDisplay.svelte";
+  // import CharacterTeamsDisplay from "./CharacterTeamsDisplay.astro";
   import Appereance from "./stats/Appereance.svelte";
   import Biography from "./stats/Biography.svelte";
-  //   import {organizedComicsProperty} from '../lib/charactersUtils'
+  //   import {organizedComicsProperty} from '../lib/charactersUtils';
 
   export let characterInfo: Character;
 </script>
@@ -64,7 +65,9 @@
   </Tabs.Content>
   <Tabs.Content class="h-full w-[90%]" value="Appereance"><Appereance appereance={characterInfo.appearance} /></Tabs.Content>
   <Tabs.Content class="h-full w-[90%]" value="Biography"><Biography biography={characterInfo.biography} connections={characterInfo.connections} /></Tabs.Content>
-  <Tabs.Content  value="Teams"><CharacterTeamsDisplay {characterInfo} /></Tabs.Content>
+  <Tabs.Content  value="Teams">
+    <slot name="character-images-display"/>
+  </Tabs.Content>
   <Tabs.Content  value="Comics">
     <CharacterImagesDisplay
       characterInfoComics={characterInfo.comics}

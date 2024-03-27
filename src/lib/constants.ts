@@ -55,7 +55,7 @@ export const ALLGENDERS = [
   },
 ] /* as const; */
 
-  export const UNIVERSES_WITH_TEAMS = ["Marvel Comics", "DC Comics", "Dark Horse Comics", "IDW Publishing", "Shueisha", "Warner Bros", "Super Sentai", "SEGA"] /* as const */
+export const UNIVERSES_WITH_TEAMS = ["Marvel Comics", "DC Comics", "Dark Horse Comics", "IDW Publishing", "Shueisha", "Warner Bros", "Super Sentai", "SEGA"] /* as const */
 
 export const ALLUNIVERSE = [
   { value: "All", name: "All universes" },
@@ -99,6 +99,8 @@ export const ALLUNIVERSE = [
 
   //
 ] /* as const; */
+
+export const SORT_BY_VALUES = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
 
 
 export function getTeamByUniverse(universe: string): { name: string, value: string, img: string }[] {

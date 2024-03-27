@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import { collectionCharacters } from "../lib/mongodb";
 import Image from "astro/components/Image.astro";
 import Tabs from "src/components/Tabs.svelte";
+import CharacterTeamsDisplay from "src/components/CharacterTeamsDisplay.astro";
 
 const { id } = Astro.params;
 
@@ -52,7 +53,9 @@ if (!selectedCharacter) return Astro.redirect("/character-not-found");
             />
           </div>
           <div class="h-[44rem] w-full lg:w-[70%]">
-            <Tabs characterInfo={selectedCharacter} client:load />
+            <Tabs characterInfo={selectedCharacter} client:load>
+              <CharacterTeamsDisplay slot="character-images-display" characterInfo={selectedCharacter} />
+            </Tabs>
           </div>
         </div>
       ) : null

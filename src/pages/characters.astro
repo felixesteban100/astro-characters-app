@@ -15,6 +15,7 @@ import Pagination from "../components/Pagination.svelte";
 import FilterCharacters from "../components/FilterCharacters.svelte";
 import Sheet from "src/components/Sheet.svelte";
 import { Filter } from "lucide-astro";
+import type { Sort } from "mongodb";
 
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
@@ -29,6 +30,9 @@ const characterOrFullName =
   Astro.url.searchParams.get("characterOrFullName") === "true";
 const includesOrExact =
   Astro.url.searchParams.get("includesOrExact") === "true";
+
+const sortBy = Astro.url.searchParams.get("sortBy") ?? "id";
+const sortDirection = Astro.url.searchParams.get("sortDirection") ?? "desc";
 
 if (Astro.request.method === "POST") {
   try {
@@ -69,7 +73,7 @@ const characterdDisplayLenght =
 const someCharacters = await collectionCharacters
   .find({ ...queryOptions })
   .limit(CHARACTERS_PER_PAGE)
-  .sort({ id: "desc" })
+  .sort({ [`${sortBy}`]: sortDirection } as Sort)
   .skip(offset)
   .toArray();
 
@@ -94,12 +98,16 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
         <Filter slot="trigger" />
         <div slot="content">
           <FilterCharacters
+            characterOrFullName={characterOrFullName}
+            includesOrExact={includesOrExact}
             characterName={characterName}
             gender={gender}
             side={side}
             race={race}
             universe={universe}
             team={team}
+            sortBy={sortBy}
+            sortDirection={sortDirection}
             client:load
           />
         </div>
@@ -121,6 +129,7 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
           ? universe
           : null
     }
+{someCharacters.length < 1 ? <p class="text-5xl w-full text-center">No characters found</p> : null}  
 
     <div
       class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-10`}
@@ -151,6 +160,7 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
         })
       }
     </div>
+    {characterdDisplayLenght > CHARACTERS_PER_PAGE && 
     <Pagination
       currentPage={currentPage}
       countCharacters={characterdDisplayLenght}
@@ -161,6 +171,8 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
       universe={universe}
       team={team}
       client:only
-    />
+    />}
+
+    
   </main>
 </Layout>

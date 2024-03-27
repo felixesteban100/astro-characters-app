@@ -1,11 +1,18 @@
-<script lang="ts">
-  import type { Character } from "$lib/types";
+---
+
   import { getTeamByUniverse } from "$lib/constants";
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.ts";
+import { GetColorOfTheLogoByTeam } from "$lib/charactersUtils";
+import Image from "astro/components/Image.astro";
 
-  export let characterInfo: Character;
 
-  function getTeamsImagesByCharacter(characterInfo: Character) {
+interface Props {
+  characterInfo: Character
+}
+
+const { characterInfo } = Astro.props
+
+function getTeamsImagesByCharacter(characterInfo: Character) {
     const imagesget = getTeamByUniverse(
       characterInfo.biography.publisher
     ).reduce((acc, teamToFind) => {
@@ -50,25 +57,7 @@
 
   const teamsImages = getTeamsImagesByCharacter(characterInfo);
 
-  function GetColorOfTheLogoByTeam(teamName: string): string {
-    switch (teamName) {
-      case "X-Men":
-        return "rounded-full invert";
-      case "Supernatural":
-      case "X-Men-Original":
-      case "Midnight Sons":
-      case "Justice League-Original":
-        return "invert";
-
-      case "Inhumans":
-      case "Symbiotes":
-        return "rounded-full invert-0";
-
-      default:
-        return "";
-    }
-  }
-</script>
+---
 
 <!-- rounded-md border -->
 <ScrollArea
@@ -76,19 +65,21 @@
   orientation="vertical"
 >
   <div class="flex flex-col gap-5 justify-center items-center my-5">
-    {#each teamsImages as team}
+    {teamsImages.map((team) => {
+      return(
       <a
         href={`/characters?universe=${characterInfo.biography.publisher}&team=${team.value}`}
         class="hover:underline"
       >
         <figure class="shrink-0">
           <div class="overflow-hidden rounded-md">
-            <img
+            <Image
               src={team.img}
               alt={`Photo by`}
               class={`${GetColorOfTheLogoByTeam(team.name)}`}
               width={300}
               height={400}
+              transition:name={`media-image-${team.value}`}
             />
           </div>
 
@@ -100,6 +91,7 @@
           </p>
         </figure>
       </a>
-    {/each}
+      )
+    })}
   </div>
 </ScrollArea>

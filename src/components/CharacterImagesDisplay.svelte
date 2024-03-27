@@ -1,6 +1,7 @@
 <script lang="ts">
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.ts";
-
+  import { Lightbox } from 'svelte-lightbox';
+  
   export let characterInfoImages: { [key: string]: string };
   export let characterInfoComics: string[] | undefined;
   export let characterInfoPublisher: string;
@@ -109,9 +110,9 @@
 
     return comics;
   }
-
-  
 </script>
+
+
 
 <!-- rounded-md border -->
 <ScrollArea
@@ -122,13 +123,15 @@
     {#each images as image}
       <figure class="shrink-0">
         <div class="overflow-hidden rounded-md">
-          <img
+          <Lightbox>
+            <img
             src={image}
             alt={`Photo by`}
             class="h-[600px] w-[400px] object-cover"
             width={800}
             height={800}
           />
+          </Lightbox>
         </div>
         <figcaption class="pt-2 text-xs text-muted-foreground">
           Photo by
@@ -141,13 +144,15 @@
     {#each comics as comic}
       <figure class="shrink-0">
         <div class="overflow-hidden rounded-md">
-          <img
+          <Lightbox>
+            <img
             src={comic.value}
             alt={`Photo by`}
             class="h-[600px] w-[400px] object-cover"
             width={300}
             height={400}
           />
+          </Lightbox>
         </div>
         <figcaption class="pt-2 text-xs text-muted-foreground">
           Photo by
@@ -158,4 +163,6 @@
       </figure>
     {/each}
   </div>
+
+  
 </ScrollArea>
