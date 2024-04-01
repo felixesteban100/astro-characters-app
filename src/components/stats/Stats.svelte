@@ -10,6 +10,7 @@
       Percent,
     } from "lucide-svelte";
   import StatsNumber from "./StatsNumber.svelte";
+  import Powers from "./Powers.svelte";
   
     export let powerstats: {
         intelligence: number;
@@ -20,6 +21,7 @@
         combat: number;
         total: number;
     };
+    export let powers: string[]
   </script>
 
 
@@ -66,4 +68,5 @@
     >
       <Percent slot="icon" />
     </StatsNumber>
+    <Powers powers={powers} />
   </div>

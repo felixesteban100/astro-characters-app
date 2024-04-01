@@ -54,6 +54,7 @@ type Character = {
   name: string;
   slug: string;
   comics?: string[];
+  powers: string[]
 };
 
 interface Props {
@@ -88,6 +89,6 @@ const { selectedCharacter, classNames } = Astro.props;
     </div>
   </div>
   <div class="w-[80%]">
-    <Stats powerstats={selectedCharacter.powerstats} client:load />
+    <Stats powerstats={selectedCharacter.powerstats} powers={selectedCharacter.powers} client:load />
   </div>
 </div>

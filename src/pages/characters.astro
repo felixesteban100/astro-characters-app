@@ -85,13 +85,13 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
 
 // // example : {"character_key/property to search each one": "character_value of that property"}
 // const currentCharactersToUpdate = {}
+
 // // const allCharacters = await collectionCharacters.find({ }).toArray()
-// Object.entries(currentCharactersToUpdate).forEach(([character_name, character_age]) => {
+// Object.entries(currentCharactersToUpdate).forEach(([character_name, character_powers/* characters_age */]) => {
 //   // const totalPowerstats: number = Object.values(character.powerstats).reduce((acc, cur) => acc + cur)
 //   // console.log(`${character_name} has ${character_age}`)
-//   const addNewField = collectionCharacters.updateOne({ name: character_name}, { $set: {"appearance.age": character_age } });
+//   const addNewField = collectionCharacters.updateOne({ name: character_name}, { $set: {"powers": character_powers } });
 // })
-
 ---
 
 <Layout

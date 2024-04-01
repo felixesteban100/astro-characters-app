@@ -61,7 +61,7 @@
     >
   </Tabs.List>
   <Tabs.Content class="h-full w-[90%]" value="Stats">
-    <Stats powerstats={characterInfo.powerstats} />
+    <Stats powerstats={characterInfo.powerstats} powers={characterInfo.powers} />
   </Tabs.Content>
   <Tabs.Content class="h-full w-[90%]" value="Appereance"><Appereance appereance={characterInfo.appearance} /></Tabs.Content>
   <Tabs.Content class="h-full w-[90%]" value="Biography"><Biography biography={characterInfo.biography} connections={characterInfo.connections} /></Tabs.Content>

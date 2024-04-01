@@ -15,6 +15,7 @@ export type Character = {
         weight: [string, string];
         eyeColor: string;
         hairColor: string;
+        age: string;
     };
     biography: {
         fullName: string;
@@ -47,4 +48,5 @@ export type Character = {
     name: string;
     slug: string;
     comics?: string[];
+    powers: string[]
 }
