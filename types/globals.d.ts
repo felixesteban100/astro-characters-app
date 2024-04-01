@@ -7,6 +7,7 @@ declare type Character = {
         durability: number;
         power: number;
         combat: number;
+        total: number;
     };
     appearance: {
         gender: string;
@@ -15,6 +16,7 @@ declare type Character = {
         weight: [string, string];
         eyeColor: string;
         hairColor: string;
+        age: string;
     };
     biography: {
         fullName: string;

@@ -7,14 +7,30 @@
   export let characterInfoPublisher: string;
   export let characterInfoName: string
 
-  const images = Object.entries(characterInfoImages).map(
-    ([key, value]) => value
-  );
-  const comics = Object.entries(
-    organizedComicsProperty(characterInfoComics, characterInfoPublisher)
-      .slice()
-      .sort(() => Math.random() - 0.5)
-  )
+  const images = Object.entries(characterInfoImages)
+  .filter(
+        ([key, value]) =>
+          // key !== "md" &&
+          value !== "-" &&
+          value !== "" &&
+          !value.includes("/api/images/xs/")
+    )
+    .map(
+      ([key, value]) => value
+    )
+    /* .filter(
+        ([key, value]) =>
+          key !== "md" &&
+          value !== "-" &&
+          value !== "" &&
+          !value.includes("/api/images/xs/")
+    ) */;
+  const comics = Object
+    .entries(
+      organizedComicsProperty(characterInfoComics, characterInfoPublisher)
+        .slice()
+        .sort(() => Math.random() - 0.5)
+    )
     .filter(
       ([key, value]) =>
         key !== "md" &&

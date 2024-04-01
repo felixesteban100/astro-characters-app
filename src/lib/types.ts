@@ -6,6 +6,7 @@ export type Character = {
         durability: number;
         power: number;
         combat: number;
+        total: number;
     };
     appearance: {
         gender: string;

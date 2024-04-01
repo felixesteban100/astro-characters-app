@@ -18,6 +18,7 @@
         weight: [string, string];
         eyeColor: string;
         hairColor: string;
+        age: string;
     };
   </script>
 
@@ -56,6 +57,12 @@
     <StatsString
       statName="Hair color"
       statValue={appereance.hairColor}
+    >
+      <!-- <Sword slot="icon" /> -->
+    </StatsString>
+    <StatsString
+      statName="Age"
+      statValue={appereance.age}
     >
       <!-- <Sword slot="icon" /> -->
     </StatsString>

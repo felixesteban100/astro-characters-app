@@ -7,6 +7,7 @@
       CloudLightning,
       ChevronsUp,
       Sword,
+      Percent,
     } from "lucide-svelte";
   import StatsNumber from "./StatsNumber.svelte";
   
@@ -17,6 +18,7 @@
         durability: number;
         power: number;
         combat: number;
+        total: number;
     };
   </script>
 
@@ -57,5 +59,11 @@
       statValue={powerstats.strength}
     >
       <Axe slot="icon" />
+    </StatsNumber>
+    <StatsNumber
+      statName="Total"
+      statValue={powerstats.total}
+    >
+      <Percent slot="icon" />
     </StatsNumber>
   </div>

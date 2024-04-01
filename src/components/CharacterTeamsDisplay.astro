@@ -60,38 +60,40 @@ function getTeamsImagesByCharacter(characterInfo: Character) {
 ---
 
 <!-- rounded-md border -->
-<ScrollArea
+<!-- <ScrollArea
   class="w-[500px] md:w-[500px] lg:w-[800px] h-[630px] whitespace-nowrap "
   orientation="vertical"
->
-  <div class="flex flex-col gap-5 justify-center items-center my-5">
-    {teamsImages.map((team) => {
-      return(
-      <a
-        href={`/characters?universe=${characterInfo.biography.publisher}&team=${team.value}`}
-        class="hover:underline"
-      >
-        <figure class="shrink-0">
-          <div class="overflow-hidden rounded-md">
-            <Image
-              src={team.img}
-              alt={`Photo by`}
-              class={`${GetColorOfTheLogoByTeam(team.name)}`}
-              width={300}
-              height={400}
-              transition:name={`media-image-${team.value}`}
-            />
-          </div>
-
-          <p class="pt-2 text-xs text-muted-foreground">
-            Photo by
-            <span class="font-semibold text-foreground">
-              {team.name}
-            </span>
-          </p>
-        </figure>
-      </a>
-      )
-    })}
+> -->
+  <div class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px] ">
+    <div class="flex flex-col gap-5 justify-center items-center">
+      {teamsImages.map((team) => {
+        return(
+        <a
+          href={`/characters?universe=${characterInfo.biography.publisher}&team=${team.value}`}
+          class="hover:underline"
+        >
+          <figure class="shrink-0">
+            <div class="overflow-hidden rounded-md">
+              <Image
+                src={team.img}
+                alt={`Photo by`}
+                class={`${GetColorOfTheLogoByTeam(team.name)}`}
+                width={300}
+                height={400}
+                transition:name={`media-image-${team.value}`}
+              />
+            </div>
+  
+            <p class="pt-2 text-xs text-muted-foreground">
+              Photo by
+              <span class="font-semibold text-foreground">
+                {team.name}
+              </span>
+            </p>
+          </figure>
+        </a>
+        )
+      })}
+      </div>
   </div>
-</ScrollArea>
+<!-- </ScrollArea> -->

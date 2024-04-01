@@ -15,7 +15,8 @@ import Pagination from "../components/Pagination.svelte";
 import FilterCharacters from "../components/FilterCharacters.svelte";
 import Sheet from "src/components/Sheet.svelte";
 import { Filter } from "lucide-astro";
-import type { Sort } from "mongodb";
+import { ObjectId, type Sort } from "mongodb";
+import { Button } from "$lib/components/ui/button";
 
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
@@ -82,6 +83,14 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
   (t) => t.value === team
 );
 
+// // example : {"character_key/property to search each one": "character_value of that property"}
+// const currentCharactersToUpdate = {}
+// // const allCharacters = await collectionCharacters.find({ }).toArray()
+// Object.entries(currentCharactersToUpdate).forEach(([character_name, character_age]) => {
+//   // const totalPowerstats: number = Object.values(character.powerstats).reduce((acc, cur) => acc + cur)
+//   // console.log(`${character_name} has ${character_age}`)
+//   const addNewField = collectionCharacters.updateOne({ name: character_name}, { $set: {"appearance.age": character_age } });
+// })
 
 ---
 
@@ -129,7 +138,7 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
           ? universe
           : null
     }
-{someCharacters.length < 1 ? <p class="text-5xl w-full text-center">No characters found</p> : null}  
+    {someCharacters.length < 1 ? <p class="text-5xl w-full text-center">No characters found</p> : null}  
 
     <div
       class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-10`}
