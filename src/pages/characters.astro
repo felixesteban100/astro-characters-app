@@ -15,8 +15,8 @@ import Pagination from "../components/Pagination.svelte";
 import FilterCharacters from "../components/FilterCharacters.svelte";
 import Sheet from "src/components/Sheet.svelte";
 import { Filter } from "lucide-astro";
-import { ObjectId, type Sort } from "mongodb";
-import { Button } from "$lib/components/ui/button";
+import { type Sort } from "mongodb";
+import { ALLPOWERS } from "../lib/constants";
 
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
@@ -27,10 +27,9 @@ const universe = Astro.url.searchParams.get("universe") ?? "All";
 const team = Astro.url.searchParams.get("team") ?? "All";
 const gender = Astro.url.searchParams.get("gender") ?? "both";
 const race = Astro.url.searchParams.get("race") ?? "All";
-const characterOrFullName =
-  Astro.url.searchParams.get("characterOrFullName") === "true";
-const includesOrExact =
-  Astro.url.searchParams.get("includesOrExact") === "true";
+const power = Astro.url.searchParams.get("power") ?? "All";
+const characterOrFullName = Astro.url.searchParams.get("characterOrFullName") === "true";
+const includesOrExact = Astro.url.searchParams.get("includesOrExact") === "true";
 
 const sortBy = Astro.url.searchParams.get("sortBy") ?? "id";
 const sortDirection = Astro.url.searchParams.get("sortDirection") ?? "desc";
@@ -62,6 +61,7 @@ const queryOptions: QueryOptions = getQueryOptions(
   team,
   gender,
   race,
+  power,
   characterOrFullName,
   includesOrExact
 );
@@ -83,6 +83,7 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
   (t) => t.value === team
 );
 
+// ADD A NEW PROPERTY USING AI
 // // example : {"character_key/property to search each one": "character_value of that property"}
 // const currentCharactersToUpdate = {}
 
@@ -113,6 +114,7 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
             gender={gender}
             side={side}
             race={race}
+            power={power}
             universe={universe}
             team={team}
             sortBy={sortBy}
@@ -122,6 +124,7 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
         </div>
       </Sheet>
     </div>
+    
 
     {
       team && team !== "All" && teamInfo !== undefined ? (
@@ -138,6 +141,12 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
           ? universe
           : null
     }
+
+{
+  power && power !== "All"
+    && <p>{ALLPOWERS.find(p => p.value === power)?.name || "Unknown Power"}</p>
+}
+
     {someCharacters.length < 1 ? <p class="text-5xl w-full text-center">No characters found</p> : null}  
 
     <div
@@ -177,6 +186,7 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
       gender={gender}
       side={side}
       race={race}
+      power={power}
       universe={universe}
       team={team}
       characterOrFullName={characterOrFullName}
@@ -186,6 +196,5 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
       client:only
     />}
 
-    
   </main>
 </Layout>

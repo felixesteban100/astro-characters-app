@@ -55,7 +55,7 @@ function getTeamsImagesByCharacter(characterInfo: Character) {
     return filteredArray;
   }
 
-  const teamsImages = getTeamsImagesByCharacter(characterInfo);
+  const teamsImages = getTeamsImagesByCharacter(characterInfo).filter(c => c.name !== "All teams");
 
 ---
 

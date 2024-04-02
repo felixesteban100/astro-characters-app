@@ -49,6 +49,7 @@ declare type Character = {
     name: string;
     slug: string;
     comics?: string[];
+    powers: string[]
 }
 
 declare type QueryOptions = {
@@ -59,6 +60,7 @@ declare type QueryOptions = {
     "connections.groupAffiliation"?: string | RegExp;
     "appearance.gender"?: string;
     "appearance.race"?: string | RegExp;
+    "powers"?: string | RegExp;
 };
 /* {
     [key: string]: any;

@@ -3,7 +3,7 @@
   import { ScrollArea } from "$lib/components/ui/scroll-area/index";
   import { Input } from "$lib/components/ui/input/index";
   import { Label } from "$lib/components/ui/label/index";
-  import { ALLALIGMENTS, ALLGENDERS, ALLRACES, ALLUNIVERSE, getTeamByUniverse, SORT_BY_VALUES } from "../lib/constants";
+  import { ALLALIGMENTS, ALLGENDERS, ALLPOWERS, ALLRACES, ALLUNIVERSE, getTeamByUniverse, SORT_BY_VALUES } from "../lib/constants";
   import { Checkbox } from "$lib/components/ui/checkbox/index";
   import * as RadioGroup from "$lib/components/ui/radio-group/index";
 </script>
@@ -17,6 +17,7 @@
   export let gender: string;
   export let side: string;
   export let race: string;
+  export let power: string;
   export let universe: string;
   export let team: string;
 
@@ -28,6 +29,7 @@
   $: genderState = gender;
   $: sideState = side;
   $: raceState = race;
+  $: powerState = power;
   $: universeState = universe;
   $: teamState = team;
 </script>
@@ -106,6 +108,18 @@
         {/each}
       </select>
     </Label>
+
+    <Label class="flex flex-col gap-5">
+      Powers
+      <select
+        bind:value={powerState}
+        class="bg-background border border-foreground text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+      >
+        {#each ALLPOWERS as power}
+          <option value={power.value}>{power.name}</option>
+        {/each}
+      </select>
+    </Label>
   
     <Label class="flex flex-col gap-5">
       Universe
@@ -139,7 +153,7 @@
     <!-- <p>name: {characterNameState}</p> -->
     <!-- <p>gender: {genderState}</p> -->
     <!-- <p>side: {sideState}</p> -->
-    <a href={`/characters?characterName=${characterNameState}&gender=${genderState}&side=${sideState}&race=${raceState}&universe=${universeState}&team=${teamState}&characterOrFullName=${characterOrFullNameState}&includesOrExact=${includesOrExactState}&sortBy=${sortByState}&sortDirection=${sortDirectionState}&currentPage=${1}`}>
+    <a href={`/characters?characterName=${characterNameState}&gender=${genderState}&side=${sideState}&race=${raceState}&power=${powerState}&universe=${universeState}&team=${teamState}&characterOrFullName=${characterOrFullNameState}&includesOrExact=${includesOrExactState}&sortBy=${sortByState}&sortDirection=${sortDirectionState}&currentPage=${1}`}>
       <Button type="submit">Submit</Button>
     </a>
   </div>
