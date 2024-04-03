@@ -3,8 +3,8 @@
   import { ScrollArea } from "$lib/components/ui/scroll-area/index";
   import { Input } from "$lib/components/ui/input/index";
   import { Label } from "$lib/components/ui/label/index";
-  import { ALLALIGMENTS, ALLGENDERS, ALLPOWERS, ALLRACES, ALLUNIVERSE, getTeamByUniverse, SORT_BY_VALUES } from "../lib/constants";
-  import { Checkbox } from "$lib/components/ui/checkbox/index";
+  import { ALLALIGMENTS, ALLGENDERS, ALLPOWERS, ALLRACES, ALLUNIVERSE, getTeamByUniverse, SORT_BY_VALUES } from "../lib/constants/constants";
+  import { Checkbox } from "../lib/components/ui/checkbox/index";
   import * as RadioGroup from "$lib/components/ui/radio-group/index";
 </script>
 

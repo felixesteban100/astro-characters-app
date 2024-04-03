@@ -3,9 +3,9 @@
   import ChevronLeft from "lucide-svelte/icons/chevron-left";
   import ChevronRight from "lucide-svelte/icons/chevron-right";
   import Button from "$lib/components/ui/button/button.svelte";
-  import { CHARACTERS_PER_PAGE } from "../lib/constants";
+  import { CHARACTERS_PER_PAGE } from "../lib/constants/constants";
 
-  //   const isDesktop = MediaQuery("(min-width: 768px)");
+  //   const isDesktop = Med../lib/constants/constantsdth: 768px)");
 
   //   let count = 20;
   $: siblingCount = /* $isDesktop ? */ 1 /* : 0 */;

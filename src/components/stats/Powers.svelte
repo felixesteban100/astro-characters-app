@@ -1,9 +1,8 @@
 <script lang="ts">
     import Separator from "$lib/components/ui/separator/separator.svelte";
-  import { ALLPOWERS } from "$lib/constants";
-
     export let powers: string[];
 </script>
+
 
 <div class="flex flex-col items-center justify-center h-5 my-32 lg:mt-5 gap-5">
     <p class="font-bold text-primary text-xl">Main powers: </p>
@@ -28,7 +27,10 @@
         <a href={`/characters?power=${power}`} class="hover:underline "><span>{power}</span></a>
       {/each}
   </div>
-    <!-- <div>
+</div>
+
+
+ <!-- <div>
         <div class="space-y-1">
           <h4 class="text-sm font-medium leading-none">Radix Primitives</h4>
           <p class="text-sm text-muted-foreground">
@@ -43,5 +45,4 @@
           <Separator orientation="vertical" />
           <div>Source</div>
         </div>
-      </div> -->
-</div>
+      </div> --> 

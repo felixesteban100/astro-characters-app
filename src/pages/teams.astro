@@ -1,44 +1,37 @@
 ---
+export const prerender = true
+
 import {
   GetColorLogosByPublisher,
   GetColorOfTheLogoByTeam,
-  publisherIMG,
 } from "$lib/charactersUtils";
-import { getTeamByUniverse } from "$lib/constants";
-import { ALLUNIVERSE, UNIVERSES_WITH_TEAMS } from "$lib/constants";
+import { ALLUNIVERSESWITHTEAMS } from "$lib/constants/constants";
 import { cn } from "$lib/utils";
 import Layout from "src/layouts/Layout.astro";
 
-export type UniversesWithItsTeams = {
-  info: {
-    name: string;
-    value: string;
-  };
-  img: string;
-  teams: { name: string; value: string; img: string }[];
-};
+// const allUniversesWithItsTeams: UniversesWithItsTeams[] = ALLUNIVERSE.slice(
+//   1,
+//   ALLUNIVERSE.length - 1
+// ).reduce((allUniverses, universe) => {
 
-const allUniversesWithItsTeams: UniversesWithItsTeams[] = ALLUNIVERSE.slice(
-  1,
-  ALLUNIVERSE.length - 1
-).reduce((allUniverses, universe) => {
+//   if (UNIVERSES_WITH_TEAMS.includes(universe.value)) {
+//     allUniverses.push({
+//       info: universe,
+//       img: publisherIMG(universe.value),
+//       teams: getTeamByUniverse(universe.value).filter((team) => team.value !== "All"),
+//     });
+//   }
 
-  if (UNIVERSES_WITH_TEAMS.includes(universe.value)) {
-    allUniverses.push({
-      info: universe,
-      img: publisherIMG(universe.value),
-      teams: getTeamByUniverse(universe.value).filter((team) => team.value !== "All"),
-    });
-  }
+//   return allUniverses;
+// }, new Array());
 
-  return allUniverses;
-}, new Array());
+// console.log(JSON.stringify(allUniversesWithItsTeams))
 ---
 
 <Layout title="Teams">
   <div class="w-full flex flex-col justify-center">
     {
-      allUniversesWithItsTeams.map((universe) => {
+      ALLUNIVERSESWITHTEAMS.map((universe) => {
         return (
           <div class="border my-5 p-5 rounded-md">
             <a
@@ -57,12 +50,12 @@ const allUniversesWithItsTeams: UniversesWithItsTeams[] = ALLUNIVERSE.slice(
               />
             </a>
             <div>
-              <div class="grid grid-cols-3 items-center">
+              <div class="grid 2xl:grid-cols-4 grid-cols-3  justify-center items-center">
                 {universe.teams.map((team) => {
                   return (
                     <a
                       href={`/characters?universe=${universe.info.value}&team=${team.value}`}
-                      class="group/publisher"
+                      class="group/publisher w-full flex flex-col justify-center items-center"
                     >
                       <img
                         src={team.img}
@@ -84,3 +77,4 @@ const allUniversesWithItsTeams: UniversesWithItsTeams[] = ALLUNIVERSE.slice(
     }
   </div>
 </Layout>
+$lib/constants/constants

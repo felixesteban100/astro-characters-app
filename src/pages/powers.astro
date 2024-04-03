@@ -1,0 +1,34 @@
+---
+
+import { ALLPOWERSWITHIMAGE } from "$lib/constants/PowersWithImage";
+import Layout from "src/layouts/Layout.astro";
+
+---
+
+<Layout title="Powers">
+  <div class="w-full grid 2xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
+    {
+      ALLPOWERSWITHIMAGE.map((power) => {
+        return (
+          <div class="my-5 p-5 border rounded-md ">
+            <a
+                href={`/characters?power=${power.value}`}
+                class="group/power flex flex-col justify-center items-center gap-5"
+            >
+                {power.img !== "" && <img
+                    src={power.img}
+                    height={500}
+                    width={500}
+                    alt={power.name}
+                    class={`w-[20rem] h-[15rem] col-span-1 object-cover`}
+                    transition:name={`media-image-power-${power.value}`}
+                />}
+                <p class="group-hover/power:underline">{power.name}</p>
+            </a>
+          </div>
+        );
+      })
+    }
+  </div>
+</Layout>
+$lib/constants/PowersWithImage

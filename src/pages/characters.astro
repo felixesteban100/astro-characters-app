@@ -7,16 +7,17 @@ import Image from "astro/components/Image.astro";
 
 import {
   getTeamByUniverse,
-} from "../lib/constants";
+} from "../lib/constants/constants";
 import { publisherIMG, getQueryOptions, GetColorLogosByPublisher, GetColorOfTheLogoByTeam } from "../lib/charactersUtils";
-import { CHARACTERS_PER_PAGE } from "../lib/constants";
+import { CHARACTERS_PER_PAGE } from "../lib/constants/constants";
 
 import Pagination from "../components/Pagination.svelte";
 import FilterCharacters from "../components/FilterCharacters.svelte";
 import Sheet from "src/components/Sheet.svelte";
 import { Filter } from "lucide-astro";
 import { type Sort } from "mongodb";
-import { ALLPOWERS } from "../lib/constants";
+import { ALLPOWERS } from "../lib/constants/constants";
+import { ALLPOWERSWITHIMAGE } from "$lib/constants/PowersWithImage";
 
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
@@ -83,6 +84,8 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
   (t) => t.value === team
 );
 
+const powerInfo = ALLPOWERSWITHIMAGE.find(powerC => powerC.value === power)
+
 // ADD A NEW PROPERTY USING AI
 // // example : {"character_key/property to search each one": "character_value of that property"}
 // const currentCharactersToUpdate = {}
@@ -125,27 +128,29 @@ const teamInfo = getTeamByUniverse(universe ?? "").find(
       </Sheet>
     </div>
     
+    <div class="flex gap-10 justify-center items-center">
+      {
+        team && team !== "All" && teamInfo !== undefined ? (
+          <div>
+            <Image class={`${GetColorOfTheLogoByTeam(teamInfo.name)}`} src={teamInfo.img} width={200} height={200} alt="" transition:name={`media-image-${teamInfo.value}`}/>
+            <p>{team}</p>
+            </div>
+        ) : universe && universe !== "All" ? (
+          <div>
+            <Image class={`${GetColorLogosByPublisher(universe)}`} src={publisherIMG(universe)} width={200} height={200} alt="" transition:name={`media-image-${universe}`}/>
+            <p>{universe}</p>
+            </div>
+        ) : null
+      }
 
-    {
-      team && team !== "All" && teamInfo !== undefined ? (
-        <Image class={`${GetColorOfTheLogoByTeam(teamInfo.name)}`} src={teamInfo.img} width={200} height={200} alt="" transition:name={`media-image-${teamInfo.value}`}/>
-      ) : universe && universe !== "All" ? (
-        <Image class={`${GetColorLogosByPublisher(universe)}`} src={publisherIMG(universe)} width={200} height={200} alt="" transition:name={`media-image-${universe}`}/>
-      ) : null
-    }
-
-    {
-      team && team !== "All"
-        ? team
-        : universe && universe !== "All"
-          ? universe
-          : null
-    }
-
-{
-  power && power !== "All"
-    && <p>{ALLPOWERS.find(p => p.value === power)?.name || "Unknown Power"}</p>
-}
+      {
+        power && power !== "All"
+          && <div class="flex flex-col items-center justify-center gap-5">
+            {(powerInfo && powerInfo.img !== "") && <img class="w-[10rem] h-[7rem] object-cover" src={powerInfo.img} alt={power} transition:name={`media-image-power-${powerInfo.value}`} />}
+            <p>{ALLPOWERS.find(p => p.value === power)?.name || "Unknown Power"}</p>
+          </div>
+      }
+    </div>
 
     {someCharacters.length < 1 ? <p class="text-5xl w-full text-center">No characters found</p> : null}  
 

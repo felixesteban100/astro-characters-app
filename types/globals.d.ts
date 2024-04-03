@@ -82,3 +82,12 @@ declare type CharacterAttributes = {
 }
 
 declare type RandomImage = { selectedRandomImage: { key: string, value: string }/* , blurSelectedRandomImage: string */ }
+
+declare type UniversesWithItsTeams = {
+    info: {
+        name: string;
+        value: string;
+    };
+    img: string;
+    teams: { name: string; value: string; img: string }[];
+};
