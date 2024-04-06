@@ -925,10 +925,6 @@ export const ALLPOWERS: {
       "name": "Expert Marksmanship"
     },
     {
-      "value": "Expert Martial Artist",
-      "name": "Expert Martial Artist"
-    },
-    {
       "value": "Expert Pilot",
       "name": "Expert Pilot"
     },
@@ -1474,10 +1470,6 @@ export const ALLPOWERS: {
       "name": "Martial Arts 🥋"
     },
     {
-      "value": "Martial Arts Mastery",
-      "name": "Martial Arts Mastery 🥋"
-    },
-    {
       "value": "Masked Identity",
       "name": "Masked Identity"
     },
@@ -1512,10 +1504,6 @@ export const ALLPOWERS: {
     {
       "value": "Master Marksman",
       "name": "Master Marksman"
-    },
-    {
-      "value": "Master Martial Artist",
-      "name": "Master Martial Artist 🥋"
     },
     {
       "value": "Master of Disguise",
@@ -1968,10 +1956,6 @@ export const ALLPOWERS: {
     {
       "value": "Razor-Sharp Feathers",
       "name": "Razor-Sharp Feathers 🦅"
-    },
-    {
-      "value": "Reality Manipulation",
-      "name": "Reality Manipulation 🌌"
     },
     {
       "value": "Reality Perception",
@@ -2544,10 +2528,6 @@ export const ALLPOWERS: {
     {
       "value": "Tracking Skills",
       "name": "Tracking Skills"
-    },
-    {
-      "value": "Trained in Martial Arts",
-      "name": "Trained in Martial Arts"
     },
     {
       "value": "Transformation",

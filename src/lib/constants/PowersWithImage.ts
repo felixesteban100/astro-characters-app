@@ -1,3 +1,6 @@
+
+// take the powers img from here: https://tenor.com
+
 export const ALLPOWERSWITHIMAGE: {
     name: string,
     value: string,
@@ -91,437 +94,422 @@ export const ALLPOWERSWITHIMAGE: {
         {
             "value": "Cosmic Awareness",
             "name": "Cosmic Awareness 🌌",
-            "img": ""
-        },
-        {
-            "value": "Master Martial Artist",
-            "name": "Master Martial Artist 🥋",
-            "img": ""
+            "img": "https://media1.tenor.com/m/oaqhN5qBdgkAAAAC/what-the.gif"
         },
         {
             "value": "Detective Skills",
             "name": "Detective Skills 🕵️‍♂️",
-            "img": ""
+            "img": "https://media1.tenor.com/m/d_2-1aIWtaoAAAAC/detective-daffy-investigate.gif"
         },
         {
             "value": "Advanced Technology",
             "name": "Advanced Technology 🛠️",
-            "img": ""
+            "img": "https://media1.tenor.com/m/N--OnDx9xAQAAAAC/unigrid-decentralization.gif"
         },
         {
             "value": "Martial Arts",
             "name": "Martial Arts 🥋",
-            "img": ""
+            "img": "https://media1.tenor.com/m/YqrAOUwcnscAAAAC/dragon-ball-z-dbz.gif"
         },
         {
             "value": "Engineering Genius",
             "name": "Engineering Genius 🛠️🧠",
-            "img": ""
+            "img": "https://media1.tenor.com/m/DNaFXPCm6FYAAAAC/speed-racer-speed-racer-s01e09.gif"
         },
-        {
+        /* {
             "value": "Bo Staff Proficiency",
             "name": "Bo Staff Proficiency 🏹",
             "img": ""
-        },
+        }, */
         {
             "value": "Sound Manipulation",
             "name": "Sound Manipulation 🔊",
-            "img": ""
+            "img": "https://media1.tenor.com/m/ubTLctrkqJgAAAAC/sound-moving.gif"
         },
         {
             "value": "Concussive Blasts",
             "name": "Concussive Blasts 💥",
-            "img": ""
+            "img": "https://media1.tenor.com/m/M_mdPr_47EEAAAAd/fire-angry.gif"
         },
         {
             "value": "Elemental Control",
             "name": "Elemental Control 🌍",
-            "img": ""
+            "img": "https://media1.tenor.com/m/-KVm2oNi6DgAAAAd/avatar-the-last-airbender-avatar.gif"
         },
         {
             "value": "Enhanced Strength",
             "name": "Enhanced Strength 💪",
-            "img": ""
+            "img": "https://media1.tenor.com/m/Msoe1K-z3ncAAAAC/spongebob-squarepants-strong.gif"
         },
         {
             "value": "Claws",
             "name": "Claws 🔪",
-            "img": ""
+            "img": "https://media1.tenor.com/m/LrKUeTvA8FoAAAAC/transforming-the-order.gif"
         },
-        {
+        /* {
             "value": "Razor-Sharp Feathers",
             "name": "Razor-Sharp Feathers 🦅",
             "img": ""
-        },
-        {
+        }, */
+        /* {
             "value": "Healing Blood",
             "name": "Healing Blood ⚕️",
             "img": ""
-        },
+        }, */
         {
             "value": "Energy Absorption",
             "name": "Energy Absorption ⚡",
-            "img": ""
+            "img": "https://media1.tenor.com/m/7q1yhfA30XgAAAAC/ben10-chromastone.gif"
         },
         {
             "value": "Energy Manipulation",
             "name": "Energy Manipulation ⚡",
-            "img": ""
+            "img": "https://media1.tenor.com/m/Z4mtiMX5bOAAAAAC/kenjaku-jujutsu-kaisen.gif"
         },
         {
             "value": "Light Manipulation",
             "name": "Light Manipulation 💡",
-            "img": ""
+            "img": "https://media1.tenor.com/m/uICzasgDdyoAAAAC/turned-on-turned-off.gif"
         },
-        {
+        /* {
             "value": "Living Light Daggers",
             "name": "Living Light Daggers 🗡️",
             "img": ""
-        },
+        }, */
         {
             "value": "Regeneration",
             "name": "Regeneration ⚕️",
-            "img": ""
+            "img": "https://media1.tenor.com/m/8hh4MkOadoIAAAAC/piccolo-regeneration.gif"
         },
         {
             "value": "Size Manipulation",
             "name": "Size Manipulation 📏",
-            "img": ""
+            "img": "https://media1.tenor.com/m/hLsvbMsMjbEAAAAC/mario-smash-bros.gif"
         },
         {
             "value": "Sorcery",
             "name": "Sorcery 🧙",
-            "img": ""
+            "img": "https://media1.tenor.com/m/-mAH7RVGPMwAAAAC/magic-sorcery.gif"
         },
         {
             "value": "Mystic Arts",
             "name": "Mystic Arts 🧙",
-            "img": ""
+            "img": "https://media1.tenor.com/m/fKktJQLLc48AAAAd/magic.gif"
         },
         {
             "value": "Dimensional Travel",
             "name": "Dimensional Travel 🌌",
-            "img": ""
+            "img": "https://media1.tenor.com/m/jmNtr9hgxK4AAAAd/loki-travel.gif"
         },
         {
             "value": "Weapon Proficiency",
             "name": "Weapon Proficiency 🔫",
-            "img": ""
+            "img": "https://media1.tenor.com/m/0zlxPqmFtksAAAAd/violet-violet-evergarden.gif"
         }
         ,
         {
             "value": "Magic Manipulation",
             "name": "Magic Manipulation",
-            "img": ""
+            "img": "https://media1.tenor.com/m/WrjECWdWCnkAAAAd/shuffle-card-trick.gif"
         },
         {
             "value": "Immortality",
             "name": "Immortality",
-            "img": ""
+            "img": "https://media1.tenor.com/m/KOjqcTw08-wAAAAd/revives-revive.gif"
         },
         {
             "value": "Diamond Form",
             "name": "Diamond Form 💎",
-            "img": ""
+            "img": "https://media1.tenor.com/m/59--223cmjgAAAAd/january-jones-emma-frost.gif"
         },
-        {
+        /* {
             "value": "Psionic Diamond Shards",
             "name": "Psionic Diamond Shards 💎",
             "img": ""
-        },
+        }, */
         {
             "value": "Lightsaber Combat",
             "name": "Lightsaber Combat ⚔️",
-            "img": ""
+            "img": "https://media1.tenor.com/m/NQwujgpzxBQAAAAC/obi-wan-swings-red-lightsaber.gif"
         },
         {
             "value": "Acrobatics",
             "name": "Acrobatics 🤸",
-            "img": ""
+            "img": "https://media1.tenor.com/m/IigULJxcqigAAAAC/acro-acrobatics.gif"
         },
         {
             "value": "Adaptation",
             "name": "Adaptation 🔄",
-            "img": ""
+            "img": "https://media1.tenor.com/m/ydidkafjcnYAAAAd/gravous-lrmite.gif"
         },
         {
             "value": "Invulnerability",
             "name": "Invulnerability 🔒",
-            "img": ""
+            "img": "https://media1.tenor.com/m/AcvjQciFgygAAAAC/omni-man-vs.gif"
         },
         {
             "value": "Master Detective",
             "name": "Master Detective 🔍",
-            "img": ""
-        },
+            "img": "https://media1.tenor.com/m/8O5qrxeANZEAAAAC/on-the-case-search.gif"
+        },/* 
         {
             "value": "Explosive Energy Manipulation",
             "name": "Explosive Energy Manipulation 💥⚡",
             "img": ""
-        },
+        }, */
         {
             "value": "Skilled Combatant",
             "name": "Skilled Combatant ⚔️",
-            "img": ""
+            "img": "https://media1.tenor.com/m/-cxKyzXTuFkAAAAC/minon-fighter-ready.gif"
         },
         {
             "value": "Power Mimicry",
             "name": "Power Mimicry 💫",
-            "img": ""
+            "img": "https://media1.tenor.com/m/4NbQX7Ql2IoAAAAC/luffy-sanji-imitation.gif"
         },
-        {
+        /* {
             "value": "Adaptability",
             "name": "Adaptability 🔄",
             "img": ""
-        },
+        }, */
         {
             "value": "Telepathy",
             "name": "Telepathy 🧠",
-            "img": ""
+            "img": "https://media1.tenor.com/m/I6VPV4_9Gf8AAAAC/telepathy-telepathic.gif"
         },
-        {
+        /* {
             "value": "Psychic Constructs",
             "name": "Psychic Constructs 🧠",
             "img": ""
-        },
+        }, */
         {
             "value": "Genius-Level Intellect",
             "name": "Genius-Level Intellect 🧠",
-            "img": ""
+            "img": "https://media1.tenor.com/m/JOPNEErjo7oAAAAC/einstein-smart.gif"
         },
         {
             "value": "Gadgets",
             "name": "Gadgets 🔧",
-            "img": ""
+            "img": "https://media1.tenor.com/m/g8ZWXSTKOgoAAAAC/find-out.gif"
         },
         {
             "value": "Telekinesis",
             "name": "Telekinesis 🧠",
-            "img": ""
+            "img": "https://media1.tenor.com/m/s7hjKTx1nJYAAAAC/stranger-things-el.gif"
         },
         {
             "value": "Dragon Physiology",
             "name": "Dragon Physiology 🐉",
-            "img": ""
+            "img": "https://media1.tenor.com/m/_F5AX4UOX4AAAAAC/dragon-toothless.gif"
         },
         {
             "value": "Fire Breath",
             "name": "Fire Breath 🔥",
-            "img": ""
+            "img": "https://media1.tenor.com/m/tLunuVJrsB0AAAAC/katon-goukakyuu-no-jutsu.gif"
         },
         {
             "value": "Android Physiology",
             "name": "Android Physiology 🤖",
-            "img": ""
+            "img": "https://media1.tenor.com/m/4ctSMO6gEfEAAAAd/android-dance.gif"
         },
         {
             "value": "Superhuman Intelligence",
             "name": "Superhuman Intelligence 🧠",
-            "img": ""
+            "img": "https://media1.tenor.com/m/uhQs_zJwL9AAAAAd/doug-maclean-nhl.gif"
         },
-        {
+        /* {
             "value": "Psionic Energy Manipulation",
             "name": "Psionic Energy Manipulation 💫⚡",
             "img": ""
-        },
+        }, */
         {
             "value": "Energy Projection",
             "name": "Energy Projection ⚡",
-            "img": ""
+            "img": "https://media1.tenor.com/m/wI76LjdNq1QAAAAC/quon-astral-eterno.gif"
         },
-        {
+        /* {
             "value": "Omega Beams",
             "name": "Omega Beams 🌀",
             "img": ""
-        },
+        }, */
         {
             "value": "Expert Marksman",
             "name": "Expert Marksman 🎯",
-            "img": ""
+            "img": "https://media1.tenor.com/m/KdqZ8ECad80AAAAd/machine-gun-submachine-gun.gif"
         },
         {
             "value": "Bounty Hunting Skills",
             "name": "Bounty Hunting Skills 🎯",
-            "img": ""
+            "img": "https://media1.tenor.com/m/Sg9PU5LrJ5YAAAAd/fishing-bare-hands-the-great-human-race.gif"
         },
-        {
+        /* {
             "value": "Psionics",
             "name": "Psionics 💫",
             "img": ""
-        },
-        {
+        }, */
+        /* {
             "value": "Canary Cry",
             "name": "Canary Cry 🗣️",
             "img": ""
-        },
-        {
+        }, */
+        /* {
             "value": "Expert Acrobat",
             "name": "Expert Acrobat 🤸",
             "img": ""
-        },
+        }, */
         {
             "value": "Enhanced Reflexes",
             "name": "Enhanced Reflexes ⚡",
-            "img": ""
+            "img": "https://media1.tenor.com/m/VqTgn53MV_cAAAAd/coroca-reflexes.gif"
         },
-        {
+        /* {
             "value": "Exoskeleton Suit",
             "name": "Exoskeleton Suit 🦾",
             "img": ""
-        },
-        {
+        }, */
+        /* {
             "value": "Darkforce Manipulation",
             "name": "Darkforce Manipulation 🌑",
             "img": ""
-        },
+        }, */
         {
             "value": "Intangibility",
             "name": "Intangibility 👻",
-            "img": ""
+            "img": "https://media1.tenor.com/m/V0OU3Feq4nIAAAAd/konan-tobi.gif"
         },
         {
             "value": "Teleportation",
             "name": "Teleportation 🌌",
-            "img": ""
+            "img": "https://media1.tenor.com/m/Ne89-cktZdEAAAAC/dragon-ball-z-dbz.gif"
         },
         {
             "value": "Heat Vision",
             "name": "Heat Vision 🔥👀",
-            "img": ""
+            "img": "https://media1.tenor.com/m/JuXojCXSU8gAAAAd/superman-tas.gif"
         },
-        {
+        /* {
             "value": "Insect Communication",
             "name": "Insect Communication 🦟🗣️",
             "img": ""
-        },
+        }, */
         {
             "value": "Web Generation",
             "name": "Web Generation 🕸️",
-            "img": ""
+            "img": "https://media1.tenor.com/m/fUT3rcXv9owAAAAC/spiderman-web.gif"
         },
-        {
-            "value": "Martial Arts Mastery",
-            "name": "Martial Arts Mastery 🥋",
-            "img": ""
-        },
-        {
+        /* {
             "value": "Telepathic Bond with Birds",
             "name": "Telepathic Bond with Birds 🦜",
             "img": ""
-        },
+        }, */
         {
             "value": "Absorption and Mimicry of Materials",
             "name": "Absorption and Mimicry of Materials 🔄",
-            "img": ""
+            "img": "https://media1.tenor.com/m/nTCHuExsdjgAAAAC/kevin11.gif"
         },
         {
             "value": "Force Field Generation",
             "name": "Force Field Generation 🛡️",
-            "img": ""
+            "img": "https://media1.tenor.com/m/ZCZsEE8lLr8AAAAd/danny-phantom-shield.gif"
         },
-        {
+        /* {
             "value": "Dimensional Manipulation",
             "name": "Dimensional Manipulation 🌌",
             "img": ""
-        },
-        {
+        }, */
+        /* {
             "value": "Advanced Alien Technology",
             "name": "Advanced Alien Technology 👽🛸",
             "img": ""
-        },
-        {
+        }, */
+        /* {
             "value": "Space Travel",
             "name": "Space Travel 🚀",
             "img": ""
-        },
+        }, */
         {
             "value": "Omnipotence",
             "name": "Omnipotence ✨",
-            "img": ""
-        },
-        {
-            "value": "Reality Manipulation",
-            "name": "Reality Manipulation 🌌",
-            "img": ""
+            "img": "https://media1.tenor.com/m/OzhQ9uwR9Z8AAAAC/spirit-athame.gif"
         },
         {
             "value": "Enhanced Stamina",
             "name": "Enhanced Stamina 💪",
-            "img": ""
+            "img": "https://media1.tenor.com/m/K4ZFNaPNIhkAAAAd/silly-running-daniel-labelle.gif"
         },
         {
             "value": "Healing Factor",
             "name": "Healing Factor 🩺",
-            "img": ""
+            "img": "https://media1.tenor.com/m/JOGPTGaw2YcAAAAd/deadpool.gif"
         },
-        {
+        /* {
             "value": "Corruption Negation",
             "name": "Corruption Negation 🚫",
             "img": ""
-        },
+        }, */
         {
             "value": "Animal Mimicry",
             "name": "Animal Mimicry 🐾",
-            "img": ""
+            "img": "https://media1.tenor.com/m/8dSgkI-0TWEAAAAd/ridewithp.gif"
         },
         {
             "value": "Animal Communication",
             "name": "Animal Communication 🐾🗣️",
-            "img": ""
+            "img": "https://media1.tenor.com/m/AauVwB1Gea8AAAAC/youre-so-cute-paul-rudd.gif"
         },
-        {
+        /* {
             "value": "Technological Sorcery",
             "name": "Technological Sorcery 🧙‍♂️⚙️",
             "img": ""
-        },
-        {
+        }, */
+        /* {
             "value": "Cosmic Power Absorption",
             "name": "Cosmic Power Absorption 💫⚡",
             "img": ""
-        },
-        {
+        }, */
+        /* {
             "value": "Amphibious Physiology",
             "name": "Amphibious Physiology 🐸",
             "img": ""
-        },
+        }, */
         {
             "value": "Probability Manipulation",
             "name": "Probability Manipulation 🎲",
-            "img": ""
+            "img": "https://media1.tenor.com/m/pUW1TE7j9ycAAAAC/cryptoflash-nft.gif"
         },
         {
             "value": "Green Lantern Ring Mastery",
             "name": "Green Lantern Ring Mastery 💍",
-            "img": ""
+            "img": "https://media1.tenor.com/m/CBp5CAsFtBgAAAAC/dc-green-lantern.gif"
         },
         {
             "value": "Energy Constructs",
             "name": "Energy Constructs ⚡",
-            "img": ""
+            "img": "https://media1.tenor.com/m/8Ltt65SLeFUAAAAC/genki-dama-spirit-bomb.gif"
         },
-        {
+        /* {
             "value": "Jet Propulsion",
             "name": "Jet Propulsion ✈️",
             "img": ""
-        },
+        }, */
         {
             "value": "Shapeshifting",
             "name": "Shapeshifting 🔄",
-            "img": ""
+            "img": "https://media1.tenor.com/m/jnPLCYviEyQAAAAd/shapeshifter-x-men.gif"
         },
-        {
-            "value": "Nightcrawler Physiology",
-            "name": "Nightcrawler Physiology 🌀",
-            "img": ""
-        },
-        {
+        /*         {
+                    "value": "Nightcrawler Physiology",
+                    "name": "Nightcrawler Physiology 🌀",
+                    "img": ""
+                }, */
+        /* {
             "value": "Organic Steel Transformation",
             "name": "Organic Steel Transformation 🔩",
             "img": ""
-        },
-        {
+        }, */
+        /* {
             "value": "Superhuman Durability",
             "name": "Superhuman Durability 🦾",
             "img": ""
-        },
+        }, */
     ]
