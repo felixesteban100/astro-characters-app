@@ -1,14 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import { collectionCharacters } from "../lib/mongodb";
+import { collectionCharacters, collectionPowers, collectionTeams, collectionUniverses } from "../lib/mongodb";
 
 import Image from "astro/components/Image.astro";
-
-import {
-  getTeamByUniverse,
-} from "../lib/constants/constants";
-import { publisherIMG, getQueryOptions, GetColorLogosByPublisher, GetColorOfTheLogoByTeam } from "../lib/charactersUtils";
+import { getQueryOptions } from "../lib/charactersUtils";
 import { CHARACTERS_PER_PAGE } from "../lib/constants/constants";
 
 import Pagination from "../components/Pagination.svelte";
@@ -16,9 +12,6 @@ import FilterCharacters from "../components/FilterCharacters.svelte";
 import Sheet from "src/components/Sheet.svelte";
 import { Filter } from "lucide-astro";
 import { type Sort } from "mongodb";
-import { ALLPOWERS } from "../lib/constants/constants";
-import { ALLPOWERSWITHIMAGE } from "$lib/constants/PowersWithImage";
-
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName") ?? "";
@@ -69,8 +62,7 @@ const queryOptions: QueryOptions = getQueryOptions(
 
 const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
-const characterdDisplayLenght =
-  await collectionCharacters.countDocuments(queryOptions);
+const characterdDisplayLenght = await collectionCharacters.countDocuments(queryOptions);
 
 const someCharacters = await collectionCharacters
   .find({ ...queryOptions })
@@ -79,23 +71,10 @@ const someCharacters = await collectionCharacters
   .skip(offset)
   .toArray();
 
+const powerInfo = await collectionPowers.findOne({ value: power !== "All" ? power : "" })
+const universeInfo = await collectionUniverses.findOne({ value: universe !== "All" ? universe : "" })
 
-const teamInfo = getTeamByUniverse(universe ?? "").find(
-  (t) => t.value === team
-);
-
-const powerInfo = ALLPOWERSWITHIMAGE.find(powerC => powerC.value === power)
-
-// ADD A NEW PROPERTY USING AI
-// // example : {"character_key/property to search each one": "character_value of that property"}
-// const currentCharactersToUpdate = {}
-
-// // const allCharacters = await collectionCharacters.find({ }).toArray()
-// Object.entries(currentCharactersToUpdate).forEach(([character_name, character_powers/* characters_age */]) => {
-//   // const totalPowerstats: number = Object.values(character.powerstats).reduce((acc, cur) => acc + cur)
-//   // console.log(`${character_name} has ${character_age}`)
-//   const addNewField = collectionCharacters.updateOne({ name: character_name}, { $set: {"powers": character_powers } });
-// })
+const teamInfo = await collectionTeams.findOne({ value: team });
 ---
 
 <Layout
@@ -130,24 +109,24 @@ const powerInfo = ALLPOWERSWITHIMAGE.find(powerC => powerC.value === power)
     
     <div class="flex gap-10 justify-center items-center">
       {
-        team && team !== "All" && teamInfo !== undefined ? (
+        team && team !== "All" && teamInfo ? (
           <div>
-            <Image class={`${GetColorOfTheLogoByTeam(teamInfo.name)}`} src={teamInfo.img} width={200} height={200} alt="" transition:name={`media-image-${teamInfo.value}`}/>
+            <Image src={teamInfo.img} width={200} height={200} alt="" transition:name={`media-image-${teamInfo.value}`}/>
             <p>{team}</p>
             </div>
-        ) : universe && universe !== "All" ? (
+        ) : universeInfo && universe !== "All" ? (
           <div>
-            <Image class={`${GetColorLogosByPublisher(universe)}`} src={publisherIMG(universe)} width={200} height={200} alt="" transition:name={`media-image-${universe}`}/>
+            <Image src={universeInfo.img} width={200} height={200} alt="" transition:name={`media-image-${universe}`}/>
             <p>{universe}</p>
             </div>
         ) : null
       }
 
       {
-        power && power !== "All"
+        (power && power !== "All" && powerInfo)
           && <div class="flex flex-col items-center justify-center gap-5">
-            {(powerInfo && powerInfo.img !== "") && <img class="w-[10rem] h-[7rem] object-cover" src={powerInfo.img} alt={power} transition:name={`media-image-power-${powerInfo.value}`} />}
-            <p>{ALLPOWERS.find(p => p.value === power)?.name || "Unknown Power"}</p>
+            {(powerInfo && powerInfo?.img !== "") && <img class="w-[10rem] h-[7rem] object-cover" src={powerInfo.img} alt={power} transition:name={`media-image-power-${powerInfo.value}`} />}
+            <p>{powerInfo.name}</p>
           </div>
       }
     </div>
@@ -186,19 +165,21 @@ const powerInfo = ALLPOWERSWITHIMAGE.find(powerC => powerC.value === power)
     {characterdDisplayLenght > CHARACTERS_PER_PAGE && 
     <Pagination
       currentPage={currentPage}
-      countCharacters={characterdDisplayLenght}
-      characterName={characterName}
-      gender={gender}
-      side={side}
-      race={race}
-      power={power}
-      universe={universe}
-      team={team}
-      characterOrFullName={characterOrFullName}
-      includesOrExact={includesOrExact}
-      sortBy={sortBy}
-      sortDirection={sortDirection}
+      countItems={characterdDisplayLenght}
+      url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&currentPage=`}
       client:only
     />}
   </main>
 </Layout>
+
+<!-- // characterName={characterName}
+      // gender={gender}
+      // side={side}
+      // race={race}
+      // power={power}
+      // universe={universe}
+      // team={team}
+      // characterOrFullName={characterOrFullName}
+      // includesOrExact={includesOrExact}
+      // sortBy={sortBy}
+      // sortDirection={sortDirection} -->

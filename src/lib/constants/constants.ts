@@ -2735,7 +2735,7 @@ export const ALLPOWERS: {
     }
   ]
 
-export function getTeamByUniverse(universe: string): { name: string, value: string, img: string }[] {
+/* export function getTeamByUniverse(universe: string): { name: string, value: string, img: string }[] {
   switch (universe) {
     case "Marvel Comics":
       return [
@@ -3201,7 +3201,7 @@ export function getTeamByUniverse(universe: string): { name: string, value: stri
     default:
       return [];
   }
-}
+} */
 
 export const ALLUNIVERSESWITHTEAMS: UniversesWithItsTeams[] = [
   {

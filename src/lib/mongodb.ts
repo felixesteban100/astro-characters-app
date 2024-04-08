@@ -1,6 +1,6 @@
-import { MongoClient } from "mongodb"; 
+import { MongoClient, type Document } from "mongodb";
 
-export function connectToCluster() {
+export function connectToCluster<CollectionType extends Document>(collectionName: string) {
     let mongoClient;
 
     try {
@@ -10,7 +10,7 @@ export function connectToCluster() {
         // console.log('Successfully connected to MongoDB Atlas!');
 
         const db = mongoClient.db('test');
-        const collection = db.collection<Character>('characters');
+        const collection = db.collection<CollectionType>(collectionName);
 
         // return mongoClient;
         return collection
@@ -20,4 +20,7 @@ export function connectToCluster() {
     }
 }
 
-export const collectionCharacters = connectToCluster()
+export const collectionCharacters = connectToCluster<Character>('characters')
+export const collectionTeams = connectToCluster<Team>('teams')
+export const collectionUniverses = connectToCluster<Universe>('universes')
+export const collectionPowers = connectToCluster<Power>('powers')

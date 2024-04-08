@@ -32,7 +32,7 @@ declare type Character = {
         base: string;
     };
     connections: {
-        groupAffiliation: string;
+        groupAffiliation: string[];
         relatives: string;
     };
     images: {
@@ -50,6 +50,30 @@ declare type Character = {
     slug: string;
     comics?: string[];
     powers: string[]
+}
+
+declare type Team = {
+    name: string,
+    value: string,
+    description: string,
+    members: { name: string, id: number }[],
+    universe: { name: string, value: string, img: string },
+    img: string,
+    comics: string[]
+}
+
+declare type Universe = {
+    name: string,
+    value: string,
+    teams: { name: string, value: string, img: string }[]
+    img: string,
+    comics?: string[]
+}
+
+declare type Power = {
+    name: string,
+    value: string,
+    img: string,
 }
 
 declare type QueryOptions = {

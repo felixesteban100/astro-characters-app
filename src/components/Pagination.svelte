@@ -10,27 +10,30 @@
   //   let count = 20;
   $: siblingCount = /* $isDesktop ? */ 1 /* : 0 */;
 
+  export let url: string
+
   export let currentPage: string;
-  export let countCharacters: number;
-  export let characterOrFullName: boolean;
-  export let includesOrExact: boolean;
-  export let sortBy: string;
-  export let sortDirection: string;
-  export let characterName: string;
-  export let gender: string;
-  export let side: string;
-  export let race: string;
-  export let power: string;
-  export let universe: string;
-  export let team: string;
+  export let countItems: number;
+  // export let characterOrFullName: boolean;
+  // export let includesOrExact: boolean;
+  // export let sortBy: string;
+  // export let sortDirection: string;
+  // export let characterName: string;
+  // export let gender: string;
+  // export let side: string;
+  // export let race: string;
+  // export let power: string;
+  // export let universe: string;
+  // export let team: string;
 
   function createPageURL(pageNumber: number) {
-    return `/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&currentPage=${pageNumber}`;
+    // return `/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&currentPage=${pageNumber}`;
+    return `${url}${pageNumber}`;
   }
 </script>
 
 <Pagination.Root
-  count={countCharacters}
+  count={countItems}
   perPage={CHARACTERS_PER_PAGE}
   {siblingCount}
   let:pages

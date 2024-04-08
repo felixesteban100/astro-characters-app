@@ -24,7 +24,7 @@
     alignment: string;
   };
   export let connections: {
-    groupAffiliation: string;
+    groupAffiliation: string[];
     relatives: string;
   };
 
@@ -155,7 +155,7 @@
     statValue={new Intl.ListFormat("en", {
       style: "long",
       type: "conjunction",
-    }).format(connections.groupAffiliation.split(","))}
+    }).format(connections.groupAffiliation.toString().split(","))}
   >
     <!-- <Sword slot="icon" /> -->
   </StatsString>

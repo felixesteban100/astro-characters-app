@@ -2,38 +2,38 @@
 
 import { CHARACTERS_PER_PAGE } from "$lib/constants/constants";
 import Pagination from "src/components/Pagination.svelte";
-import { collectionPowers } from "../lib/mongodb";
+import { collectionUniverses } from "../lib/mongodb";
 import Layout from "src/layouts/Layout.astro";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 
 const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
-const powers = await collectionPowers.find({}).limit(CHARACTERS_PER_PAGE).skip(offset).toArray();
+const universes = await collectionUniverses.find({}).limit(CHARACTERS_PER_PAGE).skip(offset).toArray();
 
-const powersLenght = await  collectionPowers.countDocuments();
+const universesLenght = await  collectionUniverses.countDocuments();
 
 ---
 
-<Layout title="Powers">
+<Layout title="Universes">
   <div class="w-full grid 2xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
     {
-      powers.map((power) => {
+      universes.map((universe) => {
         return (
           <div class="my-5 p-5 border rounded-md ">
             <a
-                href={`/characters?power=${power.value}`}
+                href={`/characters?universe=${universe.value}`}
                 class="group/power flex flex-col justify-center items-center gap-5"
             >
-                {power.img !== "" && <img
-                    src={power.img}
+                {universe.img !== "" && <img
+                    src={universe.img}
                     height={500}
                     width={500}
-                    alt={power.name}
+                    alt={universe.name}
                     class={`w-[20rem] h-[15rem] col-span-1 object-cover`}
-                    transition:name={`media-image-power-${power.value}`}
+                    transition:name={`media-image-${universe.value}`}
                 />}
-                <p class="group-hover/power:underline">{power.name}</p>
+                <p class="group-hover/power:underline">{universe.name}</p>
             </a>
           </div>
         );
@@ -41,11 +41,11 @@ const powersLenght = await  collectionPowers.countDocuments();
     }
   </div>
 
-  {powersLenght > CHARACTERS_PER_PAGE && 
+  {universesLenght > CHARACTERS_PER_PAGE && 
     <Pagination
       currentPage={currentPage}
-      url={`/powers?currentPage=`}
-      countItems={powersLenght}
+      url={`/universes?currentPage=`}
+      countItems={universesLenght}
       client:only
     />}
 </Layout>

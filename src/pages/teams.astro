@@ -1,80 +1,55 @@
 ---
-export const prerender = true
 
-import {
-  GetColorLogosByPublisher,
-  GetColorOfTheLogoByTeam,
-} from "$lib/charactersUtils";
-import { ALLUNIVERSESWITHTEAMS } from "$lib/constants/constants";
-import { cn } from "$lib/utils";
+import { CHARACTERS_PER_PAGE } from "$lib/constants/constants";
+import Pagination from "src/components/Pagination.svelte";
+import { collectionTeams } from "../lib/mongodb";
 import Layout from "src/layouts/Layout.astro";
 
-// const allUniversesWithItsTeams: UniversesWithItsTeams[] = ALLUNIVERSE.slice(
-//   1,
-//   ALLUNIVERSE.length - 1
-// ).reduce((allUniverses, universe) => {
+const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
+const universe = Astro.url.searchParams.get("universe") ?? "All";
 
-//   if (UNIVERSES_WITH_TEAMS.includes(universe.value)) {
-//     allUniverses.push({
-//       info: universe,
-//       img: publisherIMG(universe.value),
-//       teams: getTeamByUniverse(universe.value).filter((team) => team.value !== "All"),
-//     });
-//   }
+const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
-//   return allUniverses;
-// }, new Array());
+const queryOptions = universe !== "All" ? { 'universe.value': universe } : { }
 
-// console.log(JSON.stringify(allUniversesWithItsTeams))
+const teams = await collectionTeams.find(queryOptions).limit(CHARACTERS_PER_PAGE).skip(offset).toArray();
+
+const teamsLenght = await collectionTeams.countDocuments(queryOptions);
 ---
 
 <Layout title="Teams">
-  <div class="w-full flex flex-col justify-center">
+  {universe !== "All" && <p>{universe}</p>}
+  <div class="w-full grid 2xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
     {
-      ALLUNIVERSESWITHTEAMS.map((universe) => {
+      teams.map((team) => {
         return (
-          <div class="border my-5 p-5 rounded-md">
+          <div class="my-5 p-5 border rounded-md ">
             <a
-              href={`/characters?universe=${universe.info.value}&team=${'All'}`}
-              class="group/publisher"
+                href={`/characters?universe=${team.universe.value}&team=${team.value}`}
+                class="group/power flex flex-col justify-center items-center gap-5"
             >
-              <img
-                src={universe.img}
-                width={500}
-                height={500}
-                alt={universe.info.value}
-                class={cn(
-                  `w-[20%] h-auto mx-auto ${GetColorLogosByPublisher(universe.info.value)}`
-                )}
-                transition:name={`media-image-${universe.info.value}`}
-              />
+                {team.img !== "" && <img
+                    src={team.img}
+                    height={500}
+                    width={500}
+                    alt={team.name}
+                    class={`w-[20rem] h-[15rem] col-span-1 object-cover`}
+                    transition:name={`media-image-${team.value}`}
+                />}
+                <p class="group-hover/power:underline">{team.name}</p>
+                <p class="group-hover/power:underline">Universe: {team.universe.name}</p>
             </a>
-            <div>
-              <div class="grid 2xl:grid-cols-4 grid-cols-3  justify-center items-center">
-                {universe.teams.map((team) => {
-                  return (
-                    <a
-                      href={`/characters?universe=${universe.info.value}&team=${team.value}`}
-                      class="group/publisher w-full flex flex-col justify-center items-center"
-                    >
-                      <img
-                        src={team.img}
-                        height={500}
-                        width={500}
-                        alt={team.name}
-                        class={`w-[80%] h-auto col-span-1 ${GetColorOfTheLogoByTeam(team.value)}`}
-                        transition:name={`media-image-${team.value}`}
-                      />
-                      <p class="group-hover/publisher:underline">{team.name}</p>
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
           </div>
         );
       })
     }
   </div>
+
+  {teamsLenght > CHARACTERS_PER_PAGE && 
+    <Pagination
+      currentPage={currentPage}
+      url={`/teams?universe=${universe}&currentPage=`}
+      countItems={teamsLenght}
+      client:only
+    />}
 </Layout>
-$lib/constants/constants

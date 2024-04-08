@@ -31,7 +31,7 @@ export type Character = {
         base: string;
     };
     connections: {
-        groupAffiliation: string;
+        groupAffiliation: string[];
         relatives: string;
     };
     images: {
