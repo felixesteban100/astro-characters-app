@@ -128,7 +128,13 @@ const universesWithTeams = await collectionUniverses
               />
             </div>
           ) : (
-            <p class="font-bold text-3xl">Last Characters Added</p>
+            <p class="font-bold text-3xl">Characters</p>
+          )
+        }
+
+        {
+          side !== "All" && (
+            <p class="font-bold text-3xl">{AlignmentTranslator(side)}</p>
           )
         }
 
