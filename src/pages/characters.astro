@@ -1,10 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import { collectionCharacters, collectionPowers, collectionTeams, collectionUniverses } from "../lib/mongodb";
+import {
+  collectionCharacters,
+  collectionPowers,
+  collectionTeams,
+  collectionUniverses,
+} from "../lib/mongodb";
 
 import Image from "astro/components/Image.astro";
-import { getQueryOptions } from "../lib/charactersUtils";
+import { AlignmentTranslator, getQueryOptions } from "../lib/charactersUtils";
 import { CHARACTERS_PER_PAGE } from "../lib/constants/constants";
 
 import Pagination from "../components/Pagination.svelte";
@@ -22,8 +27,10 @@ const team = Astro.url.searchParams.get("team") ?? "All";
 const gender = Astro.url.searchParams.get("gender") ?? "both";
 const race = Astro.url.searchParams.get("race") ?? "All";
 const power = Astro.url.searchParams.get("power") ?? "All";
-const characterOrFullName = Astro.url.searchParams.get("characterOrFullName") === "true";
-const includesOrExact = Astro.url.searchParams.get("includesOrExact") === "true";
+const characterOrFullName =
+  Astro.url.searchParams.get("characterOrFullName") === "true";
+const includesOrExact =
+  Astro.url.searchParams.get("includesOrExact") === "true";
 
 const sortBy = Astro.url.searchParams.get("sortBy") ?? "id";
 const sortDirection = Astro.url.searchParams.get("sortDirection") ?? "desc";
@@ -39,7 +46,7 @@ if (Astro.request.method === "POST") {
     const teamForm = data.get("team");
 
     return Astro.redirect(
-      `/characters?characterName=${characterNameForm}&gender=${genderForm}&side=${sideForm}&race=${raceForm}${universeForm ? `&universe=${universeForm}&team=${universeForm === universe ? teamForm : "All"}` : `&universe="All"&team="All"`}&currentPage=${1}`
+      `/characters?characterName=${characterNameForm}&gender=${genderForm}&side=${sideForm}&race=${raceForm}${universeForm ? `&universe=${universeForm}&team=${universeForm === universe ? teamForm : "All"}` : `&universe="All"&team="All"`}&currentPage=${1}`,
     );
   } catch (error) {
     if (error instanceof Error) {
@@ -57,12 +64,13 @@ const queryOptions: QueryOptions = getQueryOptions(
   race,
   power,
   characterOrFullName,
-  includesOrExact
+  includesOrExact,
 );
 
 const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
-const characterdDisplayLenght = await collectionCharacters.countDocuments(queryOptions);
+const characterdDisplayLenght =
+  await collectionCharacters.countDocuments(queryOptions);
 
 const someCharacters = await collectionCharacters
   .find({ ...queryOptions })
@@ -71,10 +79,29 @@ const someCharacters = await collectionCharacters
   .skip(offset)
   .toArray();
 
-const powerInfo = await collectionPowers.findOne({ value: power !== "All" ? power : "" })
-const universeInfo = await collectionUniverses.findOne({ value: universe !== "All" ? universe : "" })
+const powerInfo = await collectionPowers.findOne({
+  value: power !== "All" ? power : "",
+});
+const universeInfo = await collectionUniverses.findOne({
+  value: universe !== "All" ? universe : "",
+});
+const teamInfo = universeInfo?.teams.find((t) => t.value === team); // i think this one is faster
+// const teamInfo = await collectionTeams.findOne({ value: team }); // and this one slower (cause it calls the mongodb)
 
-const teamInfo = await collectionTeams.findOne({ value: team });
+const universesWithTeams = await collectionUniverses
+  .find({ teams: { $exists: true, $not: { $size: 0 } } })
+  .toArray();
+
+// add description to all teams
+// const currentTeamsToUpdate: {[key: string]: string} = {}
+
+// const setData = await collectionTeams.updateMany({value: team}, {
+//       $set: {
+//         description: currentTeamsToUpdate[`${team}`]
+//       }
+//     }
+// );
+//add description to all teams
 ---
 
 <Layout
@@ -85,90 +112,128 @@ const teamInfo = await collectionTeams.findOne({ value: team });
       : `Characters`}
 >
   <main class="mb-32 flex flex-col justify-center items-center gap-5">
-    <div class="w-full flex justify-end">
-      <Sheet client:load ButtonClassName="">
-        <Filter slot="trigger" />
-        <div slot="content">
-          <FilterCharacters
-            characterOrFullName={characterOrFullName}
-            includesOrExact={includesOrExact}
-            characterName={characterName}
-            gender={gender}
-            side={side}
-            race={race}
-            power={power}
-            universe={universe}
-            team={team}
-            sortBy={sortBy}
-            sortDirection={sortDirection}
-            client:load
-          />
-        </div>
-      </Sheet>
-    </div>
-    
-    <div class="flex gap-10 justify-center items-center">
-      {
-        team && team !== "All" && teamInfo ? (
-          <div>
-            <Image src={teamInfo.img} width={200} height={200} alt="" transition:name={`media-image-${teamInfo.value}`}/>
-            <p>{team}</p>
+    <div class="flex justify-between items-center w-full">
+      <div class="flex flex-col justify-center items-start gap-10">
+        {
+          team && team !== "All" && teamInfo ? (
+            <div class="flex justify-center gap-5 items-center">
+              <p class="font-bold text-3xl">{team}</p>
+              <Image
+                src={teamInfo.img}
+                class="h-10 w-auto"
+                width={200}
+                height={200}
+                alt=""
+                transition:name={`media-image-${teamInfo.value}`}
+              />
             </div>
-        ) : universeInfo && universe !== "All" ? (
-          <div>
-            <Image src={universeInfo.img} width={200} height={200} alt="" transition:name={`media-image-${universe}`}/>
-            <p>{universe}</p>
+          ) : universeInfo && universe !== "All" ? (
+            <div class="flex justify-center gap-5 items-center">
+              <p class="font-bold text-3xl">{universe}</p>
+              <Image
+                src={universeInfo.img}
+                class="h-10 w-auto"
+                width={200}
+                height={200}
+                alt=""
+                transition:name={`media-image-${universe}`}
+              />
             </div>
-        ) : null
-      }
+          ) : null
+        }
 
-      {
-        (power && power !== "All" && powerInfo)
-          && <div class="flex flex-col items-center justify-center gap-5">
-            {(powerInfo && powerInfo?.img !== "") && <img class="w-[10rem] h-[7rem] object-cover" src={powerInfo.img} alt={power} transition:name={`media-image-power-${powerInfo.value}`} />}
-            <p>{powerInfo.name}</p>
+        {
+          power && power !== "All" && powerInfo && (
+            <div class="flex justify-center gap-5 items-center">
+              <p class="font-bold text-3xl">{powerInfo.name}</p>
+              {powerInfo && powerInfo?.img !== "" && (
+                <img
+                  class="h-10 w-auto"
+                  src={powerInfo.img}
+                  alt={power}
+                  transition:name={`media-image-power-${powerInfo.value}`}
+                />
+              )}
+            </div>
+          )
+        }
+      </div>
+      <div>
+        <Sheet client:load ButtonClassName="">
+          <Filter slot="trigger" />
+          <div slot="content">
+            <!-- this filter is not working as expected :/ -->
+            <FilterCharacters
+              characterOrFullName={characterOrFullName}
+              includesOrExact={includesOrExact}
+              characterName={characterName}
+              gender={gender}
+              side={side}
+              race={race}
+              power={power}
+              universe={universe}
+              team={team}
+              sortBy={sortBy}
+              sortDirection={sortDirection}
+              universesWithTeams={universesWithTeams}
+              client:load
+            />
           </div>
-      }
+        </Sheet>
+      </div>
     </div>
 
-    {someCharacters.length < 1 ? <p class="text-5xl w-full text-center">No characters found</p> : null}  
+    {
+      someCharacters.length < 1 ? (
+        <p class="text-5xl w-full text-center">No characters found</p>
+      ) : null
+    }
 
     <div
-      class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-10`}
+      class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-10 w-full`}
     >
       {
-        someCharacters.map((c: any) => {
+        someCharacters.map((c) => {
           return (
-            <div class="flex flex-col justify-center items-center gap-5 h-[30rem] w-[25rem]">
-              <a
-                href={`/${c.id}`}
-                class="uppercase font-medium hover:underline"
-              >
-                {c.slug}
-              </a>
-              <div class="relative box characterId">
-                <Image
-                  class={`object-cover h-[25rem] w-[20rem] rounded-md`}
-                  width={10000}
-                  height={10000}
-                  src={c.images.md}
-                  loading="eager"
-                  transition:name={`media-image-${c.id}`}
-                  alt={c.name}
-                />
+            <a href={`/${c.id}`} class="uppercase font-medium ">
+              <div class="group/character flex flex-col justify-center items-center xl:items-start gap-5 w-full h-full">
+                <div class="relative box characterId">
+                  <Image
+                    class={`object-cover h-[25rem] w-[25rem] rounded-md transition-all duration-500 group-hover/character:opacity-30`}
+                    width={800}
+                    height={800}
+                    src={c.images.md}
+                    loading="eager"
+                    transition:name={`media-image-${c.id}`}
+                    alt={c.name}
+                  />
+                </div>
+                <div class="flex flex-col gap-2">
+                  <p class="font-bold text-xl">
+                    {" "}
+                    <span class="text-primary">{c.id} |</span> {c.name}
+                  </p>
+                  <p class="text-secondary-foreground">
+                    {c.biography.publisher} |{" "}
+                    {AlignmentTranslator(c.biography.alignment)}
+                  </p>
+                </div>
               </div>
-            </div>
+            </a>
           );
         })
       }
     </div>
-    {characterdDisplayLenght > CHARACTERS_PER_PAGE && 
-    <Pagination
-      currentPage={currentPage}
-      countItems={characterdDisplayLenght}
-      url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&currentPage=`}
-      client:only
-    />}
+    {
+      characterdDisplayLenght > CHARACTERS_PER_PAGE && (
+        <Pagination
+          currentPage={currentPage}
+          countItems={characterdDisplayLenght}
+          url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&currentPage=`}
+          client:only
+        />
+      )
+    }
   </main>
 </Layout>
 

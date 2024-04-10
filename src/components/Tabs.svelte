@@ -8,6 +8,7 @@
     PictureInPicture,
   } from "lucide-svelte";
   import { type Character } from "$lib/types";
+  import { type Universe } from "$lib/types";
   import Stats from "./stats/Stats.svelte";
   import CharacterImagesDisplay from "./CharacterImagesDisplay.svelte";
   // import CharacterTeamsDisplay from "./CharacterTeamsDisplay.svelte";
@@ -17,6 +18,7 @@
   //   import {organizedComicsProperty} from '../lib/charactersUtils';
 
   export let characterInfo: Character;
+  export let publisherInfo: Universe
 </script>
 
 <Tabs.Root
@@ -71,9 +73,12 @@
   <Tabs.Content  value="Comics">
     <CharacterImagesDisplay
       characterInfoComics={characterInfo.comics}
-      characterInfoPublisher={characterInfo.biography.publisher}
+      publisherComics={publisherInfo.comics}
       characterInfoImages={characterInfo.images}
       characterInfoName={characterInfo.name}
     />
   </Tabs.Content>
 </Tabs.Root>
+
+
+<!-- characterInfoPublisher={characterInfo.biography.publisher} -->

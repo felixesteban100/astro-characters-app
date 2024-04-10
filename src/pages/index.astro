@@ -5,7 +5,6 @@ import HeroCard from "../components/HeroCard.astro";
 import { Atom } from "lucide-astro";
 
 const randomCharacters = await collectionCharacters
-  // .aggregate([{ $match: {} }, { $sample: { size: 50 } }])
   .find()
   .sort({ id: "desc" })
   .limit(50)

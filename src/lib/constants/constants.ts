@@ -102,6 +102,13 @@ export const ALLUNIVERSE = [
 
 export const SORT_BY_VALUES = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
 
+export const COMICS_DEFAULT = [
+  "https://img.freepik.com/free-vector/comics-poster-template_225004-800.jpg?w=2000",
+  "https://img.freepik.com/free-vector/comics-poster-template_225004-800.jpg?w=2000",
+  "https://img.freepik.com/free-vector/comics-poster-template_225004-800.jpg?w=2000",
+  "https://img.freepik.com/free-vector/comics-poster-template_225004-800.jpg?w=2000",
+]
+
 export const ALLPOWERS: {
   name: string;
   value: string;
@@ -111,10 +118,6 @@ export const ALLPOWERS: {
       "value": "All",
       // "name": "All powers ✨"
       "name": "All powers",
-    },
-    {
-      "value": "360° Vision",
-      "name": "360° Vision"
     },
     {
       "value": "Absorption and Mimicry of Materials",
@@ -3203,7 +3206,7 @@ export const ALLPOWERS: {
   }
 } */
 
-export const ALLUNIVERSESWITHTEAMS: UniversesWithItsTeams[] = [
+/* export const ALLUNIVERSESWITHTEAMS: UniversesWithItsTeams[] = [
   {
     "info": {
       "value": "Marvel Comics",
@@ -3661,4 +3664,4 @@ export const ALLUNIVERSESWITHTEAMS: UniversesWithItsTeams[] = [
       }
     ]
   }
-]
+] */

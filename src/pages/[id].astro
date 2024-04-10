@@ -1,14 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import { collectionCharacters } from "../lib/mongodb";
+import { collectionCharacters, collectionUniverses } from "../lib/mongodb";
 import Image from "astro/components/Image.astro";
 import Tabs from "src/components/Tabs.svelte";
 import CharacterTeamsDisplay from "src/components/CharacterTeamsDisplay.astro";
 
 const { id } = Astro.params;
 
-if (!id) return Astro.redirect("/character-not-found");
+if (!id) return Astro.redirect("/not-found");
 
 export async function getStaticPaths() {
   const allCharacters = await collectionCharacters.find().toArray();
@@ -25,7 +25,9 @@ const selectedCharacter = await collectionCharacters.findOne({
   id: parseInt(id),
 });
 
-if (!selectedCharacter) return Astro.redirect("/character-not-found");
+const selectedCharacterPublisher = await collectionUniverses.findOne({value: selectedCharacter?.biography.publisher})
+
+if (!selectedCharacter) return Astro.redirect("/not-found");
 
 // const optimizedCharacterImageMd = await getImage({src: selectedCharacter?.images.md ?? ""/* , format: 'webp' */})
 ---
@@ -53,7 +55,7 @@ if (!selectedCharacter) return Astro.redirect("/character-not-found");
             />
           </div>
           <div class="h-[44rem] w-full lg:w-[70%]">
-            <Tabs characterInfo={selectedCharacter} client:load>
+            <Tabs characterInfo={selectedCharacter} publisherInfo={selectedCharacterPublisher!} client:load>
               <CharacterTeamsDisplay slot="character-images-display" characterInfo={selectedCharacter} />
             </Tabs>
           </div>

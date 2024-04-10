@@ -6,10 +6,10 @@ import { Menu } from "lucide-astro";
 import Sparkles from "src/components/Sparkles.svelte";
 import Button from "node_modules/bits-ui/dist/bits/button/components/button.svelte";
 
-
 // things to fix:
 /* 
--- in the filterCharacters.svelte not workign 
+-- add description to all teams
+-- see if I can add change streams on mongo db each time a universe or team change it changes everywhere else it's at.
 - add a shortcut to enter key to search the button when the sheet is open
 -- add a shortcut to open the filter (ctrl + m) and a tooltip to the button of filter
 - see if I can add the sort random (how to make a random sort with pagination on mongodb) https://stackoverflow.com/questions/48447384/nodejs-mongo-pagination-random-order
@@ -74,10 +74,9 @@ const links = [
     href: "/powers",
     title: "Powers",
   },
-]
+];
 
-if(otherLinks) links.push(...otherLinks)
-
+if (otherLinks) links.push(...otherLinks);
 ---
 
 <!-- <script is:inline>
@@ -106,7 +105,7 @@ if(otherLinks) links.push(...otherLinks)
 <html lang="en">
   <!-- the following line doesn't work, so I don't even bother using it -->
   <!-- transition:animate={fade({ duration: "15s" })} -->
-  <head  >
+  <head>
     <ViewTransitions />
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -116,59 +115,72 @@ if(otherLinks) links.push(...otherLinks)
     <title>{title}</title>
   </head>
   <body>
-    <div class="absolute inset-0 -z-10 min-h-screen">
-      <Sparkles client:only/>
+    <div class="absolute inset-0 -z-10 min-h-screen" transition:persist>
+      <Sparkles client:only transition:persist />
     </div>
-    
+
     <main class="w-[90vw] md:w-[80vw] mx-auto overflow-hidden">
       <div
         class="flex items-center justify-between md:justify-start mx-auto py-4 gap-5"
       >
-        <a href="/"><p class="text-primary font-bold text-stroke-custom">ASTRO 🚀</p></a>
-        <div class={`items-center justify-between hidden md:flex w-full  md:w-auto`}>
+        <!-- <a href="/"><p class="text-primary font-bold text-stroke-custom">ASTRO 🚀</p></a> -->
+        <a href="/"><p class="font-bold text-primary">ASTRO-CHARACTERS</p></a>
+        <div
+          class={`items-center justify-between hidden md:flex w-full  md:w-auto`}
+        >
           <menu
             class="flex flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
           >
-            {links.map((link) => (
-              <li>
-                <Button variant={"link"} class="hover:underline text-foreground">
-                  <a
-                    href={link.href}
-                    class={`block py-2 px-3 ${(currentPath.includes(link.href) && title === link.title) && "underline"}`}
+            {
+              links.map((link) => (
+                <li>
+                  <Button
+                    variant={"link"}
+                    class="hover:underline text-foreground"
+                  >
+                    <a
+                      href={link.href}
+                      class={`block py-2 px-3 ${currentPath.includes(link.href) && title === link.title && "underline"}`}
                     >
                       {link.title}
-                  </a>
-                </Button>
-              </li>
-            ))}
+                    </a>
+                  </Button>
+                </li>
+              ))
+            }
           </menu>
         </div>
 
         <div class="flex justify-center md:hidden">
           <Sheet ButtonClassName="" client:load>
             <Menu slot="trigger" className="w-full" />
-            <div slot="content" class={`items-center justify-between flex w-full  md:w-auto`}>
+            <div
+              slot="content"
+              class={`items-center justify-between flex w-full  md:w-auto`}
+            >
               <menu
                 class="flex flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
               >
-                {links.map((link) => (
-                  <li>
-                    <Button variant={"link"} class="text-foreground">
-                      <a 
-                        href={link.href} 
-                        class={`flex py-2 px-3 ${(currentPath.includes(link.href) && title === link.title) && "underline"}`} 
+                {
+                  links.map((link) => (
+                    <li>
+                      <Button variant={"link"} class="text-foreground">
+                        <a
+                          href={link.href}
+                          class={`flex py-2 px-3 ${currentPath.includes(link.href) && title === link.title && "underline"}`}
                         >
                           {link.title}
-                      </a>
-                    </Button>
-                  </li>
-                ))}
+                        </a>
+                      </Button>
+                    </li>
+                  ))
+                }
               </menu>
             </div>
           </Sheet>
         </div>
       </div>
-      <div class="mx-auto mb-10">
+      <div class="mx-auto mb-10" transition:animate="slide">
         <slot />
       </div>
     </main>

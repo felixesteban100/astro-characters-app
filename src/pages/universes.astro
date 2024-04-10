@@ -16,11 +16,10 @@ const universesLenght = await  collectionUniverses.countDocuments();
 ---
 
 <Layout title="Universes">
-  <div class="w-full grid 2xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
+  <div class="w-full grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 my-11 justify-center items-center">
     {
       universes.map((universe) => {
         return (
-          <div class="my-5 p-5 border rounded-md ">
             <a
                 href={`/characters?universe=${universe.value}`}
                 class="group/power flex flex-col justify-center items-center gap-5"
@@ -30,12 +29,11 @@ const universesLenght = await  collectionUniverses.countDocuments();
                     height={500}
                     width={500}
                     alt={universe.name}
-                    class={`w-[20rem] h-[15rem] col-span-1 object-cover`}
+                    class={` w-[20rem] h-auto col-span-1`}
                     transition:name={`media-image-${universe.value}`}
                 />}
                 <p class="group-hover/power:underline">{universe.name}</p>
             </a>
-          </div>
         );
       })
     }

@@ -54,7 +54,7 @@ type Character = {
   name: string;
   slug: string;
   comics?: string[];
-  powers: string[]
+  powers: string[];
 };
 
 interface Props {
@@ -72,7 +72,9 @@ const { selectedCharacter, classNames } = Astro.props;
     <a href={`/${selectedCharacter.id}`}>
       <Button variant={"link"} class="m-0 p-0">
         <p class="text-lg md:text-2xl text-ellipsis">
-          {selectedCharacter.id} - {selectedCharacter.name}
+          <span class="text-primary">{selectedCharacter.id}</span>
+          |
+          <span class="text-foreground">{selectedCharacter.name}</span>
         </p>
       </Button>
     </a>
@@ -89,6 +91,10 @@ const { selectedCharacter, classNames } = Astro.props;
     </div>
   </div>
   <div class="w-[80%]">
-    <Stats powerstats={selectedCharacter.powerstats} powers={selectedCharacter.powers} client:load />
+    <Stats
+      powerstats={selectedCharacter.powerstats}
+      powers={selectedCharacter.powers}
+      client:load
+    />
   </div>
 </div>

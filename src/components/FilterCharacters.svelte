@@ -1,12 +1,11 @@
 <script lang="ts" context="module">
   import Button from "$lib/components/ui/button/button.svelte";
-  // import { ScrollArea } from "$lib/components/ui/scroll-area/index";
   import { Input } from "$lib/components/ui/input/index";
   import { Label } from "$lib/components/ui/label/index";
-  import { ALLALIGMENTS, ALLGENDERS, ALLPOWERS, ALLRACES, ALLUNIVERSE, /* getTeamByUniverse, */ SORT_BY_VALUES } from "../lib/constants/constants";
+  import { ALLALIGMENTS, ALLGENDERS, ALLPOWERS, ALLRACES, ALLUNIVERSE, SORT_BY_VALUES } from "../lib/constants/constants";
   import { Checkbox } from "../lib/components/ui/checkbox/index";
   import * as RadioGroup from "$lib/components/ui/radio-group/index";
-  import { collectionUniverses } from "$lib/mongodb";
+  import type { WithId } from "mongodb";
 </script>
 
 <script lang="ts">
@@ -21,6 +20,7 @@
   export let power: string;
   export let universe: string;
   export let team: string;
+  export let universesWithTeams: WithId<Universe>[]
 
   $: characterNameState = characterName;
   $: characterOrFullNameState = characterOrFullName;
@@ -33,20 +33,19 @@
   $: powerState = power;
   $: universeState = universe;
   $: teamState = team;
-
-
-  const universeSelectedInfo = collectionUniverses.findOne({value: universe/* universeState */})
-
-  console.log(universeState)
-
+  
+  $: universeInfo = universesWithTeams.find(c => c.value === universeState)
 </script>
 
-<!-- <ScrollArea class="h-[850px] w-full" orientation="vertical"> -->
 <div class="h-[850px] w-full overflow-y-scroll">
   <div class="flex flex-col gap-10">
     <Label class="flex flex-col gap-5">
       CharacterName 
-      <Input id="name" placeholder="batman, superman, iron man, spider-man..." bind:value={characterNameState} />
+      <Input 
+        id="name" 
+        placeholder="batman, superman, iron man, spider-man..." 
+        bind:value={characterNameState} 
+      />
     </Label>
   
     <div class="flex flex-col gap-5">
@@ -143,9 +142,7 @@
       </select>
     </Label>
   
-    <!-- {#await universeSelectedInfo then universeInfo}
-    <p>{JSON.stringify(universeInfo)}</p>
-    {#if universeInfo && universeInfo.teams.length > 0}
+    {#if universeInfo}
         <Label class="flex flex-col gap-5">
           Team
           <select
@@ -157,16 +154,17 @@
             {/each}
           </select>
         </Label>
-      {/if}
-    {/await} -->
+    {/if}
   
     <!-- <p>name: {characterNameState}</p> -->
     <!-- <p>gender: {genderState}</p> -->
     <!-- <p>side: {sideState}</p> -->
-    <p>universe: {universeState}</p>
+    <!-- <p>universe: {universeState}</p> -->
     <a href={`/characters?characterName=${characterNameState}&gender=${genderState}&side=${sideState}&race=${raceState}&power=${powerState}&universe=${universeState}&team=${teamState}&characterOrFullName=${characterOrFullNameState}&includesOrExact=${includesOrExactState}&sortBy=${sortByState}&sortDirection=${sortDirectionState}&currentPage=${1}`}>
       <Button type="submit">Submit</Button>
     </a>
   </div>
 </div>
-<!-- </ScrollArea> -->
+
+
+

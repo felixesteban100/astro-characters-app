@@ -50,3 +50,11 @@ export type Character = {
     comics?: string[];
     powers: string[]
 }
+
+export type Universe = {
+    name: string,
+    value: string,
+    teams: { name: string, value: string, img: string }[]
+    img: string,
+    comics?: string[]
+}
