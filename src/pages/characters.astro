@@ -4,7 +4,6 @@ import "../styles/globals.css";
 import {
   collectionCharacters,
   collectionPowers,
-  collectionTeams,
   collectionUniverses,
 } from "../lib/mongodb";
 
@@ -128,7 +127,9 @@ const universesWithTeams = await collectionUniverses
                 transition:name={`media-image-${universe}`}
               />
             </div>
-          ) : null
+          ) : (
+            <p class="font-bold text-3xl">Last Characters Added</p>
+          )
         }
 
         {
@@ -225,15 +226,3 @@ const universesWithTeams = await collectionUniverses
     }
   </main>
 </Layout>
-
-<!-- // characterName={characterName}
-      // gender={gender}
-      // side={side}
-      // race={race}
-      // power={power}
-      // universe={universe}
-      // team={team}
-      // characterOrFullName={characterOrFullName}
-      // includesOrExact={includesOrExact}
-      // sortBy={sortBy}
-      // sortDirection={sortDirection} -->

@@ -79,6 +79,14 @@ const { selectedCharacter, classNames } = Astro.props;
       </Button>
     </a>
     <div class="relative box characterId overflow-hidden">
+      <!-- <Image
+        width={500}
+        height={500}
+        class={`card-shine-effect rounded-md w-[10rem] h-[15rem] md:w-[35rem] md:h-[35rem] lg:w-[45rem] lg:h-[45rem] object-cover object-top`}
+        src={selectedCharacter.images.md /* selectedRandomImage */}
+        alt={selectedCharacter.name}
+        loading="eager"
+      /> -->
       <Image
         width={500}
         height={500}
@@ -86,7 +94,6 @@ const { selectedCharacter, classNames } = Astro.props;
         src={selectedCharacter.images.md /* selectedRandomImage */}
         alt={selectedCharacter.name}
         loading="eager"
-        transition:name={`media-image-${selectedCharacter.id}`}
       />
     </div>
   </div>

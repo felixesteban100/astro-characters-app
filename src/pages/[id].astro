@@ -25,7 +25,9 @@ const selectedCharacter = await collectionCharacters.findOne({
   id: parseInt(id),
 });
 
-const selectedCharacterPublisher = await collectionUniverses.findOne({value: selectedCharacter?.biography.publisher})
+const selectedCharacterPublisher = await collectionUniverses.findOne({
+  value: selectedCharacter?.biography.publisher,
+});
 
 if (!selectedCharacter) return Astro.redirect("/not-found");
 
@@ -34,10 +36,12 @@ if (!selectedCharacter) return Astro.redirect("/not-found");
 
 <Layout
   title={`${selectedCharacter?.name ? selectedCharacter?.name : "unknown"}`}
-  otherLinks={[{
-    href: `/fight?first=${selectedCharacter?.id}`,
-    title: `Fight using ${selectedCharacter?.name}`,
-  }]}
+  otherLinks={[
+    {
+      href: `/fight?first=${selectedCharacter?.id}`,
+      title: `Fight using ${selectedCharacter?.name}`,
+    },
+  ]}
 >
   <main class="mt-16">
     {
@@ -55,8 +59,15 @@ if (!selectedCharacter) return Astro.redirect("/not-found");
             />
           </div>
           <div class="h-[44rem] w-full lg:w-[70%]">
-            <Tabs characterInfo={selectedCharacter} publisherInfo={selectedCharacterPublisher!} client:load>
-              <CharacterTeamsDisplay slot="character-images-display" characterInfo={selectedCharacter} />
+            <Tabs
+              characterInfo={selectedCharacter}
+              publisherInfo={selectedCharacterPublisher!}
+              client:load
+            >
+              <CharacterTeamsDisplay
+                slot="character-images-display"
+                characterInfo={selectedCharacter}
+              />
             </Tabs>
           </div>
         </div>
@@ -65,15 +76,13 @@ if (!selectedCharacter) return Astro.redirect("/not-found");
   </main>
 </Layout>
 
-
 <!-- <CharacterFeatures
               selectedCharacter={selectedCharacter}
               tab={tab ?? "Stats"}
               client:load
             /> -->
 
-
-            <!-- <div class="flex gap-10 justify-end">
+<!-- <div class="flex gap-10 justify-end">
               <a
                 class="hover:underline"
                 href={`/${selectedCharacter?.id}?tab=Stats`}

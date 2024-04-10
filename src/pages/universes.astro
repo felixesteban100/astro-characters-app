@@ -1,5 +1,4 @@
 ---
-
 import { CHARACTERS_PER_PAGE } from "$lib/constants/constants";
 import Pagination from "src/components/Pagination.svelte";
 import { collectionUniverses } from "../lib/mongodb";
@@ -9,41 +8,51 @@ const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 
 const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
-const universes = await collectionUniverses.find({}).limit(CHARACTERS_PER_PAGE).skip(offset).toArray();
+const universes = await collectionUniverses
+  .find({})
+  .limit(CHARACTERS_PER_PAGE)
+  .skip(offset)
+  .toArray();
 
-const universesLenght = await  collectionUniverses.countDocuments();
-
+const universesLenght = await collectionUniverses.countDocuments();
 ---
 
 <Layout title="Universes">
-  <div class="w-full grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 my-11 justify-center items-center">
+  <div
+    class="w-full grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 my-11 justify-center items-center"
+  >
     {
       universes.map((universe) => {
         return (
-            <a
-                href={`/characters?universe=${universe.value}`}
-                class="group/power flex flex-col justify-center items-center gap-5"
-            >
-                {universe.img !== "" && <img
-                    src={universe.img}
-                    height={500}
-                    width={500}
-                    alt={universe.name}
-                    class={` w-[20rem] h-auto col-span-1`}
-                    transition:name={`media-image-${universe.value}`}
-                />}
-                <p class="group-hover/power:underline">{universe.name}</p>
-            </a>
+          <a
+            href={`/characters?universe=${universe.value}`}
+            class="group/power flex flex-col justify-center items-center gap-5"
+          >
+            {universe.img !== "" && (
+              <img
+                src={universe.img}
+                height={500}
+                width={500}
+                alt={universe.name}
+                class={` w-[20rem] h-auto col-span-1`}
+                transition:name={`media-image-${universe.value}`}
+              />
+            )}
+            <p class="group-hover/power:underline">{universe.name}</p>
+          </a>
         );
       })
     }
   </div>
 
-  {universesLenght > CHARACTERS_PER_PAGE && 
-    <Pagination
-      currentPage={currentPage}
-      url={`/universes?currentPage=`}
-      countItems={universesLenght}
-      client:only
-    />}
+  {
+    universesLenght > CHARACTERS_PER_PAGE && (
+      <Pagination
+        currentPage={currentPage}
+        url={`/universes?currentPage=`}
+        countItems={universesLenght}
+        client:only
+      />
+    )
+  }
 </Layout>

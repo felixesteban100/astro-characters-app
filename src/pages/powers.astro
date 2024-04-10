@@ -1,5 +1,4 @@
 ---
-
 import { CHARACTERS_PER_PAGE } from "$lib/constants/constants";
 import Pagination from "src/components/Pagination.svelte";
 import { collectionPowers } from "../lib/mongodb";
@@ -9,10 +8,13 @@ const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 
 const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
-const powers = await collectionPowers.find({}).limit(CHARACTERS_PER_PAGE).skip(offset).toArray();
+const powers = await collectionPowers
+  .find({})
+  .limit(CHARACTERS_PER_PAGE)
+  .skip(offset)
+  .toArray();
 
-const powersLenght = await  collectionPowers.countDocuments();
-
+const powersLenght = await collectionPowers.countDocuments();
 ---
 
 <Layout title="Powers">
@@ -22,18 +24,20 @@ const powersLenght = await  collectionPowers.countDocuments();
         return (
           <div class="my-5 p-5 border rounded-md ">
             <a
-                href={`/characters?power=${power.value}`}
-                class="group/power flex flex-col justify-center items-center gap-5"
+              href={`/characters?power=${power.value}`}
+              class="group/power flex flex-col justify-center items-center gap-5"
             >
-                {power.img !== "" && <img
-                    src={power.img}
-                    height={500}
-                    width={500}
-                    alt={power.name}
-                    class={`w-[20rem] h-[15rem] col-span-1 object-cover`}
-                    transition:name={`media-image-power-${power.value}`}
-                />}
-                <p class="group-hover/power:underline">{power.name}</p>
+              {power.img !== "" && (
+                <img
+                  src={power.img}
+                  height={500}
+                  width={500}
+                  alt={power.name}
+                  class={`w-[20rem] h-[15rem] col-span-1 object-cover`}
+                  transition:name={`media-image-power-${power.value}`}
+                />
+              )}
+              <p class="group-hover/power:underline">{power.name}</p>
             </a>
           </div>
         );
@@ -41,11 +45,14 @@ const powersLenght = await  collectionPowers.countDocuments();
     }
   </div>
 
-  {powersLenght > CHARACTERS_PER_PAGE && 
-    <Pagination
-      currentPage={currentPage}
-      url={`/powers?currentPage=`}
-      countItems={powersLenght}
-      client:only
-    />}
+  {
+    powersLenght > CHARACTERS_PER_PAGE && (
+      <Pagination
+        currentPage={currentPage}
+        url={`/powers?currentPage=`}
+        countItems={powersLenght}
+        client:only
+      />
+    )
+  }
 </Layout>

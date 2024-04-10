@@ -8,18 +8,13 @@ import Button from "node_modules/bits-ui/dist/bits/button/components/button.svel
 
 // things to fix:
 /* 
--- add description to all teams
 -- see if I can add change streams on mongo db each time a universe or team change it changes everywhere else it's at.
-- add a shortcut to enter key to search the button when the sheet is open
--- add a shortcut to open the filter (ctrl + m) and a tooltip to the button of filter
-- see if I can add the sort random (how to make a random sort with pagination on mongodb) https://stackoverflow.com/questions/48447384/nodejs-mongo-pagination-random-order
+-- add a shortcut to open the filter (ctrl + f) and a tooltip to the button of filter
 - (I added one but I can't do zoom) add a library to see each image in the charactersImageDisplay.svelte component in fullscreen  
 - some images are not displaying (because are from a CORS site i guess or webp files) :/
 - dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
-
--- see if I can use chatgpt with node to automaicly create those properties for all the characters and fill it using information from chatgpt
--- do the same with new propertyes like: history (just a couple of lines or so), and age range (the ages that characters has been doing the super heroic/villain life style)
---- add a description to each team in the 'teams' collection of mongodb
+-- add history of each character 
+- the > fall in weird places using prettier in vscode in astro files
 */
 
 const currentPath = Astro.url.pathname;
@@ -34,21 +29,6 @@ interface Props {
 
 const { title, otherLinks } = Astro.props;
 
-// const propsParticles = {
-//   id: "tsparticlesfullpage",
-//   background: "transparent",
-//   minSize: 0.6,
-//   maxSize: 1.4,
-//   particleDensity: 50,
-//   particleColor: "#000000",
-// };
-
-// const propsParticlesDark = {
-//   ...propsParticles,
-//   particleColor: "#fff",
-//   id: "tsparticlesfullpage2",
-// };
-
 const links = [
   // {
   //   href: "/",
@@ -57,6 +37,10 @@ const links = [
   {
     href: "/characters",
     title: "Characters",
+  },
+  {
+    href: "/random_characters",
+    title: "Random Characters",
   },
   {
     href: "/fight",
@@ -79,32 +63,7 @@ const links = [
 if (otherLinks) links.push(...otherLinks);
 ---
 
-<!-- <script is:inline>
-  const getThemePreference = () => {
-    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-      return localStorage.getItem("theme");
-    }
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  };
-  const isDark = getThemePreference() === "dark";
-  document.documentElement.classList[isDark ? "add" : "remove"]("dark");
-
-  if (typeof localStorage !== "undefined") {
-    const observer = new MutationObserver(() => {
-      const isDark = document.documentElement.classList.contains("dark");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-  }
-</script> -->
 <html lang="en">
-  <!-- the following line doesn't work, so I don't even bother using it -->
-  <!-- transition:animate={fade({ duration: "15s" })} -->
   <head>
     <ViewTransitions />
     <meta charset="UTF-8" />
@@ -114,7 +73,7 @@ if (otherLinks) links.push(...otherLinks);
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body>
+  <body class="animate-fade">
     <div class="absolute inset-0 -z-10 min-h-screen" transition:persist>
       <Sparkles client:only />
     </div>
@@ -123,8 +82,10 @@ if (otherLinks) links.push(...otherLinks);
       <nav
         class="flex items-center justify-between md:justify-start mx-auto py-4 gap-5"
       >
-        <!-- <a href="/"><p class="text-primary font-bold text-stroke-custom">ASTRO 🚀</p></a> -->
-        <a href="/"><p class="font-bold text-primary">ASTRO-CHARACTERS</p></a>
+        <a href="/" class="flex gap-2">
+          <p class="font-bold text-primary">ASTRO-CHARACTERS</p>
+          <p class="animate-bounce">🚀</p>
+        </a>
         <div
           class={`items-center justify-between hidden md:flex w-full  md:w-auto`}
         >
@@ -181,7 +142,7 @@ if (otherLinks) links.push(...otherLinks);
         </div>
       </nav>
 
-      <div class="mx-auto mb-10 mt-20" transition:animate="slide">
+      <div class="mx-auto mb-10 md:mt-20" transition:animate="slide">
         <slot />
       </div>
     </main>
