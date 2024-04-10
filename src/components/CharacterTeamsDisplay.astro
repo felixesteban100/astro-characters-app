@@ -1,60 +1,68 @@
 ---
-
-  // import { getTeamByUniverse } from "$lib/constants/constants";
-  import { ScrollArea } from "$lib/components/ui/scroll-area/index.ts";
+// import { getTeamByUniverse } from "$lib/constants/constants";
+import { ScrollArea } from "$lib/components/ui/scroll-area/index.ts";
 import Image from "astro/components/Image.astro";
 import { collectionTeams } from "$lib/mongodb";
 
-
 interface Props {
-  characterInfo: Character
+  characterInfo: Character;
 }
 
-const { characterInfo } = Astro.props
+const { characterInfo } = Astro.props;
 
-
-const teams = await collectionTeams.find({
-  "value": {
-    $in: [...characterInfo.connections.groupAffiliation]
-  }
-}).toArray()
-
+const teams = await collectionTeams
+  .find({
+    /* value: {
+      $regex: characterInfo.connections.groupAffiliation.join("|"),
+    }, */
+    value: {
+      $in: characterInfo.connections.groupAffiliation,
+    },
+    /* value: {
+      $regex: characterInfo.connections.groupAffiliation.join("|"),
+      $options: "si",
+    }, */
+  })
+  .toArray();
 ---
 
-<!-- rounded-md border -->
-<!-- <ScrollArea
+<!-- rounded-md border --><!-- <ScrollArea
   class="w-[500px] md:w-[500px] lg:w-[800px] h-[630px] whitespace-nowrap "
   orientation="vertical"
 > -->
-  <div class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px] ">
-    <div class="flex flex-col gap-5 justify-center items-center">
-      {teams.map((team) => {
-        return(
-        <a
-          href={`/characters?universe=${characterInfo.biography.publisher}&team=${team.value}`}
-          class="hover:underline"
-        >
-          <figure class="shrink-0">
-            <div class="overflow-hidden rounded-md">
-              <Image
-                src={team.img}
-                alt={`Photo by`}
-                width={300}
-                height={400}
-                transition:name={`media-image-${team.value}`}
-              />
-            </div>
-  
-            <p class="pt-2 text-xs text-muted-foreground">
-              Photo by
-              <span class="font-semibold text-foreground">
-                {team.name}
-              </span>
-            </p>
-          </figure>
-        </a>
-        )
-      })}
-      </div>
+<div
+  class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px]"
+>
+  <div class="flex flex-col gap-5 justify-center items-center">
+    {teams.length < 1 && <p class="text-xl font-medium">No teams</p>}
+
+    {
+      teams.map((team) => {
+        return (
+          <a
+            href={`/characters?universe=${characterInfo.biography.publisher}&team=${team.value}`}
+            class="hover:underline"
+          >
+            <figure class="shrink-0">
+              <div class="overflow-hidden rounded-md">
+                <Image
+                  src={team.img}
+                  alt={`Photo by`}
+                  width={300}
+                  height={400}
+                  transition:name={`media-image-${team.value}`}
+                />
+              </div>
+
+              <p class="pt-2 text-xs text-muted-foreground">
+                Team -
+                <span class="font-semibold text-foreground">{team.name}</span>
+              </p>
+            </figure>
+          </a>
+        );
+      })
+    }
   </div>
+</div>
 <!-- </ScrollArea> -->

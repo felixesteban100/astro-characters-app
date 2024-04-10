@@ -116,11 +116,11 @@ if (otherLinks) links.push(...otherLinks);
   </head>
   <body>
     <div class="absolute inset-0 -z-10 min-h-screen" transition:persist>
-      <Sparkles client:only transition:persist />
+      <Sparkles client:only />
     </div>
 
     <main class="w-[90vw] md:w-[80vw] mx-auto overflow-hidden">
-      <div
+      <nav
         class="flex items-center justify-between md:justify-start mx-auto py-4 gap-5"
       >
         <!-- <a href="/"><p class="text-primary font-bold text-stroke-custom">ASTRO 🚀</p></a> -->
@@ -179,8 +179,9 @@ if (otherLinks) links.push(...otherLinks);
             </div>
           </Sheet>
         </div>
-      </div>
-      <div class="mx-auto mb-10" transition:animate="slide">
+      </nav>
+
+      <div class="mx-auto mb-10 mt-20" transition:animate="slide">
         <slot />
       </div>
     </main>

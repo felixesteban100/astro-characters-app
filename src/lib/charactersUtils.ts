@@ -140,3 +140,22 @@ export async function getRandomIdRecursively() {
 //       }
 //     }
 // ]);
+
+
+// // add description to all teams
+// const currentTeamsToUpdate: { [key: string]: string } = {}
+// // {"db property of collection": "value I want to fill that property with"}
+
+// for (let i = 0; i < Object.entries(currentTeamsToUpdate).length; i++) {
+//   const [key, value] = Object.entries(currentTeamsToUpdate)[i];
+
+//   const setData = await collectionTeams.updateOne(
+//     { value: key },
+//     {
+//       $set: {
+//         description: value,
+//       },
+//     },
+//   );
+// }
+// //add description to all teams

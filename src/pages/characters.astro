@@ -86,22 +86,11 @@ const universeInfo = await collectionUniverses.findOne({
   value: universe !== "All" ? universe : "",
 });
 const teamInfo = universeInfo?.teams.find((t) => t.value === team); // i think this one is faster
-// const teamInfo = await collectionTeams.findOne({ value: team }); // and this one slower (cause it calls the mongodb)
+// const teamInfo = await collectionTeams.findOne({ value: team }); // and this one slower (cause it calls the mongodb again)
 
 const universesWithTeams = await collectionUniverses
   .find({ teams: { $exists: true, $not: { $size: 0 } } })
   .toArray();
-
-// add description to all teams
-// const currentTeamsToUpdate: {[key: string]: string} = {}
-
-// const setData = await collectionTeams.updateMany({value: team}, {
-//       $set: {
-//         description: currentTeamsToUpdate[`${team}`]
-//       }
-//     }
-// );
-//add description to all teams
 ---
 
 <Layout

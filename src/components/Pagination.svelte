@@ -10,7 +10,7 @@
   //   let count = 20;
   $: siblingCount = /* $isDesktop ? */ 1 /* : 0 */;
 
-  export let url: string
+  export let url: string;
 
   export let currentPage: string;
   export let countItems: number;
@@ -39,7 +39,7 @@
   let:pages
   page={parseInt(currentPage)}
 >
-  <Pagination.Content>
+  <Pagination.Content class="my-10">
     <Pagination.Item>
       <a href={`${createPageURL(parseInt(currentPage) - 1)}`}>
         <Pagination.PrevButton>
