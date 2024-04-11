@@ -8,6 +8,7 @@ import { AlignmentTranslator } from "../lib/charactersUtils";
 import { getRandomIdRecursively } from "../lib/charactersUtils";
 import { Button } from "$lib/components/ui/button";
 import { Shuffle } from "lucide-astro";
+import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 
 // const someCharacters = await collectionCharacters
 //   // .find()
@@ -65,29 +66,7 @@ const selectedCharacters = await collectionCharacters
         selectedCharacters.map((c) => {
           return (
             <a href={`/${c.id}`} class="uppercase font-medium ">
-              <div class="group/character flex flex-col justify-center items-center xl:items-start gap-5 w-full h-full">
-                <div class="relative box characterId">
-                  <Image
-                    class={`object-cover h-[25rem] w-[25rem] rounded-md transition-all duration-500 group-hover/character:opacity-30`}
-                    width={800}
-                    height={800}
-                    src={c.images.md}
-                    loading="eager"
-                    transition:name={`media-image-${c.id}`}
-                    alt={c.name}
-                  />
-                </div>
-                <div class="flex flex-col gap-2">
-                  <p class="font-bold text-xl">
-                    {" "}
-                    <span class="text-primary">{c.id} |</span> {c.name}
-                  </p>
-                  <p class="text-secondary-foreground">
-                    {c.biography.publisher} |{" "}
-                    {AlignmentTranslator(c.biography.alignment)}
-                  </p>
-                </div>
-              </div>
+              <CharacterCard c={c} />
             </a>
           );
         })

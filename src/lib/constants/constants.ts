@@ -1,4 +1,4 @@
-export const CHARACTERS_PER_PAGE = 8;
+export const CHARACTERS_PER_PAGE = 12;
 
 export const ALLRACES = [
   { value: "All", name: "All races" },
@@ -55,7 +55,6 @@ export const ALLGENDERS = [
   },
 ] /* as const; */
 
-export const UNIVERSES_WITH_TEAMS = ["Marvel Comics", "DC Comics", "Dark Horse Comics", "IDW Publishing", "Shueisha", "Warner Bros", "Super Sentai", "SEGA"] /* as const */
 
 export const ALLUNIVERSE = [
   { value: "All", name: "All universes" },

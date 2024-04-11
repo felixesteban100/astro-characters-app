@@ -14,10 +14,12 @@
   import * as RadioGroup from "$lib/components/ui/radio-group/index";
   import type { WithId } from "mongodb";
   import type { Universe } from "$lib/types";
+  import { Slider } from "$lib/components/ui/slider/index.js";
 </script>
 
 <script lang="ts">
   export let characterOrFullName: boolean;
+  export let howManyPerPage: number;
   export let includesOrExact: boolean;
   export let sortBy: string;
   export let sortDirection: string;
@@ -32,6 +34,7 @@
 
   $: characterNameState = characterName;
   $: characterOrFullNameState = characterOrFullName;
+  $: howManyPerPageState = howManyPerPage;
   $: sortByState = sortBy;
   $: sortDirectionState = sortDirection;
   $: includesOrExactState = includesOrExact;
@@ -71,6 +74,12 @@
         placeholder="batman, superman, iron man, spider-man..."
         bind:value={characterNameState}
       />
+    </Label>
+
+    <Label class="flex flex-col gap-5">
+      howManyPerPageState
+      <!-- <Slider max={60} step={12} bind:value={[howManyPerPageState]} /> -->
+      <p>{howManyPerPageState}</p>
     </Label>
 
     <div class="flex flex-col gap-5">

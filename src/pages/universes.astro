@@ -35,8 +35,8 @@ const universesLenght = await collectionUniverses.countDocuments();
                 width={500}
                 alt={universe.name}
                 class={` w-[20rem] h-auto col-span-1`}
-                transition:name={`media-image-${universe.value}`}
               />
+              // transition:name={`media-image-${universe.value}`}
             )}
             <p class="group-hover/power:underline">{universe.name}</p>
           </a>
@@ -51,6 +51,7 @@ const universesLenght = await collectionUniverses.countDocuments();
         currentPage={currentPage}
         url={`/universes?currentPage=`}
         countItems={universesLenght}
+        howManyPerPage={CHARACTERS_PER_PAGE}
         client:only
       />
     )

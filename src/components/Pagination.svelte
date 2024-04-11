@@ -3,7 +3,6 @@
   import ChevronLeft from "lucide-svelte/icons/chevron-left";
   import ChevronRight from "lucide-svelte/icons/chevron-right";
   import Button from "$lib/components/ui/button/button.svelte";
-  import { CHARACTERS_PER_PAGE } from "../lib/constants/constants";
 
   //   const isDesktop = Med../lib/constants/constantsdth: 768px)");
 
@@ -14,6 +13,7 @@
 
   export let currentPage: string;
   export let countItems: number;
+  export let howManyPerPage: number;
   // export let characterOrFullName: boolean;
   // export let includesOrExact: boolean;
   // export let sortBy: string;
@@ -34,7 +34,7 @@
 
 <Pagination.Root
   count={countItems}
-  perPage={CHARACTERS_PER_PAGE}
+  perPage={howManyPerPage}
   {siblingCount}
   let:pages
   page={parseInt(currentPage)}

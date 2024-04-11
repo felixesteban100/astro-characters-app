@@ -4,7 +4,6 @@ import Pagination from "src/components/Pagination.svelte";
 import Drawer from "src/components/Drawer.svelte";
 import { collectionTeams } from "../lib/mongodb";
 import Layout from "src/layouts/Layout.astro";
-import { Button } from "$lib/components/ui/button";
 import Sheet from "src/components/Sheet.svelte";
 import { Filter } from "lucide-astro";
 
@@ -96,8 +95,8 @@ const imgUniverse: { [key: string]: string } = {
                   width={500}
                   alt={team.name}
                   class={`w-[20rem] h-auto col-span-1`}
-                  transition:name={`media-image-${team.value}`}
                 />
+                /* transition:name={`media-image-${team.value}`} */
               )}
 
               <a
@@ -107,7 +106,26 @@ const imgUniverse: { [key: string]: string } = {
                 Go to team
               </a>
             </div>
-            <Drawer client:load>
+          </div>
+        );
+      })
+    }
+  </div>
+
+  {
+    teamsLenght > CHARACTERS_PER_PAGE && (
+      <Pagination
+        currentPage={currentPage}
+        url={`/teams?universe=${universe}&currentPage=`}
+        countItems={teamsLenght}
+        howManyPerPage={CHARACTERS_PER_PAGE}
+        client:only
+      />
+    )
+  }
+</Layout>
+
+<!-- <Drawer client:load>
               <p slot="trigger">More info</p>
               <div
                 class="flex flex-col justify-center items-center gap-5 px-10"
@@ -120,7 +138,6 @@ const imgUniverse: { [key: string]: string } = {
                     width={500}
                     alt={team.name}
                     class={`w-[20rem] h-auto col-span-1`}
-                    transition:name={`media-image-${team.value}`}
                   />
                 )}
                 <div class="flex flex-col justify-center gap-5 items-start max-w-[400px]">
@@ -145,21 +162,4 @@ const imgUniverse: { [key: string]: string } = {
                   </div>
                 </div>
               </div>
-            </Drawer>
-          </div>
-        );
-      })
-    }
-  </div>
-
-  {
-    teamsLenght > CHARACTERS_PER_PAGE && (
-      <Pagination
-        currentPage={currentPage}
-        url={`/teams?universe=${universe}&currentPage=`}
-        countItems={teamsLenght}
-        client:only
-      />
-    )
-  }
-</Layout>
+            </Drawer> -->

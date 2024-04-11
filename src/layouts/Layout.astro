@@ -1,21 +1,20 @@
 ---
 import "../styles/globals.css";
-import { ViewTransitions } from "astro:transitions";
-import Sheet from "src/components/Sheet.svelte";
-import { Menu } from "lucide-astro";
+import { ViewTransitions, slide } from "astro:transitions";
+import Navbar from "src/components/Navbar.astro";
 import Sparkles from "src/components/Sparkles.svelte";
-import Button from "node_modules/bits-ui/dist/bits/button/components/button.svelte";
 
 // things to fix:
 /* 
+-- find a better way to animate images so that when they are not persinting to the other page they animate like the rest of the page because they are idle with this current config in the viewTransition API 
 -- see if I can add change streams on mongo db each time a universe or team change it changes everywhere else it's at.
 -- add a shortcut to open the filter (ctrl + f) and a tooltip to the button of filter
 - (I added one but I can't do zoom) add a library to see each image in the charactersImageDisplay.svelte component in fullscreen  
 - some images are not displaying (because are from a CORS site i guess or webp files) :/
 - dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
 -- add history of each character 
--- add leader to each team { name, id }
-- the > fall in weird places using prettier in vscode in astro files
+-- add leaders peroperty as an array to each team { name, id }[]
+- configure the swap page transition so that they slide in the same order they are in the navbar
 */
 
 const currentPath = Astro.url.pathname;
@@ -31,10 +30,6 @@ interface Props {
 const { title, otherLinks } = Astro.props;
 
 const links = [
-  // {
-  //   href: "/",
-  //   title: "Home",
-  // },
   {
     href: "/characters",
     title: "Characters",
@@ -62,88 +57,49 @@ const links = [
 ];
 
 if (otherLinks) links.push(...otherLinks);
+
+const anim = {
+  old: {
+    name: "fadeIn",
+    duration: "2s",
+    easing: "linear",
+    fillMode: "forwards",
+  },
+  new: {
+    name: "fadeOut",
+    duration: "2s",
+    easing: "linear",
+    fillMode: "backwards",
+  },
+};
+
+const myFade = {
+  forwards: anim,
+  backwards: anim,
+};
 ---
 
 <html lang="en">
   <head>
-    <ViewTransitions />
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <ViewTransitions fallback="swap" />
   </head>
   <body class="animate-fade">
     <div class="absolute inset-0 -z-10 min-h-screen" transition:persist>
       <Sparkles client:only />
     </div>
 
-    <main class="w-[90vw] md:w-[80vw] mx-auto overflow-hidden">
-      <nav
-        class="flex items-center justify-between md:justify-start mx-auto py-4 gap-5"
+    <main class="w-[90vw] md:w-[80vw] mx-auto overflow-hidden max-w-[1700px]">
+      <Navbar title={title} currentPath={currentPath} links={links} />
+      <div
+        class={`mx-auto mb-10 ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
+        transition:animate={slide({ duration: "1s" })}
       >
-        <a href="/" class="flex gap-2">
-          <p class="font-bold text-primary">ASTRO-CHARACTERS</p>
-          <p class="animate-bounce">🚀</p>
-        </a>
-        <div
-          class={`items-center justify-between hidden md:flex w-full  md:w-auto`}
-        >
-          <menu
-            class="flex flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
-          >
-            {
-              links.map((link) => (
-                <li>
-                  <Button
-                    variant={"link"}
-                    class="hover:underline text-foreground"
-                  >
-                    <a
-                      href={link.href}
-                      class={`block py-2 px-3 ${currentPath.includes(link.href) && title === link.title && "underline"}`}
-                    >
-                      {link.title}
-                    </a>
-                  </Button>
-                </li>
-              ))
-            }
-          </menu>
-        </div>
-
-        <div class="flex justify-center md:hidden">
-          <Sheet ButtonClassName="" client:load>
-            <Menu slot="trigger" className="w-full" />
-            <div
-              slot="content"
-              class={`items-center justify-between flex w-full  md:w-auto`}
-            >
-              <menu
-                class="flex flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
-              >
-                {
-                  links.map((link) => (
-                    <li>
-                      <Button variant={"link"} class="text-foreground">
-                        <a
-                          href={link.href}
-                          class={`flex py-2 px-3 ${currentPath.includes(link.href) && title === link.title && "underline"}`}
-                        >
-                          {link.title}
-                        </a>
-                      </Button>
-                    </li>
-                  ))
-                }
-              </menu>
-            </div>
-          </Sheet>
-        </div>
-      </nav>
-
-      <div class="mx-auto mb-10 md:mt-20" transition:animate="slide">
         <slot />
       </div>
     </main>

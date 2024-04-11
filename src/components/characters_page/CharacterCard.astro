@@ -1,0 +1,37 @@
+---
+import { AlignmentTranslator } from "$lib/charactersUtils";
+import Image from "astro/components/Image.astro";
+
+interface Props {
+  c: Character;
+}
+
+const { c } = Astro.props;
+---
+
+<div
+  class="group/character flex flex-col justify-center items-center xl:items-start gap-5 w-fit h-fit"
+>
+  <!-- transition:animate="none" -->
+  <div class="relative box characterId flex justify-center">
+    <Image
+      class={`object-cover h-[25rem] w-[25rem] rounded-md transition-all duration-500 group-hover/character:opacity-30`}
+      width={800}
+      height={800}
+      src={c.images.md}
+      loading="eager"
+      alt={c.name}
+    />
+    <!-- transition:name={`media-image-${c.id}`} -->
+  </div>
+  <div class="flex flex-col gap-2">
+    <p class="font-bold text-xl">
+      <span class="text-primary">{c.id} |</span>
+      {c.name}
+    </p>
+    <p class="text-secondary-foreground">
+      {c.biography.publisher} |{" "}
+      {AlignmentTranslator(c.biography.alignment)}
+    </p>
+  </div>
+</div>

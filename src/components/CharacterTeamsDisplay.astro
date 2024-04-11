@@ -1,6 +1,4 @@
 ---
-// import { getTeamByUniverse } from "$lib/constants/constants";
-import { ScrollArea } from "$lib/components/ui/scroll-area/index.ts";
 import Image from "astro/components/Image.astro";
 import { collectionTeams } from "$lib/mongodb";
 
@@ -50,7 +48,7 @@ const teams = await collectionTeams
                   alt={`Photo by`}
                   width={300}
                   height={400}
-                  transition:name={`media-image-${team.value}`}
+                  /* transition:name={`media-image-${team.value}`} */
                 />
               </div>
 

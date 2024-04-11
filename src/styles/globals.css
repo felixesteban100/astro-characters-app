@@ -206,7 +206,7 @@
     width: 100%;
     height: 100%;
     /* background: rgba(255, 255, 255, 0.3); */
-    background: hsl(var(--foreground) / 20%);
+    background: hsl(var(--foreground) / 50%);
     transform: skewX(-30deg);
     transition: 1s;
   }

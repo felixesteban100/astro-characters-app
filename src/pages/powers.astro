@@ -15,6 +15,8 @@ const powers = await collectionPowers
   .toArray();
 
 const powersLenght = await collectionPowers.countDocuments();
+
+/* transition:name={`media-image-${power.value}`} */
 ---
 
 <Layout title="Powers">
@@ -34,9 +36,9 @@ const powersLenght = await collectionPowers.countDocuments();
                   width={500}
                   alt={power.name}
                   class={`w-[20rem] h-[15rem] col-span-1 object-cover`}
-                  transition:name={`media-image-power-${power.value}`}
                 />
               )}
+
               <p class="group-hover/power:underline">{power.name}</p>
             </a>
           </div>
@@ -51,6 +53,7 @@ const powersLenght = await collectionPowers.countDocuments();
         currentPage={currentPage}
         url={`/powers?currentPage=`}
         countItems={powersLenght}
+        howManyPerPage={CHARACTERS_PER_PAGE}
         client:only
       />
     )
