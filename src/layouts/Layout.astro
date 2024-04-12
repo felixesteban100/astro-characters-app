@@ -58,25 +58,25 @@ const links = [
 
 if (otherLinks) links.push(...otherLinks);
 
-const anim = {
-  old: {
-    name: "fadeIn",
-    duration: "2s",
-    easing: "linear",
-    fillMode: "forwards",
-  },
-  new: {
-    name: "fadeOut",
-    duration: "2s",
-    easing: "linear",
-    fillMode: "backwards",
-  },
-};
+// const anim = {
+//   old: {
+//     name: "fadeIn",
+//     duration: "0.2s",
+//     easing: "linear",
+//     fillMode: "forwards",
+//   },
+//   new: {
+//     name: "fadeOut",
+//     duration: "0.3s",
+//     easing: "linear",
+//     fillMode: "backwards",
+//   },
+// };
 
-const myFade = {
-  forwards: anim,
-  backwards: anim,
-};
+// const myFade = {
+//   forwards: anim,
+//   backwards: anim,
+// };
 ---
 
 <html lang="en">
@@ -97,8 +97,13 @@ const myFade = {
     <main class="w-[90vw] md:w-[80vw] mx-auto overflow-hidden max-w-[1700px]">
       <Navbar title={title} currentPath={currentPath} links={links} />
       <div
-        class={`mx-auto mb-10 ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
-        transition:animate={slide({ duration: "1s" })}
+        class={`mx-auto mb-10 hidden lg:block ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
+        transition:animate={slide({ duration: "2s" })}
+      >
+        <slot />
+      </div>
+      <div
+        class={`mx-auto mb-10 block lg:hidden ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
       >
         <slot />
       </div>

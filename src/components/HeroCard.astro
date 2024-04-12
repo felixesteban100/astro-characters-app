@@ -10,7 +10,10 @@ const { character } = Astro.props;
 
 <!-- transition:name={`media-image-${character.id}`} -->
 <div class={"group/product h-56 w-[20rem] relative flex-shrink-0"}>
-  <a href={`/${character.id}`} class="block group-hover/product:shadow-2xl">
+  <a
+    href={`character?id=${character.id}`}
+    class="block group-hover/product:shadow-2xl"
+  >
     <Image
       src={character.images.md}
       height={600}

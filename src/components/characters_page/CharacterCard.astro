@@ -9,8 +9,40 @@ interface Props {
 const { c } = Astro.props;
 ---
 
+<script>
+  // import { navigate } from "astro:transitions/client";
+  // const ids = document.querySelectorAll("#character");
+  // ids.forEach((e) => {
+  //   const inputString = e.textContent!;
+  //   const regex = /(\d+) \|/;
+  //   const match = inputString.match(regex);
+  //   if (match) {
+  //     const number = parseInt(match[1]);
+  //     const parentOfcurrentElementId = `container-character-${number}`;
+
+  //     const currentContainer = document.getElementById(
+  //       parentOfcurrentElementId,
+  //     );
+
+  //     currentContainer!.onclick = (/* ev */) => {
+  //       navigate(`/${number}`);
+  //     };
+
+  //     currentContainer?.classList.add("cursor-pointer");
+  //     currentContainer?.classList.remove("hidden");
+  //     currentContainer?.classList.add("flex");
+  //   } else {
+  //     console.log("No match found.");
+  //   }
+  // });
+</script>
+
+<!-- 
+  hidden
+id={`container-character-${c.id}`} 
+-->
 <div
-  class="group/character flex flex-col justify-center items-center xl:items-start gap-5 w-fit h-fit"
+  class="group/character flex-col justify-center items-center xl:items-start gap-5 w-fit h-fit"
 >
   <!-- transition:animate="none" -->
   <div class="relative box characterId flex justify-center">
@@ -26,6 +58,8 @@ const { c } = Astro.props;
   </div>
   <div class="flex flex-col gap-2">
     <p class="font-bold text-xl">
+      <!-- id={`character-${c.id}`} -->
+      <!-- id={`character`} -->
       <span class="text-primary">{c.id} |</span>
       {c.name}
     </p>

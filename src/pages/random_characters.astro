@@ -65,7 +65,10 @@ const selectedCharacters = await collectionCharacters
       {
         selectedCharacters.map((c) => {
           return (
-            <a href={`/${c.id}`} class="w-full h-full flex justify-center">
+            <a
+              href={`character?id=${c.id}`}
+              class="w-full h-full flex justify-center"
+            >
               <CharacterCard c={c} />
             </a>
           );

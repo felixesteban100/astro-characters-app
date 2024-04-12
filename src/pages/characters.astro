@@ -7,7 +7,6 @@ import {
   collectionUniverses,
 } from "../lib/mongodb";
 
-import Image from "astro/components/Image.astro";
 import { AlignmentTranslator, getQueryOptions } from "../lib/charactersUtils";
 import { CHARACTERS_PER_PAGE } from "../lib/constants/constants";
 
@@ -19,6 +18,7 @@ import { type Sort } from "mongodb";
 import HeroSection from "src/components/HeroSection.astro";
 import NameAndImage from "src/components/characters_page/NameAndImage.astro";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
+// import navigate from 'astro:transitions/client';
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName") ?? "";
@@ -107,7 +107,7 @@ const universesWithTeams = await collectionUniverses
 
     <div class="flex justify-between items-center w-full">
       <div class="flex flex-col justify-center items-start gap-10">
-        {
+        <!-- {
           team && team !== "All" && teamInfo ? (
             <NameAndImage img={teamInfo.img} name={team} />
           ) : universeInfo && universe !== "All" ? (
@@ -127,7 +127,8 @@ const universesWithTeams = await collectionUniverses
           power && power !== "All" && powerInfo && powerInfo.img && (
             <NameAndImage img={powerInfo.img} name={powerInfo.value} />
           )
-        }
+        } -->
+        <p class="font-bold text-3xl">Characters</p>
       </div>
       <div>
         <Sheet client:load ButtonClassName="">
@@ -166,7 +167,10 @@ const universesWithTeams = await collectionUniverses
       {
         someCharacters.map((c) => {
           return (
-            <a href={`/${c.id}`} class="w-full h-full flex justify-center">
+            <a
+              href={`character?id=${c.id}`}
+              class="w-full h-full flex justify-center"
+            >
               <CharacterCard c={c} />
             </a>
           );

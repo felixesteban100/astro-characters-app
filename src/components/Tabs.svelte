@@ -18,7 +18,8 @@
   //   import {organizedComicsProperty} from '../lib/charactersUtils';
 
   export let characterInfo: Character;
-  export let publisherInfo: Universe
+  export let publisherInfo: Universe;
+  export let teams: Team[];
 </script>
 
 <Tabs.Root
@@ -63,14 +64,52 @@
     >
   </Tabs.List>
   <Tabs.Content class="h-full w-[90%]" value="Stats">
-    <Stats powerstats={characterInfo.powerstats} powers={characterInfo.powers} />
+    <Stats
+      powerstats={characterInfo.powerstats}
+      powers={characterInfo.powers}
+    />
   </Tabs.Content>
-  <Tabs.Content class="h-full w-[90%]" value="Appereance"><Appereance appereance={characterInfo.appearance} /></Tabs.Content>
-  <Tabs.Content class="h-full w-[90%]" value="Biography"><Biography biography={characterInfo.biography} connections={characterInfo.connections} /></Tabs.Content>
-  <Tabs.Content  value="Teams">
-    <slot name="character-images-display"/>
+  <Tabs.Content class="h-full w-[90%]" value="Appereance"
+    ><Appereance appereance={characterInfo.appearance} /></Tabs.Content
+  >
+  <Tabs.Content class="h-full w-[90%]" value="Biography"
+    ><Biography
+      biography={characterInfo.biography}
+      connections={characterInfo.connections}
+    /></Tabs.Content
+  >
+  <Tabs.Content value="Teams">
+    <!-- <slot name="character-images-display"/> -->
+    <div
+      class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px]"
+    >
+      <div class="flex flex-col gap-5 justify-center items-center">
+        {#if teams.length < 1}
+          <p class="text-xl font-medium">No teams</p>
+        {/if}
+
+        {#each teams as team}
+          <a
+            href={`/characters?universe=${characterInfo.biography.publisher}&team=${team.value}`}
+            class="hover:underline"
+          >
+            <figure class="shrink-0">
+              <div class="overflow-hidden rounded-md">
+                <img src={team.img} alt={`Photo by`} width={300} height={400} />
+              </div>
+
+              <p class="pt-2 text-xs text-muted-foreground">
+                Team - <span class="font-semibold text-foreground"
+                  >{team.name}</span
+                >
+              </p>
+            </figure>
+          </a>
+        {/each}
+      </div>
+    </div>
   </Tabs.Content>
-  <Tabs.Content  value="Comics">
+  <Tabs.Content value="Comics">
     <CharacterImagesDisplay
       characterInfoComics={characterInfo.comics}
       publisherComics={publisherInfo.comics}
@@ -79,6 +118,5 @@
     />
   </Tabs.Content>
 </Tabs.Root>
-
 
 <!-- characterInfoPublisher={characterInfo.biography.publisher} -->
