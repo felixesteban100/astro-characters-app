@@ -8,6 +8,15 @@ import Sparkles from "src/components/Sparkles.svelte";
 /* 
 -- find a better way to animate images so that when they are not persinting to the other page they animate like the rest of the page because they are idle with this current config in the viewTransition API 
 -- see if I can add change streams on mongo db each time a universe or team change it changes everywhere else it's at.
+    (If I can't do the above do the below one)
+      ↓ ↓ ↓ ↓ ↓
+      CHANGE THE DATABASE (MIGRATE) FROM MONGODB TO POSGREST AND PRIMA AS ORM BECAUSE IT HAS RELATIONSHIP BETWEEN TABLES SO THAT WHEN A PROPERTY CHANGE AND ANOTHER TABLE IS LNKED TO THAT TABLE IT HAS THE CHANGES TOO,
+      AND BE ABLE TO MAKE JOIN QUERYES
+      AND STORE ARRAYS
+      examples: use the link the specific power, universe, teams instamce of each tables (data) to a each character so that I can use it withut calling the db again
+
+
+
 -- add a shortcut to open the filter (ctrl + f) and a tooltip to the button of filter
 - (I added one but I can't do zoom) add a library to see each image in the charactersImageDisplay.svelte component in fullscreen  
 - some images are not displaying (because are from a CORS site i guess or webp files) :/

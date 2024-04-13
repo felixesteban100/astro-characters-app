@@ -1,30 +1,43 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { collectionCharacters } from "../lib/mongodb";
-import { getRandomIdRecursively } from "../lib/charactersUtils";
+import {
+  getRandomIdRecursively,
+  joinTeam_universe_power_toCharacter,
+} from "../lib/charactersUtils";
 import CharacterInfoBattle from "../components/CharacterInfoBattle.astro";
 import { Separator } from "$lib/components/ui/separator";
 
 const first = Astro.url.searchParams.get("first");
 const second = Astro.url.searchParams.get("second");
 
-const firstId = first ?? (await getRandomIdRecursively())
-const secondId = second ?? (await getRandomIdRecursively())
+const firstId = first ?? (await getRandomIdRecursively());
+const secondId = second ?? (await getRandomIdRecursively());
 
-if(!first || !second){
-    return Astro.redirect(`/fight?first=${firstId}&second=${secondId}`)
+if (!first || !second) {
+  return Astro.redirect(`/fight?first=${firstId}&second=${secondId}`);
 }
 
-const selectedCharacters = await collectionCharacters
-  .find({
-    id: {
-      $in: [
-        parseInt(firstId),
-        parseInt(secondId),
-      ],
-    },
-  })
+const characterJoinTeamAndUniverse = await collectionCharacters
+  .aggregate<CharacterWithJoinTeamUniversePower>(
+    joinTeam_universe_power_toCharacter(
+      {
+        id: {
+          $in: [parseInt(firstId), parseInt(secondId)],
+        },
+      },
+      "id",
+      "desc",
+      0,
+      2,
+    ),
+  )
   .toArray();
+
+const selectedCharacters = [
+  characterJoinTeamAndUniverse[0],
+  characterJoinTeamAndUniverse[1],
+];
 
 // const otherLinks = [{
 //     url: `/${selectedCharacters[0].id}`,
@@ -35,32 +48,27 @@ const selectedCharacters = await collectionCharacters
 //     title: `Fight using ${selectedCharacters[1].name}`,
 //   }]
 
-const otherLinks = [{
-  href: `/fight?first=${selectedCharacters[0].id}`,
+const otherLinks = [
+  {
+    href: `/fight?first=${selectedCharacters[0].id}`,
     title: `Fight using ${selectedCharacters[0].name}`,
   },
   {
     href: `/fight?first=${selectedCharacters[1].id}`,
     title: `Fight using ${selectedCharacters[1].name}`,
-  }]
+  },
+];
 ---
 
-<Layout 
-  title="Fight"
-  otherLinks={otherLinks}
-  >
+<Layout title="Fight" otherLinks={otherLinks}>
   <div
     class="h-full w-full flex justify-between items-start gap-2 md:gap-10 overflow-visible"
   >
-    <CharacterInfoBattle
-      selectedCharacter={selectedCharacters[0]}
-    />
+    <CharacterInfoBattle selectedCharacter={selectedCharacters[0]} />
     <Separator
       class="min-h-[90vh] md:h-[100vh] w-[0.2rem]"
       orientation="vertical"
     />
-    <CharacterInfoBattle
-      selectedCharacter={selectedCharacters[1]}
-    />
+    <CharacterInfoBattle selectedCharacter={selectedCharacters[1]} />
   </div>
 </Layout>

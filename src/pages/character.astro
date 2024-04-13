@@ -8,6 +8,7 @@ import {
 } from "../lib/mongodb";
 import Image from "astro/components/Image.astro";
 import Tabs from "src/components/Tabs.svelte";
+import { joinTeam_universe_power_toCharacter } from "$lib/charactersUtils";
 // import CharacterTeamsDisplay from "src/components/CharacterTeamsDisplay.astro";
 
 const id = Astro.url.searchParams.get("id");
@@ -23,30 +24,20 @@ const id = Astro.url.searchParams.get("id");
 //     }
 //   });
 // }
-const selectedCharacter = await collectionCharacters.findOne({
-  id: parseInt(id ?? ""),
-});
 
-const selectedCharacterPublisher = await collectionUniverses.findOne({
-  value: selectedCharacter?.biography.publisher,
-});
-
-if (!selectedCharacter) return Astro.redirect("/not-found");
-
-const teams = await collectionTeams
-  .find({
-    /* value: {
-      $regex: characterInfo.connections.groupAffiliation.join("|"),
-    }, */
-    value: {
-      $in: selectedCharacter.connections.groupAffiliation,
-    },
-    /* value: {
-      $regex: characterInfo.connections.groupAffiliation.join("|"),
-      $options: "si",
-    }, */
-  })
+const characterJoinTeamAndUniverse = await collectionCharacters
+  .aggregate<CharacterWithJoinTeamUniversePower>(
+    joinTeam_universe_power_toCharacter(
+      { id: parseInt(id ?? "") },
+      "id",
+      "desc",
+      0,
+      1,
+    ),
+  )
   .toArray();
+
+const selectedCharacter = characterJoinTeamAndUniverse[0];
 ---
 
 <Layout
@@ -81,10 +72,10 @@ const teams = await collectionTeams
           <div class="h-[44rem] w-full lg:w-[70%]">
             <Tabs
               characterInfo={selectedCharacter}
-              publisherInfo={selectedCharacterPublisher!}
-              teams={teams}
+              publisherInfo={selectedCharacter.biography.publisher}
+              teams={selectedCharacter.connections.groupAffiliation}
               client:load
-            ></Tabs>
+            />
           </div>
         </div>
       ) : null

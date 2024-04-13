@@ -3,14 +3,18 @@ import Image from "astro/components/Image.astro";
 
 interface Props {
   name: string;
-  img: string;
+  img?: string;
 }
 
 const { img, name } = Astro.props;
 ---
 
-<div class="flex justify-center gap-5 items-center">
+<div class="flex justify-start gap-5 items-center">
   <p class="font-bold text-3xl">{name}</p>
-  <Image src={img} class="h-10 w-auto" width={200} height={200} alt="" />
+  {
+    img && (
+      <Image src={img} class="h-10 w-auto" width={200} height={200} alt="" />
+    )
+  }
   <!-- transition:name={`media-image-${name}`} -->
 </div>

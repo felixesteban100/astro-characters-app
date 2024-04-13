@@ -1,21 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import {
-  collectionCharacters,
-  collectionPowers,
-  collectionUniverses,
-} from "../lib/mongodb";
+import { collectionCharacters, collectionUniverses } from "../lib/mongodb";
 
-import { AlignmentTranslator, getQueryOptions } from "../lib/charactersUtils";
+import {
+  joinTeam_universe_power_toCharacter,
+  getQueryOptions,
+} from "../lib/charactersUtils";
 import { CHARACTERS_PER_PAGE } from "../lib/constants/constants";
 
 import Pagination from "../components/Pagination.svelte";
 import FilterCharacters from "../components/FilterCharacters.svelte";
 import Sheet from "src/components/Sheet.svelte";
 import { Filter } from "lucide-astro";
-import { type Sort } from "mongodb";
-import HeroSection from "src/components/HeroSection.astro";
 import NameAndImage from "src/components/characters_page/NameAndImage.astro";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 // import navigate from 'astro:transitions/client';
@@ -57,42 +54,55 @@ if (Astro.request.method === "POST") {
   }
 }
 
-const queryOptions: QueryOptions = getQueryOptions(
-  characterName,
+const valuesFilter = {
   side,
   universe,
   team,
   gender,
   race,
   power,
+};
+
+const queryOptions: QueryOptions = getQueryOptions({
+  ...valuesFilter,
+  characterName,
   characterOrFullName,
   includesOrExact,
-);
+});
 
 const offset = (parseInt(currentPage) - 1) * howManyPerPage;
 
-const characterdDisplayLenght =
-  await collectionCharacters.countDocuments(queryOptions);
-
-const someCharacters = await collectionCharacters
-  .find({ ...queryOptions })
-  .limit(howManyPerPage)
-  .sort({ [`${sortBy}`]: sortDirection } as Sort)
-  .skip(offset)
+const characterdDisplayLenght = await collectionCharacters
+  .aggregate<CharacterWithJoinTeamUniversePower>(
+    joinTeam_universe_power_toCharacter(
+      queryOptions,
+      sortBy,
+      sortDirection,
+      0,
+      1000,
+    ),
+  )
   .toArray();
 
-const powerInfo = await collectionPowers.findOne({
-  value: power !== "All" ? power : "",
-});
-const universeInfo = await collectionUniverses.findOne({
-  value: universe !== "All" ? universe : "",
-});
-const teamInfo = universeInfo?.teams.find((t) => t.value === team); // i think this one is faster
-// const teamInfo = await collectionTeams.findOne({ value: team }); // and this one slower (cause it calls the mongodb again)
+const characterJoinTeamAndUniverse = await collectionCharacters
+  .aggregate<CharacterWithJoinTeamUniversePower>(
+    joinTeam_universe_power_toCharacter(
+      queryOptions,
+      sortBy,
+      sortDirection,
+      offset,
+      howManyPerPage,
+    ),
+  )
+  .toArray();
 
 const universesWithTeams = await collectionUniverses
   .find({ teams: { $exists: true, $not: { $size: 0 } } })
   .toArray();
+
+const attritutesFilteredArr = Object.entries(valuesFilter).filter(
+  ([key, value]) => value !== "All" && value !== "both",
+);
 ---
 
 <Layout
@@ -106,29 +116,25 @@ const universesWithTeams = await collectionUniverses
     <!-- <HeroSection /> -->
 
     <div class="flex justify-between items-center w-full">
-      <div class="flex flex-col justify-center items-start gap-10">
-        <!-- {
-          team && team !== "All" && teamInfo ? (
-            <NameAndImage img={teamInfo.img} name={team} />
-          ) : universeInfo && universe !== "All" ? (
-            <NameAndImage img={universeInfo.img} name={universe} />
+      <div
+        class="flex flex-col lg:flex-row justify-start items-start gap-4 w-full"
+      >
+        {
+          attritutesFilteredArr.length > 0 ? (
+            attritutesFilteredArr.map(([key, value], index) => {
+              return (
+                <div class="flex flex-row justify-start gap-5 items-center">
+                  <NameAndImage name={value.toString()} />
+                  {index < attritutesFilteredArr.length - 1 && (
+                    <p class="font-bold text-3xl hidden lg:block">|</p>
+                  )}
+                </div>
+              );
+            })
           ) : (
             <p class="font-bold text-3xl">Characters</p>
           )
         }
-
-        {
-          side !== "All" && (
-            <p class="font-bold text-3xl">{AlignmentTranslator(side)}</p>
-          )
-        }
-
-        {
-          power && power !== "All" && powerInfo && powerInfo.img && (
-            <NameAndImage img={powerInfo.img} name={powerInfo.value} />
-          )
-        } -->
-        <p class="font-bold text-3xl">Characters</p>
       </div>
       <div>
         <Sheet client:load ButtonClassName="">
@@ -156,7 +162,7 @@ const universesWithTeams = await collectionUniverses
     </div>
 
     {
-      someCharacters.length < 1 ? (
+      characterJoinTeamAndUniverse.length < 1 ? (
         <p class="text-5xl w-full text-center">No characters found</p>
       ) : null
     }
@@ -165,7 +171,7 @@ const universesWithTeams = await collectionUniverses
       class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-10 w-full`}
     >
       {
-        someCharacters.map((c) => {
+        characterJoinTeamAndUniverse.map((c) => {
           return (
             <a
               href={`character?id=${c.id}`}
@@ -179,10 +185,10 @@ const universesWithTeams = await collectionUniverses
     </div>
 
     {
-      characterdDisplayLenght > howManyPerPage && (
+      characterdDisplayLenght.length > howManyPerPage && (
         <Pagination
           currentPage={currentPage}
-          countItems={characterdDisplayLenght}
+          countItems={characterdDisplayLenght.length}
           howManyPerPage={howManyPerPage}
           url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&howManyPerPage=${howManyPerPage}&currentPage=`}
           client:only

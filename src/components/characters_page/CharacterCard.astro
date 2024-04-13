@@ -3,46 +3,15 @@ import { AlignmentTranslator } from "$lib/charactersUtils";
 import Image from "astro/components/Image.astro";
 
 interface Props {
-  c: Character;
+  // c: Character;
+  c: CharacterWithJoinTeamUniversePower;
 }
 
 const { c } = Astro.props;
 ---
 
-<script>
-  // import { navigate } from "astro:transitions/client";
-  // const ids = document.querySelectorAll("#character");
-  // ids.forEach((e) => {
-  //   const inputString = e.textContent!;
-  //   const regex = /(\d+) \|/;
-  //   const match = inputString.match(regex);
-  //   if (match) {
-  //     const number = parseInt(match[1]);
-  //     const parentOfcurrentElementId = `container-character-${number}`;
-
-  //     const currentContainer = document.getElementById(
-  //       parentOfcurrentElementId,
-  //     );
-
-  //     currentContainer!.onclick = (/* ev */) => {
-  //       navigate(`/${number}`);
-  //     };
-
-  //     currentContainer?.classList.add("cursor-pointer");
-  //     currentContainer?.classList.remove("hidden");
-  //     currentContainer?.classList.add("flex");
-  //   } else {
-  //     console.log("No match found.");
-  //   }
-  // });
-</script>
-
-<!-- 
-  hidden
-id={`container-character-${c.id}`} 
--->
 <div
-  class="group/character flex-col justify-center items-center xl:items-start gap-5 w-fit h-fit"
+  class="group/character flex flex-col justify-center items-start gap-5 xl:items-start w-fit h-fit"
 >
   <!-- transition:animate="none" -->
   <div class="relative box characterId flex justify-center">
@@ -63,9 +32,18 @@ id={`container-character-${c.id}`}
       <span class="text-primary">{c.id} |</span>
       {c.name}
     </p>
-    <p class="text-secondary-foreground">
-      {c.biography.publisher} |{" "}
-      {AlignmentTranslator(c.biography.alignment)}
-    </p>
+    <div class="flex justify-start items-center gap-2">
+      <Image
+        src={c.biography.publisher.img}
+        alt=""
+        width={800}
+        height={800}
+        class="h-10 w-auto"
+      />
+      |{" "}
+      <p class="text-secondary-foreground">
+        {AlignmentTranslator(c.biography.alignment)}
+      </p>
+    </div>
   </div>
 </div>

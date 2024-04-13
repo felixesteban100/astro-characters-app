@@ -3,25 +3,20 @@ import Image from "astro/components/Image.astro";
 import { collectionTeams } from "$lib/mongodb";
 
 interface Props {
-  characterInfo: Character;
+  characterInfo: CharacterWithJoinTeamUniversePower;
 }
 
 const { characterInfo } = Astro.props;
 
 const teams = await collectionTeams
   .find({
-    /* value: {
-      $regex: characterInfo.connections.groupAffiliation.join("|"),
-    }, */
     value: {
-      $in: characterInfo.connections.groupAffiliation,
+      $in: characterInfo.connections.groupAffiliation.map(c => c.name),
     },
-    /* value: {
-      $regex: characterInfo.connections.groupAffiliation.join("|"),
-      $options: "si",
-    }, */
   })
   .toArray();
+
+  console.log(characterInfo.biography.publisher)
 ---
 
 <!-- rounded-md border --><!-- <ScrollArea
@@ -38,7 +33,7 @@ const teams = await collectionTeams
       teams.map((team) => {
         return (
           <a
-            href={`/characters?universe=${characterInfo.biography.publisher}&team=${team.value}`}
+            href={`/characters?universe=${characterInfo.biography.publisher.name}&team=${team.value}`}
             class="hover:underline"
           >
             <figure class="shrink-0">

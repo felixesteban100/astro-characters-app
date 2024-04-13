@@ -2,7 +2,7 @@
   import { Button } from "$lib/components/ui/button";
   import Separator from "$lib/components/ui/separator/separator.svelte";
   import { navigate } from "astro:transitions/client";
-  export let powers: string[];
+  export let powers: Power[];
 </script>
 
 <div class="flex flex-col items-center justify-center h-5 my-32 lg:mt-5 gap-5">
@@ -18,9 +18,9 @@
       <Button
         variant={"link"}
         class="text-foreground"
-        on:click={(e) => navigate(`/characters?power=${power}`)}
+        on:click={(e) => navigate(`/characters?power=${power.value}`)}
       >
-        <span>{power}</span>
+        <span>{power.name}</span>
       </Button>
       {#if index < powers.length - 1}
         <Separator class="" orientation={"vertical"} />
@@ -36,11 +36,11 @@
 
     {#each powers as power}
       <Button
-        on:click={(e) => navigate(`/characters?power=${power}`)}
+        on:click={(e) => navigate(`/characters?power=${power.value}`)}
         variant={"link"}
         class="text-ellipsis text-foreground max-w-[5px]"
       >
-        <span>{power.slice(0, 15)}...</span>
+        <span>{power.name.slice(0, 15)}...</span>
       </Button>
     {/each}
   </div>

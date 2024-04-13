@@ -17,7 +17,17 @@ export function getCharacterStatsNumber(selectedCharacter: Character) {
   }, 0) / 6)
 }
 
-export function getQueryOptions(
+export function getQueryOptions({
+  characterName,
+  side,
+  universe,
+  team,
+  gender,
+  race,
+  power,
+  characterOrFullName,
+  includesOrExact,
+}: {
   characterName: string | null,
   side: string | null,
   universe: string | null,
@@ -27,7 +37,7 @@ export function getQueryOptions(
   power: string | null,
   characterOrFullName: boolean,
   includesOrExact: boolean
-) {
+}) {
   const queryOptions: QueryOptions = {};
 
   if (characterName && characterName !== "") {
@@ -55,10 +65,10 @@ export function getQueryOptions(
 
   if (side && side !== "All") queryOptions["biography.alignment"] = side;
   if (universe && universe !== "All") {
-    queryOptions["biography.publisher"] = universe;
+    queryOptions["biography.publisher.value"] = universe;
     if (team && team !== "All")
       // fix this so that the filters like the avengers doesn't add characters like green goblin because he has the dark avengers
-      queryOptions["connections.groupAffiliation"] = new RegExp(
+      queryOptions["connections.groupAffiliation.name"] = new RegExp(
         team,
         "g"
       ); /* new RegExp(`^(\\b${team}\\b|[ ,]${team}\\b)`, "i"); */
@@ -81,6 +91,42 @@ export async function getRandomIdRecursively() {
     console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);
   }
+}
+
+export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions | { id: number } | { id: { $in: number[] } }, sortBy: string, sortDirection: string, offset: number, howManyPerPage: number) => {
+  return [
+    {
+      $lookup: {
+        from: "powers",
+        localField: "powers",
+        foreignField: "value",
+        as: "powers",
+      },
+    },
+    {
+      $lookup: {
+        from: "universes",
+        localField: "biography.publisher",
+        foreignField: "value",
+        pipeline: [{ $project: { teams: 0 } }],
+        as: "biography.publisher",
+      },
+    },
+    { $unwind: "$biography.publisher" },
+    {
+      $lookup: {
+        from: "teams",
+        localField: "connections.groupAffiliation",
+        foreignField: "name",
+        as: "connections.groupAffiliation",
+        pipeline: [{ $project: { members: 0, universe: 0 } }],
+      },
+    },
+    { $match: { ...queryOptions } },
+    { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
+    { $skip: offset },
+    { $limit: howManyPerPage },
+  ];
 }
 
 
