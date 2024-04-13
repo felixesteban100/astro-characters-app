@@ -140,7 +140,7 @@ declare type QueryOptions = {
     "connections.groupAffiliation.name"?: string | RegExp;
     "appearance.gender"?: string;
     "appearance.race"?: string | RegExp;
-    "powers"?: string | RegExp;
+    "powers.value"?: string | RegExp;
 };
 /* {
     [key: string]: any;

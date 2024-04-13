@@ -75,7 +75,7 @@ export function getQueryOptions({
   }
   if (gender && gender !== "both") queryOptions["appearance.gender"] = gender;
   if (race && race !== "All") queryOptions["appearance.race"] = new RegExp(race, "ig");
-  if (power && power !== "All") queryOptions["powers"] = new RegExp(power, "ig");
+  if (power && power !== "All") queryOptions["powers.value"] = new RegExp(power, "ig");
 
   return queryOptions;
 }
