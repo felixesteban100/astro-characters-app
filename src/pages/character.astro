@@ -1,30 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import {
-  collectionCharacters,
-  collectionTeams,
-  collectionUniverses,
-} from "../lib/mongodb";
+import { collectionCharacters } from "../lib/mongodb";
 import Image from "astro/components/Image.astro";
 import Tabs from "src/components/Tabs.svelte";
 import { joinTeam_universe_power_toCharacter } from "$lib/charactersUtils";
-// import CharacterTeamsDisplay from "src/components/CharacterTeamsDisplay.astro";
 
 const id = Astro.url.searchParams.get("id");
-
-// export async function getStaticPaths() {
-//   const allCharacters = await collectionCharacters.find().toArray();
-
-//   return allCharacters.filter((character: any) => {
-//     if (character.id === id) {
-//       return {
-//         params: { id: character.id },
-//       };
-//     }
-//   });
-// }
-
 const characterJoinTeamAndUniverse = await collectionCharacters
   .aggregate<CharacterWithJoinTeamUniversePower>(
     joinTeam_universe_power_toCharacter(
@@ -68,6 +50,7 @@ const selectedCharacter = characterJoinTeamAndUniverse[0];
                 alt=""
               />
             </div>
+            {/* transition:name={`transition-name-character-${selectedCharacter.id}`} */}
           </div>
           <div class="h-[44rem] w-full lg:w-[70%]">
             <Tabs
@@ -82,11 +65,6 @@ const selectedCharacter = characterJoinTeamAndUniverse[0];
     }
   </main>
 </Layout>
-
-<!-- <CharacterTeamsDisplay
-                slot="character-images-display"
-                characterInfo={selectedCharacter}
-              /> -->
 
 <!-- in the characterId div -->
 <!-- transition:animate="none" -->

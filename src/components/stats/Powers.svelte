@@ -20,7 +20,8 @@
         class="text-foreground"
         on:click={(e) => navigate(`/characters?power=${power.value}`)}
       >
-        <span>{power.name}</span>
+        <span class="block lg:hidden">{power.name.slice(0, 11)}...</span>
+        <span class="hidden lg:block">{power.name}</span>
       </Button>
       {#if index < powers.length - 1}
         <Separator class="" orientation={"vertical"} />

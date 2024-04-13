@@ -57,7 +57,7 @@
     <Pagination.Item>
       <Pagination.NextButton
         on:click={(e) =>
-          navigate(`${createPageURL(parseInt(currentPage) - 1)}`)}
+          navigate(`${createPageURL(parseInt(currentPage) + 1)}`)}
       >
         <span class="hidden sm:block">Next</span>
         <ChevronRight class="h-4 w-4" />

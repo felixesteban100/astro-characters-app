@@ -117,11 +117,29 @@ declare type Team = {
     comics: string[]
 }
 
+declare type TeamWithJoinCharacterUniverse = {
+    name: string,
+    value: string,
+    description: string,
+    members: Omit<Character, "comics" | "slug" | "powerstats" | "appearance" | "biography" | "work" | "connections" | "powers">[],
+    universe: Omit<Universe, "teams" | "comics">
+    img: string,
+    comics: string[]
+}
+
 declare type Universe = {
     name: string,
     value: string,
     teams: { name: string, value: string, img: string }[] // OLD
     // teams: { name: string }[] // NEW 
+    img: string,
+    comics?: string[]
+}
+
+declare type UniverseWithJoinTeams = {
+    name: string,
+    value: string,
+    teams: Omit<Team, "members" | "universe" | "comics">[]
     img: string,
     comics?: string[]
 }

@@ -33,25 +33,25 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem; */
-    --background: 198.6 50% 7%;
-    --foreground: 198.6 5% 90%;
-    --card: 198.6 50% 7%;
-    --card-foreground: 198.6 5% 90%;
-    --popover: 198.6 50% 5%;
-    --popover-foreground: 198.6 5% 90%;
-    --primary: 198.6 88.7% 48.4%;
+    --background: 11 10% 5%;
+    --foreground: 11 0% 90%;
+    --card: 11 0% 0%;
+    --card-foreground: 11 0% 90%;
+    --popover: 11 10% 5%;
+    --popover-foreground: 11 0% 90%;
+    --primary: 11 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 198.6 30% 10%;
+    --secondary: 11 10% 10%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 160.6 30% 15%;
-    --muted-foreground: 198.6 5% 60%;
-    --accent: 160.6 30% 15%;
-    --accent-foreground: 198.6 5% 90%;
-    --destructive: 0 100% 30%;
-    --destructive-foreground: 198.6 5% 90%;
-    --border: 198.6 30% 18%;
-    --input: 198.6 30% 18%;
-    --ring: 198.6 88.7% 48.4%;
+    --muted: -27 10% 15%;
+    --muted-foreground: 11 0% 60%;
+    --accent: -27 10% 15%;
+    --accent-foreground: 11 0% 90%;
+    --destructive: 0 50% 30%;
+    --destructive-foreground: 11 0% 90%;
+    --border: 11 20% 18%;
+    --input: 11 20% 18%;
+    --ring: 11 100% 50%;
     --radius: 0.5rem;
   }
 
@@ -225,4 +225,9 @@
     left: -1000px;
     animation: characterCarouselZoom-animation 8s ease-in-out infinite;
   } */
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 2s;
+  }
 }

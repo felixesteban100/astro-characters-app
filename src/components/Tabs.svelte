@@ -17,6 +17,7 @@
   // import CharacterTeamsDisplay from "./CharacterTeamsDisplay.astro";
   import Appereance from "./stats/Appereance.svelte";
   import Biography from "./stats/Biography.svelte";
+  import { navigate } from "astro:transitions/client";
   //   import {organizedComicsProperty} from '../lib/charactersUtils';
 
   export let characterInfo: /* Character */ CharacterWithJoinTeamUniversePower;
@@ -102,7 +103,7 @@
 
         {#each teams as team}
           <a
-            href={`/characters?universe=${characterInfo.biography.publisher.name}&team=${team.value}`}
+            href={`/characters?universe=${characterInfo.biography.publisher.value}&team=${team.value}`}
             class="hover:underline"
           >
             <figure class="shrink-0">

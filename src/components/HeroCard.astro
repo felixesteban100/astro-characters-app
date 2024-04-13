@@ -22,6 +22,7 @@ const { character } = Astro.props;
       alt={character.name}
       loading={"eager"}
     />
+    <!-- transition:name={`transition-name-character-${character.id}`} -->
   </a>
   <div
     class="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"

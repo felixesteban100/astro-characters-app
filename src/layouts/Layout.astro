@@ -7,6 +7,17 @@ import Sparkles from "src/components/Sparkles.svelte";
 // things to fix:
 /* 
 -- find a better way to animate images so that when they are not persinting to the other page they animate like the rest of the page because they are idle with this current config in the viewTransition API 
+-- add a shortcut to open the filter (ctrl + f) and a tooltip to the button of filter
+- (I added one but I can't do zoom) add a library to see each image in the charactersImageDisplay.svelte component in fullscreen  
+- some images are not displaying (because are from a CORS site i guess or webp files) :/
+- dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
+-- add history of each character 
+-- add leaders peroperty as an array to each team { name, id }[]
+- configure the swap page transition so that they slide in the same order they are in the navbar
+
+
+/// ACTUALLY I JUST LEARN HOW TO DO A PSEUDO-JOIN USING MONGODB $lookup and it's actually pretty easy! 😆
+
 -- see if I can add change streams on mongo db each time a universe or team change it changes everywhere else it's at.
     (If I can't do the above do the below one)
       ↓ ↓ ↓ ↓ ↓
@@ -15,15 +26,7 @@ import Sparkles from "src/components/Sparkles.svelte";
       AND STORE ARRAYS
       examples: use the link the specific power, universe, teams instamce of each tables (data) to a each character so that I can use it withut calling the db again
 
-
-
--- add a shortcut to open the filter (ctrl + f) and a tooltip to the button of filter
-- (I added one but I can't do zoom) add a library to see each image in the charactersImageDisplay.svelte component in fullscreen  
-- some images are not displaying (because are from a CORS site i guess or webp files) :/
-- dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
--- add history of each character 
--- add leaders peroperty as an array to each team { name, id }[]
-- configure the swap page transition so that they slide in the same order they are in the navbar
+/// ACTUALLY I JUST LEARN HOW TO DO A PSEUDO-JOIN USING MONGODB $lookup and it's actually pretty easy! 😆
 */
 
 const currentPath = Astro.url.pathname;
@@ -88,6 +91,12 @@ if (otherLinks) links.push(...otherLinks);
 // };
 ---
 
+<!-- <script>
+  let lastClick;
+  addEventListener("click", (event) => (lastClick = event));
+
+  console.log("lastClick", lastClick);
+</script> -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -107,7 +116,6 @@ if (otherLinks) links.push(...otherLinks);
       <Navbar title={title} currentPath={currentPath} links={links} />
       <div
         class={`mx-auto mb-10 hidden lg:block ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
-        transition:animate={slide({ duration: "2s" })}
       >
         <slot />
       </div>

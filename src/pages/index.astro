@@ -10,7 +10,6 @@ const randomCharacters = await collectionCharacters
   .limit(50)
   .toArray();
 
-
 const firstRow = randomCharacters.slice(0, 15);
 const secondRow = randomCharacters.slice(15, 35);
 const thirdRow = randomCharacters.slice(35, 50);
@@ -32,22 +31,14 @@ const thirdRow = randomCharacters.slice(35, 50);
         <div class="flex space-x-20 group mb-20">
           <!-- animate-loop-scroll2 -->
           <div class="group-hover:paused flex space-x-20 animate-loop-scroll">
-            {
-              secondRow.map((character) => (
-                <HeroCard character={character} />
-              ))
-            }
+            {secondRow.map((character) => <HeroCard character={character} />)}
           </div>
         </div>
         <div class="flex space-x-20 group">
           <div
             class="group-hover:paused flex flex-row-reverse space-x-reverse space-x-20 animate-loop-scroll"
           >
-            {
-              thirdRow.map((character) => (
-                <HeroCard character={character} />
-              ))
-            }
+            {thirdRow.map((character) => <HeroCard character={character} />)}
           </div>
         </div>
       </div>

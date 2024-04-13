@@ -111,3 +111,33 @@ export type Universe = {
     img: string,
     comics?: string[]
 }
+
+export type UniverseWithJoinTeams = {
+    name: string,
+    value: string,
+    teams: Omit<Team, "members" | "universe" | "comics">[]
+    img: string,
+    comics?: string[]
+}
+
+export type Team = {
+    name: string,
+    value: string,
+    description: string,
+    members: { name: string, id: number }[], // OLD 
+    // members: { id: number }[], // NEW 
+    universe: { name: string, value: string, img: string }, // OLD
+    // universe: { value: string }, // NEW 
+    img: string,
+    comics: string[]
+}
+
+export type TeamWithJoinCharacterUniverse = {
+    name: string,
+    value: string,
+    description: string,
+    members: Omit<Character, "comics" | "slug" | "powerstats" | "appearance" | "biography" | "work" | "connections" | "powers">[],
+    universe: Omit<Universe, "teams" | "comics">
+    img: string,
+    comics: string[]
+}
