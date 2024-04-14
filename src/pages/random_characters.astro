@@ -26,28 +26,39 @@ const second = Astro.url.searchParams.get("second");
 const third = Astro.url.searchParams.get("third");
 const fourth = Astro.url.searchParams.get("fourth");
 
-const firstId = first ?? (await getRandomIdRecursively());
-const secondId = second ?? (await getRandomIdRecursively());
-const thirdId = third ?? (await getRandomIdRecursively());
-const fourthId = fourth ?? (await getRandomIdRecursively());
+const firstId =
+  first && first != "null" ? first : await getRandomIdRecursively();
+const secondId =
+  second && second != "null" ? second : await getRandomIdRecursively();
+const thirdId =
+  third && third != "null" ? third : await getRandomIdRecursively();
+const fourthId =
+  fourth && fourth != "null" ? fourth : await getRandomIdRecursively();
 
-if (!first || !second) {
+if (
+  (!first && first != "null") ||
+  (!second && second != "null") ||
+  (!third && third != "null") ||
+  (!fourth && fourth != "null")
+) {
   return Astro.redirect(
     `/random_characters?first=${firstId}&second=${secondId}&third=${thirdId}&fourth=${fourthId}`,
   );
 }
+
+const arrayOfIds = [
+  parseInt(firstId),
+  parseInt(secondId),
+  parseInt(thirdId),
+  parseInt(fourthId),
+];
 
 const selectedCharacters = await collectionCharacters
   .aggregate<CharacterWithJoinTeamUniversePower>(
     joinTeam_universe_power_toCharacter(
       {
         id: {
-          $in: [
-            parseInt(firstId),
-            parseInt(secondId),
-            parseInt(thirdId),
-            parseInt(fourthId),
-          ],
+          $in: arrayOfIds,
         },
       },
       "id",
@@ -57,6 +68,13 @@ const selectedCharacters = await collectionCharacters
     ),
   )
   .toArray();
+
+const charactersDictionary: { [key: string]: string } = {
+  "0": "first",
+  "1": "second",
+  "2": "third",
+  "3": "fourth",
+};
 ---
 
 <Layout title={`Random Characters`}>
@@ -74,16 +92,34 @@ const selectedCharacters = await collectionCharacters
       class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-10 w-full`}
     >
       {
-        selectedCharacters.map((c) => {
-          return (
-            <a
-              href={`character?id=${c.id}`}
-              class="w-full h-full flex justify-center"
-            >
-              <CharacterCard c={c} />
-            </a>
-          );
-        })
+        selectedCharacters
+          .sort((a, b) => arrayOfIds.indexOf(a.id) - arrayOfIds.indexOf(b.id))
+          .map((c: CharacterWithJoinTeamUniversePower, index: number) => {
+            return (
+              <div class="flex flex-col gap-5 justify-center">
+                <a
+                  href={`character?id=${c.id}`}
+                  class="w-full h-full flex justify-center"
+                >
+                  <CharacterCard c={c} />
+                </a>
+
+                <a
+                  href={`/random_characters?${charactersDictionary[`${index}`]}=${c.id}`}
+                  class="hover:underline"
+                >
+                  Random all but {charactersDictionary[`${index}`]} character
+                </a>
+
+                <a
+                  href={`/random_characters?first=${index === 0 ? null : firstId}&second=${index === 1 ? null : secondId}&third=${index === 2 ? null : thirdId}&fourth=${index === 3 ? null : fourthId}`}
+                  class="hover:underline"
+                >
+                  Random {index + 1} character only
+                </a>
+              </div>
+            );
+          })
       }
     </div>
   </main>
