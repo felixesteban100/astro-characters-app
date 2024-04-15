@@ -36,10 +36,14 @@ const fourthId =
   fourth && fourth != "null" ? fourth : await getRandomIdRecursively();
 
 if (
-  (!first && first != "null") ||
-  (!second && second != "null") ||
-  (!third && third != "null") ||
-  (!fourth && fourth != "null")
+  !first ||
+  first != "null" ||
+  !second ||
+  second != "null" ||
+  !third ||
+  third != "null" ||
+  !fourth ||
+  fourth != "null"
 ) {
   return Astro.redirect(
     `/random_characters?first=${firstId}&second=${secondId}&third=${thirdId}&fourth=${fourthId}`,
