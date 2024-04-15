@@ -37,13 +37,13 @@ const fourthId =
 
 if (
   !first ||
-  first != "null" ||
+  first === "null" ||
   !second ||
-  second != "null" ||
+  second === "null" ||
   !third ||
-  third != "null" ||
+  third === "null" ||
   !fourth ||
-  fourth != "null"
+  fourth === "null"
 ) {
   return Astro.redirect(
     `/random_characters?first=${firstId}&second=${secondId}&third=${thirdId}&fourth=${fourthId}`,
