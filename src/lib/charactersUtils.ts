@@ -114,13 +114,39 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions |
     },
     { $unwind: "$biography.publisher" },
     {
-      $lookup: {
-        from: "teams",
-        localField: "connections.groupAffiliation",
-        foreignField: "name",
-        as: "connections.groupAffiliation",
-        pipeline: [{ $project: { members: 0, universe: 0 } }],
-      },
+      "$lookup": {
+        "from": "teams",
+        "let": { "groupAffiliation": "$connections.groupAffiliation" },
+        "pipeline": [
+          {
+            "$match": {
+              "$expr": {
+                "$or": [
+                  {
+                    "$in": [
+                      true,
+                      {
+                        "$map": {
+                          "input": "$$groupAffiliation",
+                          "in": {
+                            "$regexMatch": {
+                              "input": { "$toString": "$$this" },
+                              "regex": "$name",
+                              "options": "i"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          { "$project": { "members": 0, "universe": 0 } }
+        ],
+        "as": "connections.groupAffiliation"
+      }
     },
     { $match: { ...queryOptions } },
     { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },

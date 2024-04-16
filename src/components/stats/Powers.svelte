@@ -5,27 +5,27 @@
   export let powers: Power[];
 </script>
 
-<div class="flex flex-col items-center justify-center h-5 my-32 lg:mt-5 gap-5">
+<div class="flex flex-col items-center justify-center my-32 lg:mt-5 gap-5">
   <p class="font-bold text-primary text-xl">Main powers:</p>
-  <div
-    class="hidden lg:flex flex-col lg:flex-row justify-center items-center space-x-4"
-  >
+  <div class="hidden lg:grid grid-cols-3 justify-center items-center space-x-4">
     {#if powers.length < 1}
       <span class=" font-bold text-xl">Powers unknown.</span>
     {/if}
 
     {#each powers as power, index}
-      <Button
-        variant={"link"}
-        class="text-foreground"
-        on:click={(e) => navigate(`/characters?power=${power.value}`)}
-      >
-        <span class="block lg:hidden">{power.name.slice(0, 11)}...</span>
-        <span class="hidden lg:block">{power.name}</span>
-      </Button>
-      {#if index < powers.length - 1}
-        <Separator class="" orientation={"vertical"} />
-      {/if}
+      <div>
+        <Button
+          variant={"link"}
+          class="text-foreground"
+          on:click={(e) => navigate(`/characters?power=${power.value}`)}
+        >
+          <span class="block lg:hidden">{power.name.slice(0, 11)}...</span>
+          <span class="hidden lg:block">{power.name}</span>
+        </Button>
+        {#if index < powers.length - 1}
+          <Separator class="" orientation={"vertical"} />
+        {/if}
+      </div>
     {/each}
   </div>
   <div

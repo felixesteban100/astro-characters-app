@@ -22,28 +22,45 @@
     total: number;
   };
   export let powers: Power[];
+
+  export let showNameAtAll: boolean = false;
 </script>
 
-<div class="w-full flex justify-center items-center flex-col">
-  <StatsNumber statName="Combat" statValue={powerstats.combat}>
+<!-- class="w-full flex justify-center items-center flex-col" -->
+<div
+  class="overflow-y-scroll whitespace-nowrap h-[44rem] w-full flex justify-start items-center flex-col"
+>
+  <StatsNumber {showNameAtAll} statName="Combat" statValue={powerstats.combat}>
     <Sword slot="icon" />
   </StatsNumber>
-  <StatsNumber statName="Durability" statValue={powerstats.durability}>
+  <StatsNumber
+    {showNameAtAll}
+    statName="Durability"
+    statValue={powerstats.durability}
+  >
     <Shield slot="icon" />
   </StatsNumber>
-  <StatsNumber statName="Intelligence" statValue={powerstats.durability}>
+  <StatsNumber
+    {showNameAtAll}
+    statName="Intelligence"
+    statValue={powerstats.durability}
+  >
     <Brain slot="icon" />
   </StatsNumber>
-  <StatsNumber statName="Power" statValue={powerstats.power}>
+  <StatsNumber {showNameAtAll} statName="Power" statValue={powerstats.power}>
     <CloudLightning slot="icon" />
   </StatsNumber>
-  <StatsNumber statName="Speed" statValue={powerstats.speed}>
+  <StatsNumber {showNameAtAll} statName="Speed" statValue={powerstats.speed}>
     <ChevronsUp slot="icon" />
   </StatsNumber>
-  <StatsNumber statName="Strength" statValue={powerstats.strength}>
+  <StatsNumber
+    {showNameAtAll}
+    statName="Strength"
+    statValue={powerstats.strength}
+  >
     <Axe slot="icon" />
   </StatsNumber>
-  <StatsNumber statName="Total" statValue={powerstats.total}>
+  <StatsNumber {showNameAtAll} statName="Total" statValue={powerstats.total}>
     <Percent slot="icon" />
   </StatsNumber>
   <Powers {powers} />

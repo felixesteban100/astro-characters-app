@@ -3,11 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
 import { collectionCharacters } from "../lib/mongodb";
 
-import Image from "astro/components/Image.astro";
-import {
-  AlignmentTranslator,
-  joinTeam_universe_power_toCharacter,
-} from "../lib/charactersUtils";
+import { joinTeam_universe_power_toCharacter } from "../lib/charactersUtils";
 import { getRandomIdRecursively } from "../lib/charactersUtils";
 import { Button } from "$lib/components/ui/button";
 import { Shuffle } from "lucide-astro";

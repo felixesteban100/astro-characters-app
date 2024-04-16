@@ -41,6 +41,7 @@ const { selectedCharacter, classNames } = Astro.props;
     <Stats
       powerstats={selectedCharacter.powerstats}
       powers={selectedCharacter.powers}
+      showNameAtAll={false}
       client:load
     />
   </div>

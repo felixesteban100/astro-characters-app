@@ -80,6 +80,7 @@
     <Stats
       powerstats={characterInfo.powerstats}
       powers={characterInfo.powers}
+      showNameAtAll={true}
     />
   </Tabs.Content>
   <Tabs.Content class="h-full w-[90%]" value="Appereance">
