@@ -6,6 +6,20 @@ import Sparkles from "src/components/Sparkles.svelte";
 
 // things to fix:
 /* 
+-- add objects collection with the following propertyes: name, description, universe, carriers (charactersIds) so that we can aggergate the characters using a $lookup later, the same with powers (array of powers values)
+  - use chatGPT to populate the objects collection
+  I could use this ones: 
+  https://comicvine.gamespot.com/profile/van_cere/lists/dc-objects-items-and-artifacts/51733/
+  https://www.cbr.com/marvel-powerful-weapons-fans-forgot-existed/
+-- add a new page called objects where you display the documents from the objects collection
+
+-- do the exact same but with places: 
+  - create collection
+  - create page
+properties: name, description, universe, characters 
+
+
+
 -- find a better way to animate images so that when they are not persinting to the other page they animate like the rest of the page because they are idle with this current config in the viewTransition API 
 -- add a shortcut to open the filter (ctrl + f) and a tooltip to the button of filter
 - (I added one but I can't do zoom) add a library to see each image in the charactersImageDisplay.svelte component in fullscreen  
@@ -14,19 +28,6 @@ import Sparkles from "src/components/Sparkles.svelte";
 -- add history of each character 
 -- add leaders peroperty as an array to each team { name, id }[]
 - configure the swap page transition so that they slide in the same order they are in the navbar
-
-
-/// ACTUALLY I JUST LEARN HOW TO DO A PSEUDO-JOIN USING MONGODB $lookup and it's actually pretty easy! 😆
-
--- see if I can add change streams on mongo db each time a universe or team change it changes everywhere else it's at.
-    (If I can't do the above do the below one)
-      ↓ ↓ ↓ ↓ ↓
-      CHANGE THE DATABASE (MIGRATE) FROM MONGODB TO POSGREST AND PRIMA AS ORM BECAUSE IT HAS RELATIONSHIP BETWEEN TABLES SO THAT WHEN A PROPERTY CHANGE AND ANOTHER TABLE IS LNKED TO THAT TABLE IT HAS THE CHANGES TOO,
-      AND BE ABLE TO MAKE JOIN QUERYES
-      AND STORE ARRAYS
-      examples: use the link the specific power, universe, teams instamce of each tables (data) to a each character so that I can use it withut calling the db again
-
-/// ACTUALLY I JUST LEARN HOW TO DO A PSEUDO-JOIN USING MONGODB $lookup and it's actually pretty easy! 😆
 */
 
 const currentPath = Astro.url.pathname;
@@ -48,12 +49,16 @@ const links = [
   },
   {
     href: "/random_characters",
-    title: "Random Characters",
+    title: "Random",
   },
   {
     href: "/fight",
-    title: "Fight",
+    title: "1 vs 1",
   },
+  // {
+  //   href: "/team-fight",
+  //   title: "some vs some",
+  // },
   {
     href: "/universes",
     title: "Universes",

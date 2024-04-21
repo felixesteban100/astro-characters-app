@@ -1,7 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import { collectionCharacters, collectionUniverses } from "../lib/mongodb";
+import {
+  collectionCharacters,
+  collectionPowers,
+  collectionUniverses,
+} from "../lib/mongodb";
 
 import {
   joinTeam_universe_power_toCharacter,
@@ -45,7 +49,7 @@ if (Astro.request.method === "POST") {
     const teamForm = data.get("team");
 
     return Astro.redirect(
-      `/characters?characterName=${data.get("characterName")}&gender=${data.get("gender")}&side=${data.get("side")}&race=${data.get("race")}${universeForm ? `&universe=${universeForm}&team=${universeForm === universe ? teamForm : "All"}` : `&universe="All"&team="All"`}&currentPage=${1}`,
+      `/characters?characterName=${data.get("characterName")}&howManyPerPage=${data.get("howManyPerPage")}&gender=${data.get("gender")}&side=${data.get("side")}&race=${data.get("race")}${universeForm ? `&universe=${universeForm}&team=${universeForm === universe ? teamForm : "All"}` : `&universe="All"&team="All"`}&currentPage=${1}`,
     );
   } catch (error) {
     if (error instanceof Error) {
@@ -103,6 +107,12 @@ const universesWithTeams = await collectionUniverses
 const attritutesFilteredArr = Object.entries(valuesFilter).filter(
   ([key, value]) => value !== "All" && value !== "both",
 );
+
+const allUniverses = await collectionUniverses
+  .find({})
+  .sort({ _id: 1 })
+  .toArray();
+const allPowers = await collectionPowers.find({}).sort({ _id: 1 }).toArray();
 ---
 
 <Layout
@@ -154,6 +164,8 @@ const attritutesFilteredArr = Object.entries(valuesFilter).filter(
               sortBy={sortBy}
               sortDirection={sortDirection}
               universesWithTeams={universesWithTeams}
+              allUniverses={allUniverses}
+              allPowers={allPowers}
               client:load
             />
           </div>

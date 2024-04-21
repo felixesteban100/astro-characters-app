@@ -5,16 +5,14 @@
   import {
     ALLALIGMENTS,
     ALLGENDERS,
-    ALLPOWERS,
     ALLRACES,
-    ALLUNIVERSE,
     SORT_BY_VALUES,
   } from "../lib/constants/constants";
   import { Checkbox } from "../lib/components/ui/checkbox/index";
   import * as RadioGroup from "$lib/components/ui/radio-group/index";
   import type { WithId } from "mongodb";
   import type { Universe } from "$lib/types";
-  import { Slider } from "$lib/components/ui/slider/index.js";
+  // import { Slider } from "$lib/components/ui/slider/index.js";
 </script>
 
 <script lang="ts">
@@ -31,6 +29,9 @@
   export let universe: string;
   export let team: string;
   export let universesWithTeams: WithId<Universe>[];
+
+  export let allUniverses: WithId<Universe>[];
+  export let allPowers: WithId<Power>[];
 
   $: characterNameState = characterName;
   $: characterOrFullNameState = characterOrFullName;
@@ -79,7 +80,12 @@
     <Label class="flex flex-col gap-5">
       howManyPerPageState
       <!-- <Slider max={60} step={12} bind:value={[howManyPerPageState]} /> -->
-      <p>{howManyPerPageState}</p>
+      <Input
+        type="number"
+        id="howManyPerPageState"
+        bind:value={howManyPerPageState}
+      />
+      <!-- <p>{howManyPerPageState}</p> -->
     </Label>
 
     <div class="flex flex-col gap-5">
@@ -161,7 +167,8 @@
         bind:value={powerState}
         class="bg-background border border-foreground text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
       >
-        {#each ALLPOWERS as power}
+        <option value={"All"}>All powers</option>
+        {#each allPowers as power}
           <option value={power.value}>{power.name}</option>
         {/each}
       </select>
@@ -176,7 +183,8 @@
         }}
         class="bg-background border border-foreground text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
       >
-        {#each ALLUNIVERSE as universe}
+        <option value={"All"}>All universes</option>
+        {#each allUniverses as universe}
           <option value={universe.value}>{universe.name}</option>
         {/each}
       </select>
@@ -201,7 +209,7 @@
     <!-- <p>side: {sideState}</p> -->
     <!-- <p>universe: {universeState}</p> -->
     <a
-      href={`/characters?characterName=${characterNameState}&gender=${genderState}&side=${sideState}&race=${raceState}&power=${powerState}&universe=${universeState}&team=${teamState}&characterOrFullName=${characterOrFullNameState}&includesOrExact=${includesOrExactState}&sortBy=${sortByState}&sortDirection=${sortDirectionState}&currentPage=${1}`}
+      href={`/characters?characterName=${characterNameState}&howManyPerPage=${howManyPerPageState ?? 12}&gender=${genderState}&side=${sideState}&race=${raceState}&power=${powerState}&universe=${universeState}&team=${teamState}&characterOrFullName=${characterOrFullNameState}&includesOrExact=${includesOrExactState}&sortBy=${sortByState}&sortDirection=${sortDirectionState}&currentPage=${1}`}
       class="flex justify-center items-center gap-5"
     >
       <Button id="filter_characters" type="submit">Submit</Button>
