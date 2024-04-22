@@ -49,7 +49,7 @@ declare type Character = {
     name: string;
     slug: string;
     comics?: string[];
-    powers: string[]
+    powers: (string | number)[]
 }
 
 declare type CharacterWithJoinTeamUniversePower = {
@@ -106,18 +106,18 @@ declare type CharacterWithJoinTeamUniversePower = {
 }
 
 declare type Team = {
+    id: number;
     name: string,
     value: string,
     description: string,
     members: { name: string, id: number }[], // OLD 
-    // members: { id: number }[], // NEW 
     universe: { name: string, value: string, img: string }, // OLD
-    // universe: { value: string }, // NEW 
     img: string,
     comics: string[]
 }
 
 declare type TeamWithJoinCharacterUniverse = {
+    id: number
     name: string,
     value: string,
     description: string,
@@ -128,15 +128,16 @@ declare type TeamWithJoinCharacterUniverse = {
 }
 
 declare type Universe = {
+    id: number;
     name: string,
     value: string,
-    teams: { name: string, value: string, img: string }[] // OLD
-    // teams: { name: string }[] // NEW 
+    teams: number[]
     img: string,
     comics?: string[]
 }
 
 declare type UniverseWithJoinTeams = {
+    id: number;
     name: string,
     value: string,
     teams: Omit<Team, "members" | "universe" | "comics">[]
@@ -145,6 +146,7 @@ declare type UniverseWithJoinTeams = {
 }
 
 declare type Power = {
+    id: number;
     name: string,
     value: string,
     img: string,

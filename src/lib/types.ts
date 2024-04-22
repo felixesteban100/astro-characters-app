@@ -48,7 +48,7 @@ export type Character = {
     name: string;
     slug: string;
     comics?: string[];
-    powers: string[]
+    powers: (string | number)[]
 }
 
 export type CharacterWithJoinTeamUniversePower = {
@@ -105,14 +105,16 @@ export type CharacterWithJoinTeamUniversePower = {
 }
 
 export type Universe = {
+    id: number;
     name: string,
     value: string,
-    teams: { name: string, value: string, img: string }[]
+    teams: number[]
     img: string,
     comics?: string[]
 }
 
 export type UniverseWithJoinTeams = {
+    id: number;
     name: string,
     value: string,
     teams: Omit<Team, "members" | "universe" | "comics">[]
@@ -121,6 +123,7 @@ export type UniverseWithJoinTeams = {
 }
 
 export type Team = {
+    id: number
     name: string,
     value: string,
     description: string,
@@ -133,6 +136,7 @@ export type Team = {
 }
 
 export type TeamWithJoinCharacterUniverse = {
+    id: number
     name: string,
     value: string,
     description: string,

@@ -99,7 +99,7 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions |
       $lookup: {
         from: "powers",
         localField: "powers",
-        foreignField: "value",
+        foreignField: "id",
         as: "powers",
       },
     },
@@ -114,6 +114,15 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions |
     },
     { $unwind: "$biography.publisher" },
     {
+      $lookup: {
+        from: "teams",
+        localField: "connections.groupAffiliation",
+        foreignField: "id",
+        pipeline: [{ "$project": { "members": 0, "universe": 0 } }],
+        as: "connections.groupAffiliation",
+      },
+    },
+    /* {
       "$lookup": {
         "from": "teams",
         "let": { "groupAffiliation": "$connections.groupAffiliation" },
@@ -147,7 +156,7 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions |
         ],
         "as": "connections.groupAffiliation"
       }
-    },
+    }, */
     { $match: { ...queryOptions } },
     { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
     { $skip: offset },

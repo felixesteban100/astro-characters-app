@@ -14,8 +14,8 @@ const aggregationOptions = [
   {
     $lookup: {
       from: "teams",
-      localField: "teams.value",
-      foreignField: "value",
+      localField: "teams",
+      foreignField: "id",
       pipeline: [
         {
           $project: {
@@ -25,7 +25,7 @@ const aggregationOptions = [
           },
         },
       ],
-      as: "members",
+      as: "teams",
     },
   },
   { $match: {} },
@@ -89,7 +89,7 @@ const universesJoinTeams = await collectionUniverses
                   <p>Replace this with a publisher description</p>
                   <div class="self-center">
                     <p class="font-medium mb-2">
-                      Members (total = {universe.teams.length}):{" "}
+                      teams (total = {universe.teams.length}):{" "}
                     </p>
                     <ScrollArea class="h-72" client:load>
                       <div class="w-full justify-center items-center grid grid-cols-3 gap-5">

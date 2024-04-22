@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import {
   collectionCharacters,
   collectionPowers,
+  collectionTeams,
   collectionUniverses,
 } from "../lib/mongodb";
 
@@ -101,7 +102,26 @@ const characterJoinTeamAndUniverse = await collectionCharacters
   .toArray();
 
 const universesWithTeams = await collectionUniverses
-  .find({ teams: { $exists: true, $not: { $size: 0 } } })
+  .aggregate<UniverseWithJoinTeams>([
+    {
+      $lookup: {
+        from: "teams",
+        localField: "teams",
+        foreignField: "id",
+        pipeline: [
+          {
+            $project: {
+              members: 0,
+              universe: 0,
+              comics: 0,
+            },
+          },
+        ],
+        as: "teams",
+      },
+    },
+    { $match: { teams: { $exists: true, $not: { $size: 0 } } } },
+  ])
   .toArray();
 
 const attritutesFilteredArr = Object.entries(valuesFilter).filter(
@@ -113,6 +133,20 @@ const allUniverses = await collectionUniverses
   .sort({ _id: 1 })
   .toArray();
 const allPowers = await collectionPowers.find({}).sort({ _id: 1 }).toArray();
+
+// const allTeams = await collectionTeams.find({}).sort({ id: -1 }).toArray();
+// allTeams.forEach((teamsToUpdate) => {
+//   teamsToUpdate.members.forEach(async (character) => {
+//     const changeNameForIdPowers = await collectionCharacters.updateOne(
+//       { name: character.name },
+//       {
+//         $addToSet: {
+//           "connections.groupAffiliation": teamsToUpdate.id,
+//         },
+//       },
+//     );
+//   });
+// });
 ---
 
 <Layout

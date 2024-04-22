@@ -10,6 +10,7 @@ const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
 const powers = await collectionPowers
   .find({})
+  .sort({ id: -1 })
   .limit(CHARACTERS_PER_PAGE)
   .skip(offset)
   .toArray();
