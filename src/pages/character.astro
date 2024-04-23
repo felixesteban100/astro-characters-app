@@ -2,9 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
 import { collectionCharacters } from "../lib/mongodb";
-import Image from "astro/components/Image.astro";
 import Tabs from "src/components/Tabs.svelte";
 import { joinTeam_universe_power_toCharacter } from "$lib/charactersUtils";
+import ImageCharacter from "src/components/ImageCharacter.astro";
 
 const id = Astro.url.searchParams.get("id");
 const characterJoinTeamAndUniverse = await collectionCharacters
@@ -41,16 +41,16 @@ const selectedCharacter = characterJoinTeamAndUniverse[0];
               {selectedCharacter.name}
             </p>
             <div class="relative box characterId overflow-hidden">
-              <Image
-                class={`object-cover h-[40rem] w-[40rem] rounded-md`}
+              <ImageCharacter
+                classes={`object-cover h-[40rem] w-[40rem] rounded-md`}
                 width={500}
                 height={500}
                 src={selectedCharacter.images.md}
                 loading="eager"
-                alt=""
+                alt={selectedCharacter.name}
+                id={selectedCharacter.id}
               />
             </div>
-            {/* transition:name={`transition-name-character-${selectedCharacter.id}`} */}
           </div>
           <div class="h-[44rem] w-full lg:w-[70%]">
             <Tabs

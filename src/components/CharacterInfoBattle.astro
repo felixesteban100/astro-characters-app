@@ -1,7 +1,7 @@
 ---
 import { Button } from "$lib/components/ui/button";
-import Image from "astro/components/Image.astro";
 import Stats from "./stats/Stats.svelte";
+import ImageCharacter from "./ImageCharacter.astro";
 
 interface Props {
   selectedCharacter: CharacterWithJoinTeamUniversePower;
@@ -26,15 +26,15 @@ const { selectedCharacter, classNames } = Astro.props;
     </a>
     <!-- transition:animate="none" -->
     <div class="relative box characterId overflow-hidden">
-      <Image
+      <ImageCharacter
         width={500}
         height={500}
-        class={`card-shine-effect rounded-md w-[10rem] h-[15rem] md:w-[35rem] md:h-[35rem] lg:w-[45rem] lg:h-[45rem] object-cover object-top`}
-        src={selectedCharacter.images.md /* selectedRandomImage */}
+        classes={`card-shine-effect rounded-md w-[10rem] h-[15rem] md:w-[35rem] md:h-[35rem] lg:w-[45rem] lg:h-[45rem] object-cover object-top`}
+        src={selectedCharacter.images.md}
         alt={selectedCharacter.name}
         loading="eager"
+        id={selectedCharacter.id}
       />
-      <!-- transition:name={`transition-name-character-${selectedCharacter.id}`} -->
     </div>
   </div>
   <div class="w-[80%]">

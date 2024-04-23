@@ -1,6 +1,7 @@
 ---
 import { AlignmentTranslator } from "$lib/charactersUtils";
 import Image from "astro/components/Image.astro";
+import ImageCharacter from "../ImageCharacter.astro";
 
 interface Props {
   // c: Character;
@@ -15,15 +16,15 @@ const { c } = Astro.props;
 >
   <!-- transition:animate="none" -->
   <div class="relative box characterId flex justify-center">
-    <Image
-      class={`object-cover h-[25rem] w-[25rem] rounded-md transition-all duration-500 group-hover/character:opacity-30`}
+    <ImageCharacter
+      classes={`object-cover h-[25rem] w-[25rem] rounded-md transition-all duration-500 group-hover/character:opacity-30`}
       width={800}
       height={800}
       src={c.images.md}
       loading="eager"
       alt={c.name}
+      id={c.id}
     />
-    <!-- transition:name={`transition-name-character-${c.id}`} -->
   </div>
   <div class="flex flex-col gap-2">
     <p class="font-bold text-xl">
@@ -34,7 +35,7 @@ const { c } = Astro.props;
     </p>
     <div class="flex justify-start items-center gap-2">
       <Image
-        src={c.biography.publisher.img}
+        src={c.biography.publisher.logo}
         alt=""
         width={800}
         height={800}

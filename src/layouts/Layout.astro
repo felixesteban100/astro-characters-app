@@ -6,7 +6,6 @@ import Sparkles from "src/components/Sparkles.svelte";
 
 // things to fix:
 /* 
--- use the members array in the teams collection to update every character in the team adding to the characters documents the id of the team inside the array team and delete all the team strings after that
 -- add objects collection with the following propertyes: name, description, universe, carriers (charactersIds) so that we can aggergate the characters using a $lookup later, the same with powers (array of powers values)
   - use chatGPT to populate the objects collection
   I could use this ones: 
@@ -26,7 +25,7 @@ properties: name, description, universe, characters
 - (I added one but I can't do zoom) add a library to see each image in the charactersImageDisplay.svelte component in fullscreen  
 - some images are not displaying (because are from a CORS site i guess or webp files) :/
 - dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
--- add history of each character 
+-- add description, weaknesses, and origin property to each character 
 -- add leaders peroperty as an array to each team { name, id }[]
 - configure the swap page transition so that they slide in the same order they are in the navbar
 */
@@ -113,7 +112,7 @@ if (otherLinks) links.push(...otherLinks);
     <title>{title}</title>
     <ViewTransitions fallback="swap" />
   </head>
-  <body class="animate-fade">
+  <body>
     <div class="absolute inset-0 -z-10 min-h-screen" transition:persist>
       <Sparkles client:only />
     </div>
@@ -122,11 +121,13 @@ if (otherLinks) links.push(...otherLinks);
       <Navbar title={title} currentPath={currentPath} links={links} />
       <div
         class={`mx-auto mb-10 hidden lg:block ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
+        transition:animate={slide({})}
       >
         <slot />
       </div>
       <div
         class={`mx-auto mb-10 block lg:hidden ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
+        transition:animate="none"
       >
         <slot />
       </div>

@@ -1,5 +1,5 @@
 ---
-import Image from "astro/components/Image.astro";
+import ImageCharacter from "./ImageCharacter.astro";
 
 interface Props {
   character: Character;
@@ -8,21 +8,20 @@ interface Props {
 const { character } = Astro.props;
 ---
 
-<!-- transition:name={`media-image-${character.id}`} -->
 <div class={"group/product h-56 w-[20rem] relative flex-shrink-0"}>
   <a
     href={`character?id=${character.id}`}
     class="block group-hover/product:shadow-2xl"
   >
-    <Image
+    <ImageCharacter
       src={character.images.md}
       height={600}
       width={600}
-      class="object-cover object-left-top absolute h-full w-full inset-0"
+      classes="object-cover object-left-top absolute h-full w-full inset-0"
       alt={character.name}
       loading={"eager"}
+      id={character.id}
     />
-    <!-- transition:name={`transition-name-character-${character.id}`} -->
   </a>
   <div
     class="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"

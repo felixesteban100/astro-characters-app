@@ -109,7 +109,12 @@
           >
             <figure class="shrink-0">
               <div class="overflow-hidden rounded-md">
-                <img src={team.img} alt={`Photo by`} width={300} height={400} />
+                <img
+                  src={team.logo}
+                  alt={`Photo by`}
+                  width={300}
+                  height={400}
+                />
               </div>
 
               <p class="pt-2 text-xs text-muted-foreground">

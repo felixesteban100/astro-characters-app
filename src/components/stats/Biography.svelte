@@ -56,7 +56,7 @@
   </StatsString>
   <StatsString statName="Publisher" statValue={biography.publisher.name}>
     <img
-      src={biography.publisher.img}
+      src={biography.publisher.logo}
       class="h-10 w-auto"
       slot="publisher"
       alt=""

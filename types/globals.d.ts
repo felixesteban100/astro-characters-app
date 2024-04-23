@@ -111,8 +111,8 @@ declare type Team = {
     value: string,
     description: string,
     members: { name: string, id: number }[], // OLD 
-    universe: { name: string, value: string, img: string }, // OLD
-    img: string,
+    universe: { name: string, value: string }, // OLD
+    logo: string,
     comics: string[]
 }
 
@@ -123,7 +123,7 @@ declare type TeamWithJoinCharacterUniverse = {
     description: string,
     members: Omit<Character, "comics" | "slug" | "powerstats" | "appearance" | "biography" | "work" | "connections" | "powers">[],
     universe: Omit<Universe, "teams" | "comics">
-    img: string,
+    logo: string,
     comics: string[]
 }
 
@@ -132,7 +132,7 @@ declare type Universe = {
     name: string,
     value: string,
     teams: number[]
-    img: string,
+    logo: string,
     comics?: string[]
 }
 
@@ -141,7 +141,7 @@ declare type UniverseWithJoinTeams = {
     name: string,
     value: string,
     teams: Omit<Team, "members" | "universe" | "comics">[]
-    img: string,
+    logo: string,
     comics?: string[]
 }
 
@@ -183,11 +183,11 @@ declare type CharacterAttributes = {
 
 declare type RandomImage = { selectedRandomImage: { key: string, value: string }/* , blurSelectedRandomImage: string */ }
 
-declare type UniversesWithItsTeams = {
-    info: {
-        name: string;
-        value: string;
-    };
-    img: string;
-    teams: { name: string; value: string; img: string }[];
-};
+// declare type UniversesWithItsTeams = {
+//     info: {
+//         name: string;
+//         value: string;
+//     };
+//     logo: string;
+//     teams: { name: string; value: string; img: string }[];
+// };
