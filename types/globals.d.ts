@@ -85,7 +85,7 @@ declare type CharacterWithJoinTeamUniversePower = {
         base: string;
     };
     connections: {
-        groupAffiliation: Omit<Team, "members" | "universe">[];
+        groupAffiliation: Omit<Team, "universe">[];
         relatives: string;
     };
     images: {
@@ -110,7 +110,6 @@ declare type Team = {
     name: string,
     value: string,
     description: string,
-    members: { name: string, id: number }[], // OLD 
     universe: { name: string, value: string }, // OLD
     logo: string,
     comics: string[]
@@ -140,7 +139,7 @@ declare type UniverseWithJoinTeams = {
     id: number;
     name: string,
     value: string,
-    teams: Omit<Team, "members" | "universe" | "comics">[]
+    teams: Omit<Team, "universe" | "comics">[]
     logo: string,
     comics?: string[]
 }
@@ -157,7 +156,7 @@ declare type QueryOptions = {
     "biography.fullName"?: RegExp /* | RegExp[] *//* { "$or": RegExp[] }; */
     "biography.alignment"?: string;
     "biography.publisher.value"?: string;
-    "connections.groupAffiliation.name"?: string | RegExp;
+    "connections.groupAffiliation.value"?: string | RegExp;
     "appearance.gender"?: string;
     "appearance.race"?: string | RegExp;
     "powers.value"?: string | RegExp;

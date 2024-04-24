@@ -84,7 +84,7 @@ export type CharacterWithJoinTeamUniversePower = {
         base: string;
     };
     connections: {
-        groupAffiliation: Omit<Team, "members" | "universe">[];
+        groupAffiliation: Omit<Team, "universe">[];
         relatives: string;
     };
     images: {
@@ -117,7 +117,7 @@ export type UniverseWithJoinTeams = {
     id: number;
     name: string,
     value: string,
-    teams: Omit<Team, "members" | "universe" | "comics">[]
+    teams: Omit<Team, "universe" | "comics">[]
     logo: string,
     comics?: string[]
 }
@@ -127,8 +127,6 @@ export type Team = {
     name: string,
     value: string,
     description: string,
-    members: { name: string, id: number }[], // OLD 
-    // members: { id: number }[], // NEW 
     universe: { name: string, value: string }, // OLD
     // universe: { value: string }, // NEW 
     logo: string,

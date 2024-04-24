@@ -36,8 +36,8 @@ const aggregationOptions = [
   {
     $lookup: {
       from: "characters",
-      localField: "members.id",
-      foreignField: "id",
+      localField: "id",
+      foreignField: "connections.groupAffiliation",
       pipeline: [
         {
           $project: {

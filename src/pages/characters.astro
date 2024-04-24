@@ -89,6 +89,8 @@ const characterdDisplayLenght = await collectionCharacters
   )
   .toArray();
 
+console.log("queryOptions", queryOptions);
+
 const characterJoinTeamAndUniverse = await collectionCharacters
   .aggregate<CharacterWithJoinTeamUniversePower>(
     joinTeam_universe_power_toCharacter(
@@ -111,7 +113,6 @@ const universesWithTeams = await collectionUniverses
         pipeline: [
           {
             $project: {
-              members: 0,
               universe: 0,
               comics: 0,
             },

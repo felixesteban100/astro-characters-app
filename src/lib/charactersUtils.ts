@@ -68,7 +68,7 @@ export function getQueryOptions({
     queryOptions["biography.publisher.value"] = universe;
     if (team && team !== "All")
       // fix this so that the filters like the avengers doesn't add characters like green goblin because he has the dark avengers
-      queryOptions["connections.groupAffiliation.name"] = new RegExp(
+      queryOptions["connections.groupAffiliation.value"] = new RegExp(
         team,
         "g"
       ); /* new RegExp(`^(\\b${team}\\b|[ ,]${team}\\b)`, "i"); */
@@ -118,7 +118,7 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions |
         from: "teams",
         localField: "connections.groupAffiliation",
         foreignField: "id",
-        pipeline: [{ "$project": { "members": 0, "universe": 0 } }],
+        pipeline: [{ "$project": { "universe": 0 } }],
         as: "connections.groupAffiliation",
       },
     },
