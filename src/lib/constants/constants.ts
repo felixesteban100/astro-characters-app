@@ -64,30 +64,30 @@ export const COMICS_DEFAULT = [
   "https://img.freepik.com/free-vector/comics-poster-template_225004-800.jpg?w=2000",
 ]
 
-const dc = [
-  37,
-  44,
-  16,
-  41,
-  69,
-  17,
-  65,
-  34,
-  2,
-  5,
-  51,
-  19,
-  18,
-  24,
-  27,
-  21,
-  26,
-  43,
-  20,
-  46,
-  23,
-  42
-]
+// const dc = [
+//   37,
+//   44,
+//   16,
+//   41,
+//   69,
+//   17,
+//   65,
+//   34,
+//   2,
+//   5,
+//   51,
+//   19,
+//   18,
+//   24,
+//   27,
+//   21,
+//   26,
+//   43,
+//   20,
+//   46,
+//   23,
+//   42
+// ]
 
 // MAYBE THERE IS STILL A MISTAKE AFTER THIS UPDATE... ?
 

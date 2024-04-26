@@ -1,6 +1,6 @@
 ---
 import "../styles/globals.css";
-import { ViewTransitions, slide } from "astro:transitions";
+import { ViewTransitions /* slide,  */ } from "astro:transitions";
 import Navbar from "src/components/Navbar.astro";
 import Sparkles from "src/components/Sparkles.svelte";
 
@@ -121,7 +121,6 @@ if (otherLinks) links.push(...otherLinks);
       <Navbar title={title} currentPath={currentPath} links={links} />
       <div
         class={`mx-auto mb-10 hidden lg:block ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
-        transition:animate={slide({})}
       >
         <slot />
       </div>
