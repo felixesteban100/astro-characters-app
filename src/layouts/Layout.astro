@@ -110,7 +110,8 @@ if (otherLinks) links.push(...otherLinks);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <ViewTransitions fallback="swap" />
+    <!-- <ViewTransitions fallback="swap" /> -->
+    <ViewTransitions />
   </head>
   <body>
     <div class="absolute inset-0 -z-10 min-h-screen" transition:persist>

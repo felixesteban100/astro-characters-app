@@ -33,25 +33,25 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem; */
-    --background: 182 10% 5%;
-    --foreground: 182 0% 90%;
-    --card: 182 0% 0%;
-    --card-foreground: 182 0% 90%;
-    --popover: 182 10% 5%;
-    --popover-foreground: 182 0% 90%;
-    --primary: 182 100% 65%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 182 10% 10%;
+    --background: 220 10% 5%;
+    --foreground: 220 0% 90%;
+    --card: 220 0% 0%;
+    --card-foreground: 220 0% 90%;
+    --popover: 220 10% 5%;
+    --popover-foreground: 220 0% 90%;
+    --primary: 220 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 10% 10%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 144 10% 15%;
-    --muted-foreground: 182 0% 60%;
-    --accent: 144 10% 15%;
-    --accent-foreground: 182 0% 90%;
+    --muted: 182 10% 15%;
+    --muted-foreground: 220 0% 60%;
+    --accent: 182 10% 15%;
+    --accent-foreground: 220 0% 90%;
     --destructive: 0 50% 30%;
-    --destructive-foreground: 182 0% 90%;
-    --border: 182 20% 18%;
-    --input: 182 20% 18%;
-    --ring: 182 100% 65%;
+    --destructive-foreground: 220 0% 90%;
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 220 100% 50%;
     --radius: 0.5rem;
   }
 
@@ -226,8 +226,8 @@
     animation: characterCarouselZoom-animation 8s ease-in-out infinite;
   } */
 
-  ::view-transition-old(root),
+  /* ::view-transition-old(root),
   ::view-transition-new(root) {
     animation-duration: 2s;
-  }
+  } */
 }
