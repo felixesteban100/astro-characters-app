@@ -40,7 +40,10 @@ const selectedCharacter = characterJoinTeamAndUniverse[0];
               <span class="text-primary">{selectedCharacter.id} |</span>
               {selectedCharacter.name}
             </p>
-            <div class="relative box characterId overflow-hidden">
+            <div
+              class="relative box characterId overflow-hidden"
+              transition:name={`photo-${selectedCharacter.id}`}
+            >
               <ImageCharacter
                 classes={`object-cover h-[40rem] w-[40rem] rounded-md`}
                 width={500}
@@ -65,12 +68,6 @@ const selectedCharacter = characterJoinTeamAndUniverse[0];
     }
   </main>
 </Layout>
-
-<!-- in the characterId div -->
-<!-- transition:animate="none" -->
-
-<!-- in the image -->
-<!-- transition:name={`media-image-${selectedCharacter.id}`} -->
 
 <!-- <CharacterFeatures
               selectedCharacter={selectedCharacter}

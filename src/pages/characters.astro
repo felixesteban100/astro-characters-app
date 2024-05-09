@@ -224,7 +224,8 @@ const allPowers = await collectionPowers.find({}).sort({ _id: 1 }).toArray();
           return (
             <a
               href={`character?id=${c.id}`}
-              class="w-full h-full flex justify-center"
+              class="w-full h-full flex justify-center character-image"
+              id={`photo-${c.id}`}
             >
               <CharacterCard c={c} />
             </a>

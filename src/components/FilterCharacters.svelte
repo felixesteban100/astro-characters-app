@@ -103,7 +103,7 @@
       Sort By
       <select
         bind:value={sortByState}
-        class="bg-background border border-foreground text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+        class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
       >
         {#each SORT_BY_VALUES as sort}
           <option value={sort}>{sort}</option>
@@ -129,7 +129,7 @@
       Gender
       <select
         bind:value={genderState}
-        class="bg-background border border-foreground text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+        class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
       >
         {#each ALLGENDERS as gender}
           <option value={gender.value}>{gender.name}</option>
@@ -141,7 +141,7 @@
       Aligment
       <select
         bind:value={sideState}
-        class="bg-background border border-foreground text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+        class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
       >
         {#each ALLALIGMENTS as aligment}
           <option value={aligment.value}>{aligment.name}</option>
@@ -153,7 +153,7 @@
       Race
       <select
         bind:value={raceState}
-        class="bg-background border border-foreground text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+        class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
       >
         {#each ALLRACES as race}
           <option value={race.value}>{race.name}</option>
@@ -165,7 +165,7 @@
       Powers
       <select
         bind:value={powerState}
-        class="bg-background border border-foreground text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+        class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
       >
         <option value={"All"}>All powers</option>
         {#each allPowers as power}
@@ -181,7 +181,7 @@
         on:change={() => {
           teamState = "All";
         }}
-        class="bg-background border border-foreground text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+        class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
       >
         <option value={"All"}>All universes</option>
         {#each allUniverses as universe}
@@ -195,7 +195,7 @@
         Team
         <select
           bind:value={teamState}
-          class="bg-background border border-foreground text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+          class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
         >
           <option value="All">All Teams</option>
           {#each universeInfo.teams as team}

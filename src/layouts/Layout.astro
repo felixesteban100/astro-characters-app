@@ -1,6 +1,6 @@
 ---
 import "../styles/globals.css";
-import { ViewTransitions /* slide,  */ } from "astro:transitions";
+import { ViewTransitions, slide } from "astro:transitions";
 import Navbar from "src/components/Navbar.astro";
 import Sparkles from "src/components/Sparkles.svelte";
 
@@ -75,25 +75,26 @@ const links = [
 
 if (otherLinks) links.push(...otherLinks);
 
-// const anim = {
-//   old: {
-//     name: "fadeIn",
-//     duration: "0.2s",
-//     easing: "linear",
-//     fillMode: "forwards",
-//   },
-//   new: {
-//     name: "fadeOut",
-//     duration: "0.3s",
-//     easing: "linear",
-//     fillMode: "backwards",
-//   },
-// };
+const anim = {
+  old: {
+    name: "fadeIn",
+    duration: "0.2s",
+    easing: "linear",
+    fillMode: "forwards",
+  },
+  new: {
+    name: "fadeOut",
+    duration: "0.3s",
+    easing: "linear",
+    fillMode: "backwards",
+  },
+};
 
-// const myFade = {
-//   forwards: anim,
-//   backwards: anim,
-// };
+const this_animation_does_nothing_because_it_is_being_customized_in_css_using_classes =
+  {
+    forwards: anim,
+    backwards: anim,
+  };
 ---
 
 <!-- <script>
@@ -110,8 +111,9 @@ if (otherLinks) links.push(...otherLinks);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <!-- <ViewTransitions fallback="swap" /> -->
-    <ViewTransitions />
+    <ViewTransitions fallback="swap" />
+    <!-- <ViewTransitions /> -->
+    <script src="../scripts/transitions.ts"></script>
   </head>
   <body>
     <div class="absolute inset-0 -z-10 min-h-screen" transition:persist>
@@ -122,15 +124,16 @@ if (otherLinks) links.push(...otherLinks);
       <Navbar title={title} currentPath={currentPath} links={links} />
       <div
         class={`mx-auto mb-10 hidden lg:block ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
+        transition:animate={slide({ duration: "1s" })}
       >
         <slot />
       </div>
       <div
         class={`mx-auto mb-10 block lg:hidden ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
-        transition:animate="none"
+        transition:animate={"none"}
       >
         <slot />
       </div>
     </main>
-  </body>
+  </body><!-- transition:animate={this_animation_does_nothing_because_it_is_being_customized_in_css_using_classes} -->
 </html>

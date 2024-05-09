@@ -15,17 +15,22 @@ const { selectedCharacter, classNames } = Astro.props;
   class={`flex-shrink flex flex-col justify-center items-center mb-10 ${classNames} `}
 >
   <div class="flex flex-col gap-5">
-    <a href={`/character?id=${selectedCharacter.id}`}>
-      <Button variant={"link"} class="m-0 p-0">
-        <p class="text-lg md:text-2xl text-ellipsis">
-          <span class="text-primary">{selectedCharacter.id}</span>
-          |
-          <span class="text-foreground">{selectedCharacter.name}</span>
-        </p>
-      </Button>
-    </a>
-    <!-- transition:animate="none" -->
-    <div class="relative box characterId overflow-hidden">
+    <div class="flex justify-between items-center pb-5 flex-col lg:flex-row">
+      <a href={`/character?id=${selectedCharacter.id}`}>
+        <Button variant={"link"} class="m-0 p-0">
+          <p class="text-lg md:text-2xl text-ellipsis">
+            <span class="text-primary">{selectedCharacter.id}</span>
+            |
+            <span class="text-foreground">{selectedCharacter.name}</span>
+          </p>
+        </Button>
+      </a>
+      <a href={`/fight?first=${selectedCharacter.id}`}> Fight another </a>
+    </div>
+    <div
+      class="relative box characterId overflow-hidden character-image"
+      id={`photo-${selectedCharacter.id}`}
+    >
       <ImageCharacter
         width={500}
         height={500}

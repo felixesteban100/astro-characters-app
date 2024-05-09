@@ -16,13 +16,12 @@ const { classes, id, src, height, width, alt, loading } = Astro.props;
 
 <!-- Your template here! -->
 <Image
-  class={`${classes}`}
+  class:list={[`${classes}`]}
   src={src}
   height={height}
   width={width}
   alt={alt}
   loading={loading}
-  transition:name={`image-character-${id}`}
 />
 
-{/* transition:name={`transition-name-character-${id}`} */}
+<!-- transition:name={`image-character-${id}`} -->
