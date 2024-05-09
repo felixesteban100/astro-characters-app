@@ -11,7 +11,8 @@ const { character } = Astro.props;
 <div class={"group/product h-56 w-[20rem] relative flex-shrink-0"}>
   <a
     href={`character?id=${character.id}`}
-    class="block group-hover/product:shadow-2xl"
+    class="block group-hover/product:shadow-2xl character-image"
+    id={`photo-${character.id}`}
   >
     <ImageCharacter
       src={character.images.md}

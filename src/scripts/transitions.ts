@@ -17,38 +17,37 @@ function saveLastPhotoId(id: string) {
  * when there is a large number of photos in the grid.
  */
 document.addEventListener('astro:page-load', (e) => {
-  // const pathname = window.location.pathname
+  const pathname = window.location.pathname
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get('id');
+  const first = urlParams.get('first');
 
-  // const urlParams = new URLSearchParams(window.location.search);
-  // const id = urlParams.get('id');
-  // const first = urlParams.get('first');
+  console.log(first)
 
-  // console.log(first)
+  switch (pathname) {
+    case "/characters":
+      saveLastPhotoId(id || "")
+      break;
 
-  // switch (pathname) {
-  //   case "/characters":
-  //     saveLastPhotoId(id || "")
-  //     break;
+    case "/random":
+      saveLastPhotoId(id || "")
+      break;
 
-  //   case "/random":
-  //     saveLastPhotoId(id || "")
-  //     break;
+    case "/character":
+      saveLastPhotoId(id || "")
+      break;
 
-  //   case "/character":
-  //     saveLastPhotoId(id || "")
-  //     break;
+    case "/fight":
+      saveLastPhotoId(first || "")
+      break;
 
-  //   case "/fight":
-  //     saveLastPhotoId(first || "")
-  //     break;
-
-  //   case "/powers":
-  //   case "/universes":
-  //   case "/teams":
-  //     saveLastPhotoId("")
-  //     break;
-  // }
+    case "/powers":
+    case "/universes":
+    case "/teams":
+      saveLastPhotoId("")
+      break;
+  }
 
 
   const photos = document.querySelectorAll('.character-image')
