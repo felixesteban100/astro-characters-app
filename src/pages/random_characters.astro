@@ -104,8 +104,9 @@ const charactersDictionary: { [key: string]: string } = {
             return (
               <div class="flex flex-col gap-5 justify-center ">
                 <a
-                  href={`character?id=${c.id}`}
-                  class="w-full h-full flex justify-center "
+                  href={`character?id=${c.id}&animatedFade=false`}
+                  class={`w-full h-full flex justify-center ${animateFade && "character-image"}`}
+                  id={animateFade ? `photo-${c.id}` : `${c.id}`}
                 >
                   <CharacterCard c={c} />
                 </a>
