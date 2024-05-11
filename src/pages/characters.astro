@@ -170,9 +170,29 @@ function getTitle(): string {
 }
 ---
 
+<script>
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "t") {
+      const buttonSheetTrigger = document.getElementById("filterCharacters");
+      buttonSheetTrigger?.click();
+    }
+  });
+</script>
+
 <Layout title={getTitle()}>
-  <Sheet client:load ButtonClassName="" slot="page_title_other_content">
-    <Filter slot="trigger" />
+  <Sheet
+    variant={undefined}
+    size={"default"}
+    client:load
+    ButtonClassName=""
+    slot="page_title_other_content"
+    buttonTriggerId={"filterCharacters"}
+  >
+    <div class="flex gap-5" slot="trigger">
+      <Filter />
+      <span class="text-primary hidden lg:flex">|</span>
+      <span>(Press T)</span>
+    </div>
     <div slot="content">
       <FilterCharacters
         characterOrFullName={characterOrFullName}

@@ -47,7 +47,13 @@ const { currentPath, links, title } = Astro.props;
   </div>
 
   <div class="flex justify-center xl:hidden">
-    <Sheet ButtonClassName="" client:load>
+    <Sheet
+      variant={undefined}
+      size={undefined}
+      ButtonClassName=""
+      buttonTriggerId={"navbar"}
+      client:load
+    >
       <Menu slot="trigger" className="w-full" />
       <div
         slot="content"

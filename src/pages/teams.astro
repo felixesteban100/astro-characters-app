@@ -105,7 +105,14 @@ function getTitle() {
 ---
 
 <Layout title={getTitle()}>
-  <Sheet client:load ButtonClassName="" slot="page_title_other_content">
+  <Sheet
+    variant={undefined}
+    size={undefined}
+    client:load
+    ButtonClassName=""
+    slot="page_title_other_content"
+    buttonTriggerId={"teamsFilter"}
+  >
     <Filter slot="trigger" />
     <div slot="content">
       <!-- this filter is not working as expected :/ -->
@@ -124,106 +131,107 @@ function getTitle() {
     </div>
   </Sheet>
 
-  <div
-    class="w-full grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 my-11 justify-center items-center"
-    slot="content"
-  >
-    {
-      teamsJoinUniverse.map((team) => {
-        // const someRandomMembers = team.members
-        //   .sort(() => 0.5 - Math.random())
-        //   .slice(0, 6);
+  <div class="flex flex-col items-center justify-center" slot="content">
+    <div
+      class="w-full grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 my-11 justify-center items-center"
+    >
+      {
+        teamsJoinUniverse.map((team) => {
+          // const someRandomMembers = team.members
+          //   .sort(() => 0.5 - Math.random())
+          //   .slice(0, 6);
 
-        return (
-          <div class="flex flex-col justify-between items-center gap-5 p-5 h-full">
-            <div class="flex flex-col justify-between items-center gap-5 h-full">
-              <p class="text-3xl font-bold">{team.name}</p>
+          return (
+            <div class="flex flex-col justify-between items-center gap-5 p-5 h-full">
+              <div class="flex flex-col justify-between items-center gap-5 h-full">
+                <p class="text-3xl font-bold">{team.name}</p>
 
-              {team.logo !== "" && (
-                <img
-                  src={team.logo}
-                  height={500}
-                  width={500}
-                  alt={team.name}
-                  class={`w-[20rem] h-auto col-span-1`}
-                />
-              )}
+                {team.logo !== "" && (
+                  <img
+                    src={team.logo}
+                    height={500}
+                    width={500}
+                    alt={team.name}
+                    class={`w-[20rem] h-auto col-span-1`}
+                  />
+                )}
 
-              <a
-                href={`/characters?universe=${team.universe.value}&team=${team.value}`}
-                class="hover:underline"
-              >
-                Go to team
-              </a>
-
-              <Drawer client:load>
-                <p slot="trigger">More info</p>
-                <div
-                  class="flex flex-col justify-center items-center gap-5 px-10"
-                  slot="content"
+                <a
+                  href={`/characters?universe=${team.universe.value}&team=${team.value}`}
+                  class="hover:underline"
                 >
-                  {team.logo !== "" && (
-                    <img
-                      src={team.logo}
-                      height={500}
-                      width={500}
-                      alt={team.name}
-                      class={`w-[15rem] h-auto col-span-1`}
-                    />
-                  )}
-                  <div class="flex flex-col justify-center gap-5 items-start max-w-[400px]">
-                    <div class="flex justify-between items-center gap-5 w-full">
-                      <p class="font-bold text-3xl">{team.name}</p>
+                  Go to team
+                </a>
+
+                <Drawer client:load>
+                  <p slot="trigger">More info</p>
+                  <div
+                    class="flex flex-col justify-center items-center gap-5 px-10"
+                    slot="content"
+                  >
+                    {team.logo !== "" && (
                       <img
-                        src={team.universe.logo}
-                        class="h-10 w-auto"
-                        alt=""
+                        src={team.logo}
+                        height={500}
+                        width={500}
+                        alt={team.name}
+                        class={`w-[15rem] h-auto col-span-1`}
                       />
-                    </div>
-                    <p>{team.description}</p>
-                    <div class="self-center">
-                      <p class="font-medium mb-2">
-                        Members (total = {team.members.length}):{" "}
-                      </p>
-                      <ScrollArea class="h-72" client:load>
-                        <div class="w-full justify-center items-center grid grid-cols-3 gap-5">
-                          {team.members.map((c) => {
-                            return (
-                              <a
-                                href={`character?id=${c.id}`}
-                                class="hover:underline flex flex-col gap-2 justify-center items-center w-full"
-                              >
-                                <img
-                                  src={c.images.md}
-                                  alt=""
-                                  class="h-20 w-20 object-cover"
-                                />
-                                {c.name}
-                              </a>
-                            );
-                          })}
-                        </div>
-                      </ScrollArea>
+                    )}
+                    <div class="flex flex-col justify-center gap-5 items-start max-w-[400px]">
+                      <div class="flex justify-between items-center gap-5 w-full">
+                        <p class="font-bold text-3xl">{team.name}</p>
+                        <img
+                          src={team.universe.logo}
+                          class="h-10 w-auto"
+                          alt=""
+                        />
+                      </div>
+                      <p>{team.description}</p>
+                      <div class="self-center">
+                        <p class="font-medium mb-2">
+                          Members (total = {team.members.length}):{" "}
+                        </p>
+                        <ScrollArea class="h-72" client:load>
+                          <div class="w-full justify-center items-center grid grid-cols-3 gap-5">
+                            {team.members.map((c) => {
+                              return (
+                                <a
+                                  href={`character?id=${c.id}`}
+                                  class="hover:underline flex flex-col gap-2 justify-center items-center w-full"
+                                >
+                                  <img
+                                    src={c.images.md}
+                                    alt=""
+                                    class="h-20 w-20 object-cover"
+                                  />
+                                  {c.name}
+                                </a>
+                              );
+                            })}
+                          </div>
+                        </ScrollArea>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Drawer>
+                </Drawer>
+              </div>
             </div>
-          </div>
-        );
-      })
+          );
+        })
+      }
+    </div>
+
+    {
+      teamsLenght.length > CHARACTERS_PER_PAGE && (
+        <Pagination
+          currentPage={currentPage}
+          url={`/teams?universe=${universe}&currentPage=`}
+          countItems={teamsLenght.length}
+          howManyPerPage={CHARACTERS_PER_PAGE}
+          client:only
+        />
+      )
     }
   </div>
-
-  {
-    teamsLenght.length > CHARACTERS_PER_PAGE && (
-      <Pagination
-        currentPage={currentPage}
-        url={`/teams?universe=${universe}&currentPage=`}
-        countItems={teamsLenght.length}
-        howManyPerPage={CHARACTERS_PER_PAGE}
-        client:only
-      />
-    )
-  }
 </Layout>

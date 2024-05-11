@@ -11,7 +11,7 @@
   import { Checkbox } from "../lib/components/ui/checkbox/index";
   import * as RadioGroup from "$lib/components/ui/radio-group/index";
   import type { WithId } from "mongodb";
-  import type { Universe } from "$lib/types";
+  import type { Power, Universe, UniverseWithJoinTeams } from "$lib/types";
   // import { Slider } from "$lib/components/ui/slider/index.js";
 </script>
 

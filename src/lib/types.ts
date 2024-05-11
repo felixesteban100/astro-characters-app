@@ -143,3 +143,10 @@ export type TeamWithJoinCharacterUniverse = {
     logo: string,
     comics: string[]
 }
+
+export type Power = {
+    id: number;
+    name: string,
+    value: string,
+    img: string,
+}
