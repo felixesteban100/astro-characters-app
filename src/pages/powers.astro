@@ -19,45 +19,44 @@ const powersLenght = await collectionPowers.countDocuments();
 ---
 
 <Layout title="Powers">
-  <div
-    class="w-full grid 2xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5"
-    slot="content"
-  >
-    {
-      powers.map((power) => {
-        return (
-          <div class="my-5 p-5 border rounded-md ">
-            <a
-              href={`/characters?power=${power.value}`}
-              class="group/power flex flex-col justify-center items-center gap-5"
-            >
-              {power.img !== "" && (
-                <img
-                  src={power.img}
-                  height={500}
-                  width={500}
-                  alt={power.name}
-                  class={`w-[20rem] h-[15rem] col-span-1 object-cover`}
-                />
-              )}
+  <div class="flex flex-col items-center justify-center" slot="content">
+    <div class="w-full grid 2xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
+      {
+        powers.map((power) => {
+          return (
+            <div class="my-5 p-5 border rounded-md ">
+              <a
+                href={`/characters?power=${power.value}`}
+                class="group/power flex flex-col justify-center items-center gap-5"
+              >
+                {power.img !== "" && (
+                  <img
+                    src={power.img}
+                    height={500}
+                    width={500}
+                    alt={power.name}
+                    class={`w-[20rem] h-[15rem] col-span-1 object-cover`}
+                  />
+                )}
 
-              <p class="group-hover/power:underline">{power.name}</p>
-            </a>
-          </div>
-        );
-      })
+                <p class="group-hover/power:underline">{power.name}</p>
+              </a>
+            </div>
+          );
+        })
+      }
+    </div>
+
+    {
+      powersLenght > CHARACTERS_PER_PAGE && (
+        <Pagination
+          currentPage={currentPage}
+          url={`/powers?currentPage=`}
+          countItems={powersLenght}
+          howManyPerPage={CHARACTERS_PER_PAGE}
+          client:only
+        />
+      )
     }
   </div>
-
-  {
-    powersLenght > CHARACTERS_PER_PAGE && (
-      <Pagination
-        currentPage={currentPage}
-        url={`/powers?currentPage=`}
-        countItems={powersLenght}
-        howManyPerPage={CHARACTERS_PER_PAGE}
-        client:only
-      />
-    )
-  }
 </Layout>
