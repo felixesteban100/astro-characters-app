@@ -1,6 +1,6 @@
 ---
 import "../styles/globals.css";
-import { ViewTransitions, slide } from "astro:transitions";
+import { ViewTransitions, slide, fade } from "astro:transitions";
 import Navbar from "src/components/Navbar.astro";
 import Sparkles from "src/components/Sparkles.svelte";
 
@@ -33,14 +33,15 @@ properties: name, description, universe, characters
 const currentPath = Astro.url.pathname;
 
 interface Props {
-  title: string;
+  title?: string;
   otherLinks?: {
     href: string;
     title: string;
   }[];
+  animateFade?: boolean;
 }
 
-const { title, otherLinks } = Astro.props;
+const { title, otherLinks, animateFade } = Astro.props;
 
 const links = [
   {
@@ -49,11 +50,11 @@ const links = [
   },
   {
     href: "/random_characters",
-    title: "Random",
+    title: "Random Characters",
   },
   {
-    href: "/fight",
-    title: "1 vs 1",
+    href: "/compare",
+    title: "Compare",
   },
   // {
   //   href: "/team-fight",
@@ -75,26 +76,26 @@ const links = [
 
 if (otherLinks) links.push(...otherLinks);
 
-const anim = {
-  old: {
-    name: "fadeIn",
-    duration: "0.2s",
-    easing: "linear",
-    fillMode: "forwards",
-  },
-  new: {
-    name: "fadeOut",
-    duration: "0.3s",
-    easing: "linear",
-    fillMode: "backwards",
-  },
-};
+// const anim = {
+//   old: {
+//     name: "fadeIn",
+//     duration: "0.2s",
+//     easing: "linear",
+//     fillMode: "forwards",
+//   },
+//   new: {
+//     name: "fadeOut",
+//     duration: "0.3s",
+//     easing: "linear",
+//     fillMode: "backwards",
+//   },
+// };
 
-const this_animation_does_nothing_because_it_is_being_customized_in_css_using_classes =
-  {
-    forwards: anim,
-    backwards: anim,
-  };
+// const this_animation_does_nothing_because_it_is_being_customized_in_css_using_classes =
+//   {
+//     forwards: anim,
+//     backwards: anim,
+//   };
 ---
 
 <!-- <script>
@@ -121,19 +122,32 @@ const this_animation_does_nothing_because_it_is_being_customized_in_css_using_cl
     </div>
 
     <main class="w-[90vw] md:w-[80vw] mx-auto overflow-hidden max-w-[1700px]">
-      <Navbar title={title} currentPath={currentPath} links={links} />
+      <Navbar title={title ?? ""} currentPath={currentPath} links={links} />
       <div
-        class={`mx-auto mb-10 hidden lg:block ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
-        transition:animate={slide({ duration: "1s" })}
+        class={`mx-auto mb-10 ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"} ${currentPath.includes("/compare") && "flex flex-col items-center"}`}
       >
-        <slot />
-      </div>
-      <div
-        class={`mx-auto mb-10 block lg:hidden ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"}`}
-        transition:animate={"none"}
-      >
-        <slot />
+        <div
+          class="flex justify-between items-center w-full mb-5"
+          transition:animate="none"
+          transition:name={`title-animation`}
+        >
+          <p class="font-bold text-3xl">{title}</p>
+          <div>
+            <slot name="page_title_other_content" />
+          </div>
+        </div>
+        <div
+          transition:animate={animateFade
+            ? fade({ duration: "1s" })
+            : slide({ duration: "1s" })}
+          transition:name={`page-animation`}
+        >
+          <slot name="content" />
+        </div>
       </div>
     </main>
-  </body><!-- transition:animate={this_animation_does_nothing_because_it_is_being_customized_in_css_using_classes} -->
+  </body><!-- transition:animate={currentPath.includes("/compare") /* ||
+          currentPath.includes("/random_characters") */
+            ? fade({ duration: "1s" })
+            : slide({ duration: "1s" })}-->
 </html>

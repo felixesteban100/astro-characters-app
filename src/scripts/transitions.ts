@@ -23,22 +23,22 @@ document.addEventListener('astro:page-load', (e) => {
   const id = urlParams.get('id');
   const first = urlParams.get('first');
 
-  console.log(first)
+  // console.log(first)
 
   switch (pathname) {
     case "/characters":
       saveLastPhotoId(id || "")
       break;
 
-    case "/random":
-      saveLastPhotoId(id || "")
+    case "/random_characters":
+      saveLastPhotoId("")
       break;
 
     case "/character":
       saveLastPhotoId(id || "")
       break;
 
-    case "/fight":
+    case "/compare":
       saveLastPhotoId(first || "")
       break;
 

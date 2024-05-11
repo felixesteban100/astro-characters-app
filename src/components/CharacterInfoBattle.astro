@@ -2,30 +2,60 @@
 import { Button } from "$lib/components/ui/button";
 import Stats from "./stats/Stats.svelte";
 import ImageCharacter from "./ImageCharacter.astro";
+import { Percent } from "lucide-astro";
+import StatsNumber from "./stats/StatsNumber.svelte";
+import Powers from "./stats/Powers.svelte";
+import CharacterCard from "./characters_page/CharacterCard.astro";
 
 interface Props {
   selectedCharacter: CharacterWithJoinTeamUniversePower;
   classNames?: string;
+  position: string;
 }
 
-const { selectedCharacter, classNames } = Astro.props;
+const { selectedCharacter, position } = Astro.props;
 ---
 
-<div
+<div class="w-full h-full flex flex-col justify-start items-center">
+  <div class="character-image" id={`photo-${selectedCharacter.id}`}>
+    <a
+      class="hidden lg:block"
+      href={`/compare?${"first"}=${selectedCharacter.id}`}
+    >
+      <!-- Fight using {selectedCharacter.name} -->
+      <Button variant={"outline"} class={"mb-2"}>
+        Reuse {selectedCharacter.name}
+      </Button>
+    </a>
+    <a href={`/character?id=${selectedCharacter.id}`}>
+      <CharacterCard imageSizes={"h-[40rem] w-[40rem]"} c={selectedCharacter} />
+    </a>
+  </div>
+
+  <div class="w-[80%] flex flex-col gap-10 mt-10">
+    <StatsNumber
+      client:load
+      showNameAtAll={false}
+      statName="Total"
+      statValue={selectedCharacter.powerstats.total}
+    >
+      <Percent slot="icon" />
+    </StatsNumber>
+
+    <ul class="mx-auto">
+      {selectedCharacter.powers.map((power) => <li>{power.name}</li>)}
+    </ul>
+  </div>
+</div>
+
+<!-- <div
   class={`flex-shrink flex flex-col justify-center items-center mb-10 ${classNames} `}
 >
-  <div class="flex flex-col gap-5">
-    <div class="flex justify-between items-center pb-5 flex-col lg:flex-row">
-      <a href={`/character?id=${selectedCharacter.id}`}>
-        <Button variant={"link"} class="m-0 p-0">
-          <p class="text-lg md:text-2xl text-ellipsis">
-            <span class="text-primary">{selectedCharacter.id}</span>
-            |
-            <span class="text-foreground">{selectedCharacter.name}</span>
-          </p>
-        </Button>
+  <div class="flex flex-col gap-5 w-full items-center justify-center">
+    <div class="flex justify-end items-center flex-col lg:flex-row w-full">
+      <a class="hidden lg:block" href={`/compare?first=${selectedCharacter.id}`}>
+        Reuse
       </a>
-      <a href={`/fight?first=${selectedCharacter.id}`}> Fight another </a>
     </div>
     <div
       class="relative box characterId overflow-hidden character-image"
@@ -42,12 +72,24 @@ const { selectedCharacter, classNames } = Astro.props;
       />
     </div>
   </div>
-  <div class="w-[80%]">
-    <Stats
-      powerstats={selectedCharacter.powerstats}
-      powers={selectedCharacter.powers}
-      showNameAtAll={false}
+  <div class="w-[80%] flex flex-col gap-10 mt-10">
+    <a href={`/character?id=${selectedCharacter.id}`}>
+      <Button variant={"link"} class="m-0 p-0">
+        <p class="text-sm md:text-2xl text-ellipsis">
+          <span class="text-primary">{selectedCharacter.id}</span>
+          |
+          <span class="text-foreground">{selectedCharacter.name}</span>
+        </p>
+      </Button>
+    </a>
+    <StatsNumber
       client:load
-    />
+      showNameAtAll={false}
+      statName="Total"
+      statValue={selectedCharacter.powerstats.total}
+    >
+      <Percent slot="icon" />
+    </StatsNumber>
+    <Powers client:load powers={selectedCharacter.powers} />
   </div>
-</div>
+</div> -->

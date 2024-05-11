@@ -17,6 +17,7 @@ import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 //   .aggregate([{ $sample: { size: 12 } }])
 //   .toArray();
 
+const animateFade = Astro.url.searchParams.get("animateFade");
 const first = Astro.url.searchParams.get("first");
 const second = Astro.url.searchParams.get("second");
 const third = Astro.url.searchParams.get("third");
@@ -42,7 +43,7 @@ if (
   fourth === "null"
 ) {
   return Astro.redirect(
-    `/random_characters?first=${firstId}&second=${secondId}&third=${thirdId}&fourth=${fourthId}`,
+    `/random_characters?first=${firstId}&second=${secondId}&third=${thirdId}&fourth=${fourthId}&animateFade=${animateFade}`,
   );
 }
 
@@ -77,17 +78,22 @@ const charactersDictionary: { [key: string]: string } = {
 };
 ---
 
-<Layout title={`Random Characters`}>
-  <main class="mb-32 flex flex-col justify-center items-center gap-5">
-    <div class="flex justify-between items-center w-full">
-      <p class="font-bold text-3xl">Random Characters</p>
-      <div>
-        <a href={`/random_characters`}>
-          <Button variant="ghost" size="icon"><Shuffle /></Button>
-        </a>
-      </div>
-    </div>
+<Layout
+  title={`Random Characters`}
+  animateFade={animateFade === "true" ? true : false}
+>
+  <div slot="page_title_other_content">
+    <a href={`/random_characters`}>
+      <Button variant="ghost" size="icon">
+        <Shuffle />
+      </Button>
+    </a>
+  </div>
 
+  <main
+    class="mb-32 flex flex-col justify-center items-center gap-5"
+    slot="content"
+  >
     <div
       class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-10 w-full`}
     >
@@ -96,24 +102,23 @@ const charactersDictionary: { [key: string]: string } = {
           .sort((a, b) => arrayOfIds.indexOf(a.id) - arrayOfIds.indexOf(b.id))
           .map((c: CharacterWithJoinTeamUniversePower, index: number) => {
             return (
-              <div class="flex flex-col gap-5 justify-center">
+              <div class="flex flex-col gap-5 justify-center ">
                 <a
                   href={`character?id=${c.id}`}
-                  class="w-full h-full flex justify-center character-image"
-                  id={`photo-${c.id}`}
+                  class="w-full h-full flex justify-center "
                 >
                   <CharacterCard c={c} />
                 </a>
 
                 <a
-                  href={`/random_characters?${charactersDictionary[`${index}`]}=${c.id}`}
+                  href={`/random_characters?${charactersDictionary[`${index}`]}=${c.id}&animateFade=${true}`}
                   class="hover:underline"
                 >
                   Random all but {charactersDictionary[`${index}`]} character
                 </a>
 
                 <a
-                  href={`/random_characters?first=${index === 0 ? null : firstId}&second=${index === 1 ? null : secondId}&third=${index === 2 ? null : thirdId}&fourth=${index === 3 ? null : fourthId}`}
+                  href={`/random_characters?first=${index === 0 ? null : firstId}&second=${index === 1 ? null : secondId}&third=${index === 2 ? null : thirdId}&fourth=${index === 3 ? null : fourthId}&animateFade=${true}`}
                   class="hover:underline"
                 >
                   Random {index + 1} character only

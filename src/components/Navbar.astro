@@ -35,7 +35,7 @@ const { currentPath, links, title } = Astro.props;
             >
               <a
                 href={link.href}
-                class={`block py-2 px-3 ${currentPath.includes(link.href) && title === link.title && "underline"}`}
+                class={`block py-2 px-3 ${currentPath.includes(link.href) /* && title === link.title */ && "underline"}`}
               >
                 {link.title}
               </a>

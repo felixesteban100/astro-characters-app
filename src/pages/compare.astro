@@ -1,0 +1,79 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { collectionCharacters } from "../lib/mongodb";
+import {
+  getRandomIdRecursively,
+  joinTeam_universe_power_toCharacter,
+} from "../lib/charactersUtils";
+import CharacterInfoBattle from "../components/CharacterInfoBattle.astro";
+
+const first = Astro.url.searchParams.get("first");
+const second = Astro.url.searchParams.get("second");
+
+const firstId = first ?? (await getRandomIdRecursively());
+const secondId = second ?? (await getRandomIdRecursively());
+
+if (!first || !second) {
+  return Astro.redirect(`/compare?first=${firstId}&second=${secondId}`);
+}
+
+const [firstCharacter] = await collectionCharacters
+  .aggregate<CharacterWithJoinTeamUniversePower>(
+    joinTeam_universe_power_toCharacter(
+      {
+        id: parseInt(firstId),
+      },
+      "id",
+      "desc",
+      0,
+      2,
+    ),
+  )
+  .toArray();
+
+const [secondCharacter] = await collectionCharacters
+  .aggregate<CharacterWithJoinTeamUniversePower>(
+    joinTeam_universe_power_toCharacter(
+      {
+        id: parseInt(secondId),
+      },
+      "id",
+      "desc",
+      0,
+      2,
+    ),
+  )
+  .toArray();
+
+// const otherLinks = [
+//   {
+//     href: `/compare?first=${selectedCharacters[0].id}`,
+//     title: `compare using ${selectedCharacters[0].name}`,
+//   },
+//   {
+//     href: `/compare?first=${selectedCharacters[1].id}`,
+//     title: `compare using ${selectedCharacters[1].name}`,
+//   },
+// ];
+---
+
+<Layout>
+  <!-- <p class="font-bold text-3xl" slot="page_title_other_content">
+    {secondCharacter.name}
+  </p> -->
+
+  <div
+    class="w-fit grid grid-cols-1 md:grid-cols-2 gap-10 justify-start items-start overflow-visible"
+    slot="content"
+  >
+    <CharacterInfoBattle
+      position={"first"}
+      selectedCharacter={firstCharacter}
+    />
+
+    <CharacterInfoBattle
+      position={"second"}
+      selectedCharacter={secondCharacter}
+    />
+  </div>
+</Layout>

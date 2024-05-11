@@ -43,7 +43,7 @@
   <StatsNumber
     {showNameAtAll}
     statName="Intelligence"
-    statValue={powerstats.durability}
+    statValue={powerstats.intelligence}
   >
     <Brain slot="icon" />
   </StatsNumber>

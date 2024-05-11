@@ -93,15 +93,21 @@
     animation-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
   }
 
-  /* ::view-transition-new(*):only-child {
-    animation: 500ms cubic-bezier(0, 0, 0.2, 1) both fade-in;
+  ::view-transition-new(*):only-child {
+    animation:
+      500ms cubic-bezier(0, 0, 0.2, 1) both fade-in,
+      500ms cubic-bezier(0.4, 0, 0.2, 1) both scale-in;
     animation-delay: 500ms;
   }
 
+  /* :not(title-animation) */
+
   ::view-transition-old(*):only-child {
-    animation: 500ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
+    animation:
+      500ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+      500ms cubic-bezier(0.4, 0, 0.2, 1) both scale-out;
     animation-delay: 100ms;
-  } */
+  }
 
   @keyframes fade-in {
     from {
@@ -112,6 +118,18 @@
   @keyframes fade-out {
     to {
       opacity: 0;
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      transform: scale(0.7);
+    }
+  }
+
+  @keyframes scale-out {
+    to {
+      transform: scale(0.7);
     }
   }
 }

@@ -6,9 +6,10 @@ import ImageCharacter from "../ImageCharacter.astro";
 interface Props {
   // c: Character;
   c: CharacterWithJoinTeamUniversePower;
+  imageSizes?: string;
 }
 
-const { c } = Astro.props;
+const { c, imageSizes } = Astro.props;
 ---
 
 <div
@@ -16,7 +17,7 @@ const { c } = Astro.props;
 >
   <div class="relative box characterId flex justify-center">
     <ImageCharacter
-      classes={`object-cover h-[25rem] w-[25rem] rounded-md transition-all duration-500 group-hover/character:opacity-30`}
+      classes={`object-cover ${imageSizes ? imageSizes : "h-[25rem] w-[25rem]"} rounded-md transition-all duration-500 group-hover/character:opacity-30`}
       width={800}
       height={800}
       src={c.images.md}

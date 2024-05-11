@@ -48,6 +48,7 @@ const universesJoinTeams = await collectionUniverses
 <Layout title="Universes">
   <div
     class="w-full grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 my-11 justify-center items-center"
+    slot="content"
   >
     {
       universesJoinTeams.map((universe) => {

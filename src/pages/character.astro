@@ -20,53 +20,54 @@ const characterJoinTeamAndUniverse = await collectionCharacters
   .toArray();
 
 const selectedCharacter = characterJoinTeamAndUniverse[0];
+
+if (!selectedCharacter) {
+  return Astro.redirect(`/not-found`);
+}
 ---
 
 <Layout
   title={`${selectedCharacter?.name}`}
   otherLinks={[
     {
-      href: `/fight?first=${selectedCharacter?.id}`,
-      title: `Fight using ${selectedCharacter?.name}`,
+      href: `/compare?first=${selectedCharacter?.id}`,
+      title: `Compare using ${selectedCharacter?.name}`,
     },
   ]}
 >
-  <main class="">
-    {
-      selectedCharacter ? (
-        <div class="flex flex-col xl:flex-row justify-center items-center gap-16">
-          <div class="flex flex-col justify-center items-start gap-5">
-            <p class="font-bold text-xl">
-              <span class="text-primary">{selectedCharacter.id} |</span>
-              {selectedCharacter.name}
-            </p>
-            <div
-              class="relative box characterId overflow-hidden"
-              transition:name={`photo-${selectedCharacter.id}`}
-            >
-              <ImageCharacter
-                classes={`object-cover h-[40rem] w-[40rem] rounded-md`}
-                width={500}
-                height={500}
-                src={selectedCharacter.images.md}
-                loading="eager"
-                alt={selectedCharacter.name}
-                id={selectedCharacter.id}
-              />
-            </div>
-          </div>
-          <div class="h-[44rem] w-full lg:w-[70%]">
-            <Tabs
-              characterInfo={selectedCharacter}
-              publisherInfo={selectedCharacter.biography.publisher}
-              teams={selectedCharacter.connections.groupAffiliation}
-              client:load
-            />
-          </div>
-        </div>
-      ) : null
-    }
-  </main>
+  <div
+    class="flex flex-col xl:flex-row justify-center items-center gap-16 w-full"
+    slot="content"
+  >
+    <div class="flex flex-col justify-center items-start gap-5">
+      <!-- <p class="font-bold text-xl">
+          <span class="text-primary">{selectedCharacter.id} |</span>
+          {selectedCharacter.name}
+        </p> -->
+      <div
+        class="relative box characterId overflow-hidden"
+        transition:name={`photo-${selectedCharacter.id}`}
+      >
+        <ImageCharacter
+          classes={`object-cover h-[40rem] w-[40rem] rounded-md`}
+          width={500}
+          height={500}
+          src={selectedCharacter.images.md}
+          loading="eager"
+          alt={selectedCharacter.name}
+          id={selectedCharacter.id}
+        />
+      </div>
+    </div>
+    <div class="h-[44rem] w-full lg:w-[70%]">
+      <Tabs
+        characterInfo={selectedCharacter}
+        publisherInfo={selectedCharacter.biography.publisher}
+        teams={selectedCharacter.connections.groupAffiliation}
+        client:load
+      />
+    </div>
+  </div>
 </Layout>
 
 <!-- <CharacterFeatures
