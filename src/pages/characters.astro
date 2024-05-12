@@ -109,8 +109,8 @@ const universesWithTeams = await collectionUniverses
     {
       $lookup: {
         from: "teams",
-        localField: "teams",
-        foreignField: "id",
+        localField: "id",
+        foreignField: "universe",
         pipeline: [
           {
             $project: {

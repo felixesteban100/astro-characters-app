@@ -27,8 +27,8 @@ const aggregationOptions = [
   {
     $lookup: {
       from: "universes",
-      localField: "universe.value",
-      foreignField: "value",
+      localField: "universe",
+      foreignField: "id",
       pipeline: [{ $project: { teams: 0, comics: 0 } }],
       as: "universe",
     },
@@ -73,14 +73,14 @@ const teamsJoinUniverse = await collectionTeams
 
 const universesWithTeams: string[] = ["Marvel Comics", "DC Comics", "Shueisha"];
 
-const imgUniverse: { [key: string]: string } = {
-  "Marvel Comics":
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png",
-  "DC Comics":
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/DC_Comics_logo.svg/1200px-DC_Comics_logo.svg.png",
-  Shueisha:
-    "https://www.shueisha.co.jp/wp-content/themes/shueisha/image/en/mv/mv_subtitle_01.png",
-};
+// const imgUniverse: { [key: string]: string } = {
+//   "Marvel Comics":
+//     "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png",
+//   "DC Comics":
+//     "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/DC_Comics_logo.svg/1200px-DC_Comics_logo.svg.png",
+//   Shueisha:
+//     "https://www.shueisha.co.jp/wp-content/themes/shueisha/image/en/mv/mv_subtitle_01.png",
+// };
 
 function getTitle() {
   // {
