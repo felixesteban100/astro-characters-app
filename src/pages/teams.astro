@@ -5,7 +5,7 @@ import Drawer from "src/components/Drawer.svelte";
 import { collectionTeams } from "../lib/mongodb";
 import Layout from "src/layouts/Layout.astro";
 import Sheet from "src/components/Sheet.svelte";
-import { Filter } from "lucide-astro";
+import { Filter, Loader } from "lucide-astro";
 import { ScrollArea } from "$lib/components/ui/scroll-area";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
@@ -100,9 +100,30 @@ function getTitle() {
   //     )
   //   }
 
-  return "Teams";
+  return universe !== "All" ? universe : "Teams";
 }
 ---
+
+<script>
+  import { navigate } from "astro:transitions/client";
+
+  class AstroChangeUniverseTeams extends HTMLElement {
+    constructor() {
+      super();
+      const heartButton = this.querySelector("button")!;
+
+      // Each time the button is clicked, update the count.
+      heartButton.addEventListener("click", () => {
+        navigate(`teams?universe=${heartButton.name}&currentPage=1`);
+      });
+    }
+  }
+
+  customElements.define(
+    "astro--change-universe-teams",
+    AstroChangeUniverseTeams,
+  );
+</script>
 
 <Layout title={getTitle()}>
   <Sheet
@@ -112,19 +133,25 @@ function getTitle() {
     ButtonClassName=""
     slot="page_title_other_content"
     buttonTriggerId={"teamsFilter"}
+    from="teams"
   >
-    <Filter slot="trigger" />
+    <div slot="trigger">
+      <Filter id="actionDoer" />
+      <p id="loader" class={`hidden animate-spin text-primary`}><Loader /></p>
+    </div>
+
     <div slot="content">
-      <!-- this filter is not working as expected :/ -->
       <div class="flex flex-col justify-center items-center gap-5 my-5">
         {
           universesWithTeams.map((uni) => (
-            <a
-              href={`/teams?universe=${uni}&currentPage=1`}
-              class={`${uni === universe ? "underline" : ""}`}
-            >
-              <span>{uni}</span>
-            </a>
+            <astro--change-universe-teams class="w-fit">
+              <button
+                class={`${uni === universe ? "underline" : ""}`}
+                name={uni}
+              >
+                {uni}
+              </button>
+            </astro--change-universe-teams>
           ))
         }
       </div>
@@ -137,10 +164,6 @@ function getTitle() {
     >
       {
         teamsJoinUniverse.map((team) => {
-          // const someRandomMembers = team.members
-          //   .sort(() => 0.5 - Math.random())
-          //   .slice(0, 6);
-
           return (
             <div class="flex flex-col justify-between items-center gap-5 p-5 h-full">
               <div class="flex flex-col justify-between items-center gap-5 h-full">
@@ -188,25 +211,24 @@ function getTitle() {
                         />
                       </div>
                       <p>{team.description}</p>
-                      <div class="self-center">
+                      <div class="self-center" slot="close">
                         <p class="font-medium mb-2">
                           Members (total = {team.members.length}):{" "}
                         </p>
                         <ScrollArea class="h-72" client:load>
                           <div class="w-full justify-center items-center grid grid-cols-3 gap-5">
                             {team.members.map((c) => {
+                              // href={`character?id=${c.id}`}
+                              //hover:underline
                               return (
-                                <a
-                                  href={`character?id=${c.id}`}
-                                  class="hover:underline flex flex-col gap-2 justify-center items-center w-full"
-                                >
+                                <div class=" flex flex-col gap-2 justify-center items-center w-full">
                                   <img
                                     src={c.images.md}
                                     alt=""
                                     class="h-20 w-20 object-cover"
                                   />
                                   {c.name}
-                                </a>
+                                </div>
                               );
                             })}
                           </div>

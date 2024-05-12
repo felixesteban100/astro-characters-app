@@ -16,12 +16,8 @@ import { CHARACTERS_PER_PAGE } from "../lib/constants/constants";
 
 import Pagination from "../components/Pagination.svelte";
 import FilterCharacters from "../components/FilterCharacters.svelte";
-import Sheet from "src/components/Sheet.svelte";
-import { Filter } from "lucide-astro";
-import NameAndImage from "src/components/characters_page/NameAndImage.astro";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
-import __AstroComponent_ from "node_modules/lucide-astro/dist/.Layout.astro";
-// import navigate from 'astro:transitions/client';
+import { Filter } from "lucide-astro";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName") ?? "";
@@ -151,22 +147,17 @@ const allPowers = await collectionPowers.find({}).sort({ _id: 1 }).toArray();
 // });
 
 function getTitle(): string {
-  // attritutesFilteredArr.length > 0 ? (
-  //   attritutesFilteredArr.map(([key, value], index) => {
-  //     return (
-  //       <div class="flex flex-row justify-start gap-5 items-center">
-  //         <NameAndImage name={value.toString()} />
-  //         {index < attritutesFilteredArr.length - 1 && (
-  //           <p class="font-bold text-3xl hidden lg:block">|</p>
-  //         )}
-  //       </div>
-  //     );
-  //   })
-  // ) : (
-  //   <p class="font-bold text-3xl">Characters</p>
-  // );
+  return attritutesFilteredArr.length > 0
+    ? attritutesFilteredArr.reduce((acc, [key, value], index) => {
+        if (index > 0) {
+          acc = acc + " | " + value.toString();
+        } else {
+          acc = value.toString();
+        }
 
-  return "Characters";
+        return acc;
+      }, "")
+    : "Characters";
 }
 ---
 
@@ -180,94 +171,37 @@ function getTitle(): string {
 </script>
 
 <Layout title={getTitle()}>
-  <Sheet
-    variant={undefined}
-    size={"default"}
+  <FilterCharacters
+    characterOrFullName={characterOrFullName}
+    howManyPerPage={howManyPerPage}
+    includesOrExact={includesOrExact}
+    characterName={characterName}
+    gender={gender}
+    side={side}
+    race={race}
+    power={power}
+    universe={universe}
+    team={team}
+    sortBy={sortBy}
+    sortDirection={sortDirection}
+    universesWithTeams={universesWithTeams}
+    allUniverses={allUniverses}
+    allPowers={allPowers}
     client:load
-    ButtonClassName=""
     slot="page_title_other_content"
-    buttonTriggerId={"filterCharacters"}
   >
     <div class="flex gap-5" slot="trigger">
       <Filter />
       <span class="text-primary hidden lg:flex">|</span>
       <span>(Press T)</span>
     </div>
-    <div slot="content">
-      <FilterCharacters
-        characterOrFullName={characterOrFullName}
-        howManyPerPage={howManyPerPage}
-        includesOrExact={includesOrExact}
-        characterName={characterName}
-        gender={gender}
-        side={side}
-        race={race}
-        power={power}
-        universe={universe}
-        team={team}
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        universesWithTeams={universesWithTeams}
-        allUniverses={allUniverses}
-        allPowers={allPowers}
-        client:load
-      />
-    </div>
-  </Sheet>
+  </FilterCharacters>
 
   <main
     class="mb-32 flex flex-col justify-center items-center gap-5"
     slot="content"
   >
     <!-- <HeroSection /> -->
-
-    <!-- <div class="flex justify-between items-center w-full">
-      <div
-        class="flex flex-col lg:flex-row justify-start items-start gap-4 w-full"
-      >
-        {
-          attritutesFilteredArr.length > 0 ? (
-            attritutesFilteredArr.map(([key, value], index) => {
-              return (
-                <div class="flex flex-row justify-start gap-5 items-center">
-                  <NameAndImage name={value.toString()} />
-                  {index < attritutesFilteredArr.length - 1 && (
-                    <p class="font-bold text-3xl hidden lg:block">|</p>
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            <p class="font-bold text-3xl">Characters</p>
-          )
-        }
-      </div>
-      <div>
-        <Sheet client:load ButtonClassName="">
-          <Filter slot="trigger" />
-          <div slot="content">
-            <FilterCharacters
-              characterOrFullName={characterOrFullName}
-              howManyPerPage={howManyPerPage}
-              includesOrExact={includesOrExact}
-              characterName={characterName}
-              gender={gender}
-              side={side}
-              race={race}
-              power={power}
-              universe={universe}
-              team={team}
-              sortBy={sortBy}
-              sortDirection={sortDirection}
-              universesWithTeams={universesWithTeams}
-              allUniverses={allUniverses}
-              allPowers={allPowers}
-              client:load
-            />
-          </div>
-        </Sheet>
-      </div>
-    </div> -->
 
     {
       characterJoinTeamAndUniverse.length < 1 ? (

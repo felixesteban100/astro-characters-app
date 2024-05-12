@@ -6,7 +6,7 @@ import { collectionCharacters } from "../lib/mongodb";
 import { joinTeam_universe_power_toCharacter } from "../lib/charactersUtils";
 import { getRandomIdRecursively } from "../lib/charactersUtils";
 import { Button } from "$lib/components/ui/button";
-import { Shuffle } from "lucide-astro";
+import { Loader, Shuffle } from "lucide-astro";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 
 // const someCharacters = await collectionCharacters
@@ -83,11 +83,16 @@ const charactersDictionary: { [key: string]: string } = {
   animateFade={animateFade === "true" ? true : false}
 >
   <div slot="page_title_other_content">
-    <a href={`/random_characters`}>
-      <Button variant="ghost" size="icon">
-        <Shuffle />
-      </Button>
-    </a>
+    <div>
+      <div id="actionDoer">
+        <a href={`/random_characters`}>
+          <Button variant="ghost" size="icon">
+            <Shuffle />
+          </Button>
+        </a>
+      </div>
+      <p id="loader" class={`hidden animate-spin text-primary`}><Loader /></p>
+    </div>
   </div>
 
   <main

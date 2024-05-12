@@ -14,5 +14,8 @@
   </div>
   <Drawer.Content class="mb-32">
     <slot name="content" />
+    <Drawer.Close>
+      <slot name="close" />
+    </Drawer.Close>
   </Drawer.Content>
 </Drawer.Root>

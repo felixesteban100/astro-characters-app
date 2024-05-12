@@ -81,6 +81,15 @@ document.addEventListener('astro:page-load', (e) => {
  * When navigating back to the home page, find the image we're transitioning
  * from and set its transition name.
  */
+document.addEventListener('astro:before-preparation', () => {
+  const loaders = document.querySelector('#loader')
+  const actionDoer = document.querySelector('#actionDoer')
+
+  loaders?.classList.remove('hidden')
+  actionDoer?.classList.add('hidden')
+})
+
+
 document.addEventListener('astro:after-swap', (e) => {
   if (!lastPhotoId) {
     return true
@@ -89,6 +98,8 @@ document.addEventListener('astro:after-swap', (e) => {
   const photo = document.querySelector(
     '#photo-' + lastPhotoId
   ) as HTMLImageElement
+
+
 
   // If we find the photo we're transitioning from, set its transition name
   // and scroll it into view.

@@ -13,6 +13,7 @@
     | undefined;
   export let size: "default" | "sm" | "lg" | "icon" | undefined;
   export let buttonTriggerId: string;
+  export let from: string;
 </script>
 
 <Sheet.Root>
@@ -26,7 +27,15 @@
       <slot name="trigger" />
     </Button>
   </Sheet.Trigger>
-  <Sheet.Content>
-    <slot name="content" />
-  </Sheet.Content>
+  {#if from === "teams"}
+    <Sheet.Content>
+      <Sheet.Close class="w-full">
+        <slot name="content" />
+      </Sheet.Close>
+    </Sheet.Content>
+  {:else}
+    <Sheet.Content>
+      <slot name="content" />
+    </Sheet.Content>
+  {/if}
 </Sheet.Root>
