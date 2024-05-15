@@ -27,7 +27,7 @@
       <slot name="trigger" />
     </Button>
   </Sheet.Trigger>
-  {#if from === "teams"}
+  {#if from === "teams" || from === "navbar"}
     <Sheet.Content>
       <Sheet.Close class="w-full">
         <slot name="content" />

@@ -82,11 +82,15 @@ const characterdDisplayLenght = await collectionCharacters
       sortDirection,
       0,
       1000,
+      [],
     ),
   )
   .toArray();
 
 // console.log("queryOptions", queryOptions);
+
+const charactersName =
+  characterName.split(",").length < 0 ? [] : characterName.split(",");
 
 const characterJoinTeamAndUniverse = await collectionCharacters
   .aggregate<CharacterWithJoinTeamUniversePower>(
@@ -96,6 +100,7 @@ const characterJoinTeamAndUniverse = await collectionCharacters
       sortDirection,
       offset,
       howManyPerPage,
+      charactersName,
     ),
   )
   .toArray();

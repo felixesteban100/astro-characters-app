@@ -66,6 +66,7 @@ const selectedCharacters = await collectionCharacters
       "desc",
       0,
       4,
+      [],
     ),
   )
   .toArray();
@@ -82,18 +83,11 @@ const charactersDictionary: { [key: string]: string } = {
   title={`Random Characters`}
   animateFade={animateFade === "true" ? true : false}
 >
-  <div slot="page_title_other_content">
-    <div>
-      <div id="actionDoer">
-        <a href={`/random_characters`}>
-          <Button variant="ghost" size="icon">
-            <Shuffle />
-          </Button>
-        </a>
-      </div>
-      <p id="loader" class={`hidden animate-spin text-primary`}><Loader /></p>
-    </div>
-  </div>
+  <a slot="page_title_other_content" href={`/random_characters`}>
+    <Button variant="ghost" size="icon">
+      <Shuffle />
+    </Button>
+  </a>
 
   <main
     class="mb-32 flex flex-col justify-center items-center gap-5"

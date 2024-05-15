@@ -1,12 +1,12 @@
 ---
 import "../styles/globals.css";
 import { ViewTransitions, slide, fade } from "astro:transitions";
+import LoaderAstro from "src/components/LoaderAstro.astro";
 import Navbar from "src/components/Navbar.astro";
 import Sparkles from "src/components/Sparkles.svelte";
 
 // things to fix:
 /* 
--- sort the query by the sort selected and also by the order of the names written down in the characterNames searchParam
 -- add objects collection with the following propertyes: name, description, universe, carriers (charactersIds) so that we can aggergate the characters using a $lookup later, the same with powers (array of powers values)
   - use chatGPT to populate the objects collection
   I could use this ones: 
@@ -25,7 +25,7 @@ properties: name, description, universe, characters, images, location
 - some images are not displaying (because are from a CORS site i guess or webp files) :/
 - dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
 -- add description, weaknesses, and origin property to each character 
--- add leaders peroperty as an array to each team { name, id }[]
+-- add leaders property as an array to each team { name, id }[]
 - configure the swap page transition so that they slide in the same order they are in the navbar
 */
 
@@ -132,7 +132,10 @@ if (otherLinks) links.push(...otherLinks);
         >
           <p class="font-bold text-3xl">{title}</p>
           <div>
-            <slot name="page_title_other_content" />
+            <div id="actionDoer">
+              <slot name="page_title_other_content" />
+            </div>
+            <LoaderAstro />
           </div>
         </div>
         <div

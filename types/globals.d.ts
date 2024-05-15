@@ -152,8 +152,9 @@ declare type Power = {
 }
 
 declare type QueryOptions = {
-    name?: RegExp /* | RegExp[]  *//* { "$or": RegExp[] } */;
-    "biography.fullName"?: RegExp /* | RegExp[] *//* { "$or": RegExp[] }; */
+    id?: number | { $in: number[] }
+    name?: { $in: RegExp[] }/* RegExp | */ /* RegExp[] */ /* { "$or": RegExp[] } */;
+    "biography.fullName"?: { $in: RegExp[] } /* RegExp | */ /* RegExp[] *//* { "$or": RegExp[] }; */
     "biography.alignment"?: string;
     "biography.publisher.value"?: string;
     "connections.groupAffiliation.value"?: string | RegExp;

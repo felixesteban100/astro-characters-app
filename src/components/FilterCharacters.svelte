@@ -16,12 +16,9 @@
   import { navigate } from "astro:transitions/client";
   import Sheet from "src/components/Sheet.svelte";
   import { Close } from "$lib/components/ui/sheet";
-  import { FilterIcon } from "lucide-svelte";
 </script>
 
 <script lang="ts">
-  import { Loader } from "lucide-svelte";
-
   export let characterOrFullName: boolean;
   export let howManyPerPage: number;
   export let includesOrExact: boolean;
@@ -69,7 +66,7 @@
 
   function goPageonClick() {
     navigate(
-      `/characters?characterName=${characterNameState}&howManyPerPage=${howManyPerPageState ?? 12}&gender=${genderState}&side=${sideState}&race=${raceState}&power=${powerState}&universe=${universeState}&team=${teamState}&characterOrFullName=${characterOrFullNameState}&includesOrExact=${includesOrExactState}&sortBy=${sortByState}&sortDirection=${sortDirectionState}&currentPage=${1}`,
+      `/characters?characterName=${characterNameState}&howManyPerPage=${howManyPerPageState ?? 12}&gender=${genderState}&side=${sideState}&race=${raceState}&power=${powerState}&universe=${universeState}&team=${teamState}&characterOrFullName=${characterOrFullNameState}&includesOrExact=${sortByState === "names_sended" ? false : includesOrExactState}&sortBy=${sortByState}&sortDirection=${sortDirectionState}&currentPage=${1}`,
     );
   }
 </script>
@@ -81,12 +78,7 @@
   buttonTriggerId={"filterCharacters"}
   from="characters"
 >
-  <div slot="trigger">
-    <div id="actionDoer">
-      <slot name="trigger" />
-    </div>
-    <p id="loader" class={`hidden animate-spin text-primary`}><Loader /></p>
-  </div>
+  <slot name="trigger" slot="trigger" />
 
   <div slot="content">
     <div class="h-[850px] w-full overflow-y-scroll">
@@ -117,7 +109,8 @@
             ><Checkbox bind:checked={characterOrFullNameState} /> Fullname (Checked)
             | CharacterName (Unchecked)
           </Label>
-          <Label class="flex gap-5 items-center justify-start"
+          <Label
+            class={`${sortByState === "names_sended" ? "hidden" : "flex"} gap-5 items-center justify-start`}
             ><Checkbox bind:checked={includesOrExactState} /> Include charactes in
             name (checked) | Exact name (Unchecked)
           </Label>

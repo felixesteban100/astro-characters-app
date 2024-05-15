@@ -40,26 +40,47 @@ export function getQueryOptions({
 }) {
   const queryOptions: QueryOptions = {};
 
+  // if (characterName && characterName !== "") {
+  //   const characterNames = characterName.split(",");
+  //   const names: string = characterNames.reduce((acc, name, index) => {
+  //     if (index === 0) return `${name}`;
+  //     acc = `${acc}|${name.trim()}`;
+  //     return acc;
+  //   }, "");
+
+  //   if (includesOrExact) {
+  //     if (characterOrFullName === false) {
+  //       queryOptions.name = new RegExp(names, "ig"); // works
+  //     } else {
+  //       queryOptions["biography.fullName"] = new RegExp(names, "ig"); // works
+  //     }
+  //   } else {
+  //     if (characterOrFullName === false) {
+  //       queryOptions.name = new RegExp(`^(${names})$`, "i");
+  //     } else {
+  //       queryOptions["biography.fullName"] = new RegExp(`^(${names})$`, "i");
+  //     }
+  //   }
+  // }
+
   if (characterName && characterName !== "") {
     const characterNames = characterName.split(",");
-    const names: string = characterNames.reduce((acc, name, index) => {
-      if (index === 0) return `${name}`;
-      acc = `${acc}|${name.trim()}`;
-      return acc;
-    }, "");
 
-    if (includesOrExact) {
-      if (characterOrFullName === false) {
-        queryOptions.name = new RegExp(names, "ig"); // works
-      } else {
-        queryOptions["biography.fullName"] = new RegExp(names, "ig"); // works
-      }
+    const options: string = includesOrExact ? "ig" : "i"
+
+    const names: RegExp[] = characterNames.reduce((acc, name, index) => {
+      if (index === 0) {
+        acc.push(new RegExp(includesOrExact ? name.trim() : `^(${name.trim()})$`, options))
+        return acc
+      };
+      acc.push(new RegExp(includesOrExact ? name.trim() : `^(${name.trim()})$`, options))
+      return acc;
+    }, new Array<RegExp>());
+
+    if (characterOrFullName === false) {
+      queryOptions.name = { $in: names };
     } else {
-      if (characterOrFullName === false) {
-        queryOptions.name = new RegExp(`^(${names})$`, "i");
-      } else {
-        queryOptions["biography.fullName"] = new RegExp(`^(${names})$`, "i");
-      }
+      queryOptions["biography.fullName"] = { $in: names }
     }
   }
 
@@ -93,36 +114,99 @@ export async function getRandomIdRecursively() {
   }
 }
 
-export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions | { id: number } | { id: { $in: number[] } }, sortBy: string, sortDirection: string, offset: number, howManyPerPage: number) => {
-  return [
-    {
-      $lookup: {
-        from: "powers",
-        localField: "powers",
-        foreignField: "id",
-        as: "powers",
+export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions, sortBy: string, sortDirection: string, offset: number, howManyPerPage: number, charactersNames: string[]) => {
+
+  if (charactersNames.length > 1 && sortBy === "names_sended") {
+    // console.log("queryOptions", queryOptions)
+    // console.log("charactersNames", charactersNames)
+    // console.log("sortBy", sortBy)
+    // console.log("ok ok ")
+
+    return [
+      {
+        $lookup: {
+          from: "powers",
+          localField: "powers",
+          foreignField: "id",
+          as: "powers",
+        },
       },
-    },
-    {
-      $lookup: {
-        from: "universes",
-        localField: "biography.publisher",
-        foreignField: "value",
-        pipeline: [{ $project: { teams: 0 } }],
-        as: "biography.publisher",
+      {
+        $lookup: {
+          from: "universes",
+          localField: "biography.publisher",
+          foreignField: "value",
+          pipeline: [{ $project: { teams: 0 } }],
+          as: "biography.publisher",
+        },
       },
-    },
-    { $unwind: "$biography.publisher" },
-    {
-      $lookup: {
-        from: "teams",
-        localField: "connections.groupAffiliation",
-        foreignField: "id",
-        pipeline: [{ "$project": { "universe": 0 } }],
-        as: "connections.groupAffiliation",
+      { $unwind: "$biography.publisher" },
+      {
+        $lookup: {
+          from: "teams",
+          localField: "connections.groupAffiliation",
+          foreignField: "id",
+          pipeline: [{ "$project": { "universe": 0 } }],
+          as: "connections.groupAffiliation",
+        },
       },
-    },
-    /* {
+
+      { $match: { ...queryOptions/* , name: { $in: queryOptions.name } */ } },
+      {
+        $addFields: {
+          names_sended: {
+            $indexOfArray: [charactersNames.map(c => c.toLowerCase().trim()), { $toLower: "$name" }]
+          }
+        }
+      },
+      { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
+      { $skip: offset },
+      { $limit: howManyPerPage },
+    ]
+  } else {
+    // console.log("queryOptions", queryOptions)
+    // console.log("charactersNames", charactersNames)
+    // console.log("sortBy", sortBy)
+    // console.log("ok ok ")
+
+    return [
+      {
+        $lookup: {
+          from: "powers",
+          localField: "powers",
+          foreignField: "id",
+          as: "powers",
+        },
+      },
+      {
+        $lookup: {
+          from: "universes",
+          localField: "biography.publisher",
+          foreignField: "value",
+          pipeline: [{ $project: { teams: 0 } }],
+          as: "biography.publisher",
+        },
+      },
+      { $unwind: "$biography.publisher" },
+      {
+        $lookup: {
+          from: "teams",
+          localField: "connections.groupAffiliation",
+          foreignField: "id",
+          pipeline: [{ "$project": { "universe": 0 } }],
+          as: "connections.groupAffiliation",
+        },
+      },
+
+      { $match: { ...queryOptions } },
+      { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
+      { $skip: offset },
+      { $limit: howManyPerPage },
+    ];
+  }
+}
+
+/* {
       "$lookup": {
         "from": "teams",
         "let": { "groupAffiliation": "$connections.groupAffiliation" },
@@ -157,12 +241,9 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions |
         "as": "connections.groupAffiliation"
       }
     }, */
-    { $match: { ...queryOptions } },
-    { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
-    { $skip: offset },
-    { $limit: howManyPerPage },
-  ];
-}
+
+
+
 
 
 // to use in any of the pages.astro files
