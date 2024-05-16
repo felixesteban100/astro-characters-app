@@ -40,21 +40,21 @@ const howManyPerPage = parseInt(
     CHARACTERS_PER_PAGE.toString(),
 );
 
-if (Astro.request.method === "POST") {
-  try {
-    const data = await Astro.request.formData();
-    const universeForm = data.get("universe");
-    const teamForm = data.get("team");
+// if (Astro.request.method === "POST") {
+//   try {
+//     const data = await Astro.request.formData();
+//     const universeForm = data.get("universe");
+//     const teamForm = data.get("team");
 
-    return Astro.redirect(
-      `/characters?characterName=${data.get("characterName")}&howManyPerPage=${data.get("howManyPerPage")}&gender=${data.get("gender")}&side=${data.get("side")}&race=${data.get("race")}${universeForm ? `&universe=${universeForm}&team=${universeForm === universe ? teamForm : "All"}` : `&universe="All"&team="All"`}&currentPage=${1}`,
-    );
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
-  }
-}
+//     return Astro.redirect(
+//       `/characters?characterName=${data.get("characterName")}&howManyPerPage=${data.get("howManyPerPage")}&gender=${data.get("gender")}&side=${data.get("side")}&race=${data.get("race")}${universeForm ? `&universe=${universeForm}&team=${universeForm === universe ? teamForm : "All"}` : `&universe="All"&team="All"`}&currentPage=${1}`,
+//     );
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.error(error.message);
+//     }
+//   }
+// }
 
 const valuesFilter = {
   side,

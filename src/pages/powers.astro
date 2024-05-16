@@ -3,22 +3,57 @@ import { CHARACTERS_PER_PAGE } from "$lib/constants/constants";
 import Pagination from "src/components/Pagination.svelte";
 import { collectionPowers } from "../lib/mongodb";
 import Layout from "src/layouts/Layout.astro";
+import FilterPowers from "src/components/FilterPowers.svelte";
+import { Filter } from "lucide-astro";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
+const powerName = Astro.url.searchParams.get("powerName") ?? "";
+
+const howManyPerPage = parseInt(
+  Astro.url.searchParams.get("howManyPerPage") ??
+    CHARACTERS_PER_PAGE.toString(),
+);
 
 const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
+const query: { name?: { $in: RegExp[] } } = {};
+
+if (powerName !== "")
+  query.name = {
+    $in: powerName.split(",").map((c) => {
+      return new RegExp(c.trim(), "ig");
+    }),
+  };
+
 const powers = await collectionPowers
-  .find({})
+  .find(query)
   .sort({ id: -1 })
-  .limit(CHARACTERS_PER_PAGE)
+  .limit(howManyPerPage)
   .skip(offset)
   .toArray();
 
-const powersLenght = await collectionPowers.countDocuments();
+const powersLenght = await collectionPowers
+  .find(query)
+  .sort({ id: -1 })
+  .limit(howManyPerPage)
+  .skip(offset)
+  .toArray();
 ---
 
 <Layout title="Powers">
+  <FilterPowers
+    howManyPerPage={howManyPerPage}
+    powerName={powerName}
+    client:load
+    slot="page_title_other_content"
+  >
+    <div class="flex gap-5" slot="trigger">
+      <Filter />
+      <span class="text-primary hidden lg:flex">|</span>
+      <span>(Press T)</span>
+    </div>
+  </FilterPowers>
+
   <div class="flex flex-col items-center justify-center" slot="content">
     <div class="w-full grid 2xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-5">
       {
@@ -39,7 +74,9 @@ const powersLenght = await collectionPowers.countDocuments();
                   />
                 )}
 
-                <p class="group-hover/power:underline">{power.name}</p>
+                <p class="group-hover/power:underline">
+                  <span class={`text-primary`}>{power.id}</span>-{power.name}
+                </p>
               </a>
             </div>
           );
@@ -48,11 +85,11 @@ const powersLenght = await collectionPowers.countDocuments();
     </div>
 
     {
-      powersLenght > CHARACTERS_PER_PAGE && (
+      powersLenght.length > CHARACTERS_PER_PAGE && (
         <Pagination
           currentPage={currentPage}
           url={`/powers?currentPage=`}
-          countItems={powersLenght}
+          countItems={powersLenght.length}
           howManyPerPage={CHARACTERS_PER_PAGE}
           client:only
         />
