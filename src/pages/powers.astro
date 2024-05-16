@@ -32,12 +32,7 @@ const powers = await collectionPowers
   .skip(offset)
   .toArray();
 
-const powersLenght = await collectionPowers
-  .find(query)
-  .sort({ id: -1 })
-  .limit(howManyPerPage)
-  .skip(offset)
-  .toArray();
+const powersLenght = await collectionPowers.find(query).toArray();
 ---
 
 <Layout title="Powers">
