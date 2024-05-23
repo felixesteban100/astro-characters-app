@@ -28,7 +28,7 @@
 
 <!-- class="w-full flex justify-center items-center flex-col" -->
 <div
-  class="overflow-y-scroll whitespace-nowrap h-[44rem] w-full flex justify-start items-center flex-col"
+  class=" whitespace-nowrap h-[44rem] w-full flex justify-start items-center flex-col"
 >
   <StatsNumber {showNameAtAll} statName="Combat" statValue={powerstats.combat}>
     <Sword slot="icon" />
