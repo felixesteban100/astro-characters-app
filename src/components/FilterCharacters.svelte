@@ -110,7 +110,6 @@
             ><Checkbox bind:checked={characterOrFullNameState} /> Fullname (Checked)
             | CharacterName (Unchecked)
           </Label>
-          <!-- class={`${sortByState === "names_sended" ? "hidden" : "flex"} gap-5 items-center justify-start`} -->
           <Label
             class={`${sortByState === "names_sended" ? "text-primary" : ""} flex gap-5 items-center justify-start`}
           >
