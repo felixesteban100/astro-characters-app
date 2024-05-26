@@ -41,7 +41,8 @@
   $: howManyPerPageState = howManyPerPage;
   $: sortByState = sortBy;
   $: sortDirectionState = sortDirection;
-  $: includesOrExactState = includesOrExact;
+  $: includesOrExactState =
+    sortByState === "names_sended" ? false : includesOrExact;
   $: genderState = gender;
   $: sideState = side;
   $: raceState = race;
@@ -109,10 +110,17 @@
             ><Checkbox bind:checked={characterOrFullNameState} /> Fullname (Checked)
             | CharacterName (Unchecked)
           </Label>
+          <!-- class={`${sortByState === "names_sended" ? "hidden" : "flex"} gap-5 items-center justify-start`} -->
           <Label
-            class={`${sortByState === "names_sended" ? "hidden" : "flex"} gap-5 items-center justify-start`}
-            ><Checkbox bind:checked={includesOrExactState} /> Include charactes in
-            name (checked) | Exact name (Unchecked)
+            class={`${sortByState === "names_sended" ? "text-primary" : ""} flex gap-5 items-center justify-start`}
+          >
+            {#if sortByState !== "names_sended"}
+              <Checkbox bind:checked={includesOrExactState} />
+              Include charactes in name (checked) | Exact name (Unchecked)
+            {:else}
+              <Checkbox checked={true} disabled={true} />
+              Write Exact name to find character
+            {/if}
           </Label>
         </div>
 
