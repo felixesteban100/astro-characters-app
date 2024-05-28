@@ -1,5 +1,8 @@
 ---
-import { AlignmentTranslator } from "$lib/charactersUtils";
+import {
+  AlignmentTranslator,
+  BackgroundColorAligment,
+} from "$lib/charactersUtils";
 import Image from "astro/components/Image.astro";
 import ImageCharacter from "../ImageCharacter.astro";
 import { ObjectId } from "mongodb";
@@ -24,15 +27,15 @@ const isNew = (date: Date) => {
 ---
 
 <div class="group/character">
-  {
+  <!--  {
     isNew(new ObjectId(c._id).getTimestamp()) === true ? (
       <div class="group-hover/character:scale-125 absolute z-50 p-2 bg-primary rounded-md -translate-y-2 -translate-x-2 font-semibold transition-all">
         <p class="text-primary-foreground">
-          New {/* ({new ObjectId(c._id).getTimestamp()}) */}
+          New
         </p>
       </div>
     ) : null
-  }
+  } -->
   <div
     class="flex flex-col justify-center items-start gap-5 xl:items-start w-fit h-fit"
   >
@@ -47,14 +50,24 @@ const isNew = (date: Date) => {
         id={c.id}
       />
     </div>
-    <div class="flex flex-col gap-2">
-      <p class="font-bold text-xl">
-        <!-- id={`character-${c.id}`} -->
-        <!-- id={`character`} -->
-        <span class="text-primary">{c.id} |</span>
-        {c.name}
-      </p>
-      <div class="flex justify-start items-center gap-2">
+    <div class="flex flex-col gap-2 w-full">
+      <div class="flex justify-between w-full">
+        <p class="font-bold text-xl">
+          <span class="text-primary">{c.id} |</span>
+          {" "}{c.name}
+        </p>
+
+        {
+          isNew(new ObjectId(c._id).getTimestamp()) === true ? (
+            <div
+              class={`group-hover/character:scale-125 px-2 bg-primary rounded-full font-semibold transition-all`}
+            >
+              <p class="text-primary-foreground">New</p>
+            </div>
+          ) : null
+        }
+      </div>
+      <div class="flex justify-between items-center gap-2">
         <Image
           src={c.biography.publisher.logo}
           alt=""
@@ -62,10 +75,14 @@ const isNew = (date: Date) => {
           height={800}
           class="h-10 w-auto"
         />
-        |{" "}
-        <p class="text-secondary-foreground">
-          {AlignmentTranslator(c.biography.alignment)}
-        </p>
+        <!-- |{" "} -->
+        <div
+          class={`px-2 ${BackgroundColorAligment(c.biography.alignment)} rounded-full font-semibold transition-all`}
+        >
+          <p class="text-secondary-foreground">
+            {AlignmentTranslator(c.biography.alignment)}
+          </p>
+        </div>
       </div>
     </div>
   </div>

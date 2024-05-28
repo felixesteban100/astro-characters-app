@@ -5,6 +5,10 @@ export function AlignmentTranslator(alignment: string) {
   return alignment === "good" ? "Hero" : alignment === "bad" ? "Villain" : "Anti-Hero"
 }
 
+export function BackgroundColorAligment(alignment: string) {
+  return alignment === "good" ? "bg-green-800" : alignment === "bad" ? "bg-red-800" : "bg-gray-800"
+}
+
 
 export function getWinnerBetweenTwoCharacters(first: Character, second: Character, firstStats: number, secondStats: number) {
   return firstStats === secondStats ? "Tie" : firstStats > secondStats ? first.name : second.name
