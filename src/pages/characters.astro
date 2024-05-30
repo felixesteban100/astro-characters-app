@@ -127,10 +127,6 @@ const universesWithTeams = await collectionUniverses
   ])
   .toArray();
 
-const attritutesFilteredArr = Object.entries(valuesFilter).filter(
-  ([key, value]) => value !== "All" && value !== "both",
-);
-
 const allUniverses = await collectionUniverses
   .find({})
   .sort({ _id: 1 })
@@ -150,6 +146,10 @@ const allPowers = await collectionPowers.find({}).sort({ _id: 1 }).toArray();
 //     );
 //   });
 // });
+
+const attritutesFilteredArr = Object.entries(valuesFilter).filter(
+  ([key, value]) => value !== "All" && value !== "both",
+);
 
 function getTitle(): string {
   return attritutesFilteredArr.length > 0
@@ -215,7 +215,7 @@ function getTitle(): string {
     }
 
     <div
-      class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-10 w-full`}
+      class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-y-16 gap-10 w-full`}
     >
       {
         characterJoinTeamAndUniverse.map((c) => {

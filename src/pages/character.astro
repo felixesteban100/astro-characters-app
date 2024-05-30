@@ -5,6 +5,7 @@ import { collectionCharacters } from "../lib/mongodb";
 import Tabs from "src/components/Tabs.svelte";
 import { joinTeam_universe_power_toCharacter } from "$lib/charactersUtils";
 import ImageCharacter from "src/components/ImageCharacter.astro";
+import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 
 const id = Astro.url.searchParams.get("id");
 const characterJoinTeamAndUniverse = await collectionCharacters
@@ -27,6 +28,7 @@ if (!selectedCharacter) {
 }
 ---
 
+<!-- title={`${selectedCharacter?.name}`} -->
 <Layout
   title={`${selectedCharacter?.name}`}
   otherLinks={[
@@ -45,7 +47,7 @@ if (!selectedCharacter) {
           <span class="text-primary">{selectedCharacter.id} |</span>
           {selectedCharacter.name}
         </p> -->
-      <div
+      <!-- <div
         class="relative box characterId overflow-hidden"
         transition:name={`photo-${selectedCharacter.id}`}
       >
@@ -57,6 +59,13 @@ if (!selectedCharacter) {
           loading="eager"
           alt={selectedCharacter.name}
           id={selectedCharacter.id}
+        />
+      </div> -->
+      <div transition:name={`photo-${selectedCharacter.id}`}>
+        <CharacterCard
+          imageSizes={"h-[40rem] w-[40rem]"}
+          c={selectedCharacter}
+          showName={false}
         />
       </div>
     </div>

@@ -11,9 +11,10 @@ interface Props {
   // c: Character;
   c: CharacterWithJoinTeamUniversePower;
   imageSizes?: string;
+  showName?: boolean;
 }
 
-const { c, imageSizes } = Astro.props;
+const { c, imageSizes, showName = true } = Astro.props;
 
 const isNew = (date: Date) => {
   const now = new Date();
@@ -37,8 +38,25 @@ const isNew = (date: Date) => {
     ) : null
   } -->
   <div
-    class="flex flex-col justify-center items-start gap-5 xl:items-start w-fit h-fit"
+    class="flex flex-col justify-center items-start gap-4 xl:items-start w-fit h-fit"
   >
+    {
+      showName === true && (
+        <div class="flex justify-center w-full gap-5">
+          <p class="font-bold text-xl">
+            <span class="text-primary">{c.id} |</span> {c.name}
+          </p>
+
+          {isNew(new ObjectId(c._id).getTimestamp()) === true ? (
+            <div
+              class={`group-hover/character:scale-125 px-2 bg-primary rounded-full font-semibold transition-all`}
+            >
+              <p class="text-primary-foreground">New</p>
+            </div>
+          ) : null}
+        </div>
+      )
+    }
     <div class="relative box characterId flex justify-center">
       <ImageCharacter
         classes={`object-cover ${imageSizes ? imageSizes : "h-[25rem] w-[25rem]"} rounded-md transition-all duration-500 group-hover/character:opacity-30`}
@@ -51,22 +69,6 @@ const isNew = (date: Date) => {
       />
     </div>
     <div class="flex flex-col gap-2 w-full">
-      <div class="flex justify-between w-full">
-        <p class="font-bold text-xl">
-          <span class="text-primary">{c.id} |</span>
-          {" "}{c.name}
-        </p>
-
-        {
-          isNew(new ObjectId(c._id).getTimestamp()) === true ? (
-            <div
-              class={`group-hover/character:scale-125 px-2 bg-primary rounded-full font-semibold transition-all`}
-            >
-              <p class="text-primary-foreground">New</p>
-            </div>
-          ) : null
-        }
-      </div>
       <div class="flex justify-between items-center gap-2">
         <Image
           src={c.biography.publisher.logo}

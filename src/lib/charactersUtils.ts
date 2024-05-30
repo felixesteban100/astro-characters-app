@@ -6,7 +6,7 @@ export function AlignmentTranslator(alignment: string) {
 }
 
 export function BackgroundColorAligment(alignment: string) {
-  return alignment === "good" ? "bg-green-800" : alignment === "bad" ? "bg-red-800" : "bg-gray-800"
+  return alignment === "good" ? "bg-green-800" : alignment === "bad" ? "bg-red-800" : "bg-yellow-800"
 }
 
 

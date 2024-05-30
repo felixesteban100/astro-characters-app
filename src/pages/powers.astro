@@ -14,7 +14,7 @@ const howManyPerPage = parseInt(
     CHARACTERS_PER_PAGE.toString(),
 );
 
-const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
+const offset = (parseInt(currentPage) - 1) * howManyPerPage;
 
 const query: { name?: { $in: RegExp[] } } = {};
 
@@ -80,12 +80,12 @@ const powersLenght = await collectionPowers.find(query).toArray();
     </div>
 
     {
-      powersLenght.length > CHARACTERS_PER_PAGE && (
+      powersLenght.length > howManyPerPage && (
         <Pagination
           currentPage={currentPage}
-          url={`/powers?currentPage=`}
+          url={`/powers?powerName=${powerName}&howManyPerPage=${howManyPerPage}&currentPage=`}
           countItems={powersLenght.length}
-          howManyPerPage={CHARACTERS_PER_PAGE}
+          howManyPerPage={howManyPerPage}
           client:only
         />
       )

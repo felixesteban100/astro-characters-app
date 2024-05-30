@@ -9,7 +9,6 @@ import Sparkles from "src/components/Sparkles.svelte";
 /* 
 --- make the viewTransition API to not scrool on top before changing page
 
-
 --- add icons for each field in the appereance tan and biography tab (/character page)
 -- add search bar for teams, universe, powers
 - add id to powers
@@ -157,5 +156,7 @@ if (otherLinks) links.push(...otherLinks);
   </body><!-- transition:animate={currentPath.includes("/compare") /* ||
           currentPath.includes("/random_characters") */
             ? fade({ duration: "1s" })
-            : slide({ duration: "1s" })}-->
+            : slide({ duration: "1s" })}--><!-- transition:animate={animateFade === true
+            ? fade({ duration: "1s" })
+            : slide({ duration: "1s" })} -->
 </html>

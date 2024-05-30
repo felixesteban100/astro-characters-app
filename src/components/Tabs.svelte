@@ -17,12 +17,13 @@
   // import CharacterTeamsDisplay from "./CharacterTeamsDisplay.astro";
   import Appereance from "./stats/Appereance.svelte";
   import Biography from "./stats/Biography.svelte";
-  import { navigate } from "astro:transitions/client";
   //   import {organizedComicsProperty} from '../lib/charactersUtils';
 
   export let characterInfo: /* Character */ CharacterWithJoinTeamUniversePower;
   export let publisherInfo: Omit<Universe, "teams">;
   export let teams: Omit<Team, "members" | "universe">[];
+
+  const relativesArr = characterInfo.connections.relatives.split(",");
 </script>
 
 <Tabs.Root
@@ -57,21 +58,21 @@
     >
       <Library size={20} />
     </Tabs.Trigger>
-    <Tabs.Trigger class="text-base-content hidden md:block" value="Teams">
-      Teams
+    <Tabs.Trigger class="text-base-content hidden md:block" value="Connections">
+      Connections
     </Tabs.Trigger>
     <Tabs.Trigger
       class="text-base-content md:hidden flex justify-center"
-      value="Teams"
+      value="Connections"
     >
       <Group size={20} />
     </Tabs.Trigger>
-    <Tabs.Trigger class="text-base-content hidden md:block" value="Comics">
-      Comics
+    <Tabs.Trigger class="text-base-content hidden md:block" value="Gallery">
+      Gallery
     </Tabs.Trigger>
     <Tabs.Trigger
       class="text-base-content md:hidden flex justify-center"
-      value="Comics"
+      value="Gallery"
     >
       <PictureInPicture size={20} />
     </Tabs.Trigger>
@@ -92,12 +93,13 @@
       connections={characterInfo.connections}
     />
   </Tabs.Content>
-  <Tabs.Content value="Teams">
+  <Tabs.Content value="Connections">
     <!-- <slot name="character-images-display"/> -->
     <div
-      class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px]"
+      class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px] space-y-5"
     >
       <div class="flex flex-col gap-5 justify-center items-center">
+        <p class="text-3xl font-bold">Teams</p>
         {#if teams.length < 1}
           <p class="text-xl font-medium">No teams</p>
         {/if}
@@ -126,9 +128,21 @@
           </a>
         {/each}
       </div>
+      <div class="flex flex-col gap-5 justify-center items-center">
+        <p class="text-3xl font-bold">Relatives</p>
+        {#if relativesArr.length < 1}
+          <p class="text-xl font-medium">No relatives</p>
+        {/if}
+
+        {#each relativesArr as relative}
+          <!-- <a href={`/characters`} class="hover:underline"> -->
+          <p>{relative}</p>
+          <!-- </a> -->
+        {/each}
+      </div>
     </div>
   </Tabs.Content>
-  <Tabs.Content value="Comics">
+  <Tabs.Content value="Gallery">
     <CharacterImagesDisplay
       characterInfoComics={characterInfo.comics}
       publisherComics={publisherInfo.comics}
