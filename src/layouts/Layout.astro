@@ -7,6 +7,9 @@ import Sparkles from "src/components/Sparkles.svelte";
 
 // things to fix:
 /* 
+
+-- give a description property to powers collection
+
 --- make the viewTransition API to not scrool on top before changing page
 
 --- add icons for each field in the appereance tan and biography tab (/character page)
@@ -27,6 +30,10 @@ properties: name, description, universe, characters, images, location
 
 
 - (I added one but I can't do zoom) add a library to see each image in the charactersImageDisplay.svelte component in fullscreen  
+[https://www.npmjs.com/package/bigger-picture#options]
+[https://madewithsvelte.com/bigger-picture]
+maybe this one can work
+
 - some images are not displaying (because are from a CORS site i guess or webp files) :/
 - dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
 -- add description, weaknesses, and origin property to each character 
@@ -52,14 +59,6 @@ const links = [
     href: "/characters",
     title: "Characters",
   },
-  {
-    href: "/random_characters",
-    title: "Random Characters",
-  },
-  {
-    href: "/compare",
-    title: "Compare",
-  },
   // {
   //   href: "/team-fight",
   //   title: "some vs some",
@@ -75,6 +74,14 @@ const links = [
   {
     href: "/powers",
     title: "Powers",
+  },
+  {
+    href: "/random_characters",
+    title: "Random Characters",
+  },
+  {
+    href: "/compare",
+    title: "Compare",
   },
 ];
 

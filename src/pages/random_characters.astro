@@ -8,7 +8,6 @@ import { getRandomIdRecursively } from "../lib/charactersUtils";
 import { Button } from "$lib/components/ui/button";
 import { Shuffle } from "lucide-astro";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
-import { undefined } from "zod";
 
 // const someCharacters = await collectionCharacters
 //   // .find()
@@ -101,12 +100,11 @@ const charactersDictionary: { [key: string]: string } = {
           .map((c: CharacterWithJoinTeamUniversePower, index: number) => {
             return (
               <div class="flex flex-col gap-5 justify-center ">
+                {/* id={`photo-${c.id}`} */}
                 <a
                   href={`character?id=${c.id}&animateFade=true`}
                   class={`w-full h-full flex justify-center ${/* animateFade === "false" &&  */ "character-image"}`}
-                  id={
-                    /* animateFade === "false" ? */ `photo-${c.id}` /* : `${c.id}` */
-                  }
+                  transition:name={`photo-${c.id}`}
                 >
                   <CharacterCard c={c} />
                 </a>
@@ -115,6 +113,7 @@ const charactersDictionary: { [key: string]: string } = {
                 <a
                   href={`/random_characters?${charactersDictionary[`${index}`]}=${c.id}`}
                   class="hover:underline"
+                  transition:name={`random-${c.id}`}
                 >
                   Random all but {charactersDictionary[`${index}`]} character
                 </a>
@@ -123,8 +122,16 @@ const charactersDictionary: { [key: string]: string } = {
                 <a
                   href={`/random_characters?first=${index === 0 ? null : firstId}&second=${index === 1 ? null : secondId}&third=${index === 2 ? null : thirdId}&fourth=${index === 3 ? null : fourthId}`}
                   class="hover:underline"
+                  transition:name={`random-self-${c.id}`}
                 >
                   Random {index + 1} character only
+                </a>
+                <a
+                  href={`/compare?first=${c.id}`}
+                  class="hover:underline"
+                  transition:name={`compare-${c.id}`}
+                >
+                  Compare using {index + 1} character
                 </a>
               </div>
             );

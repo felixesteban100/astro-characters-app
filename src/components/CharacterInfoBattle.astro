@@ -17,22 +17,30 @@ const { selectedCharacter, position } = Astro.props;
 ---
 
 <div class="w-full h-full flex flex-col justify-start items-center">
-  <div class="character-image" id={`photo-${selectedCharacter.id}`}>
+  <!-- id={`photo-${selectedCharacter.id}`} -->
+  <div class="character-image">
     <a
       class="hidden lg:block"
       href={`/compare?${"first"}=${selectedCharacter.id}`}
+      transition:name={`reuse-${selectedCharacter.id}`}
     >
       <!-- Fight using {selectedCharacter.name} -->
       <Button variant={"outline"} class={"mb-2"}>
         Reuse {selectedCharacter.name}
       </Button>
     </a>
-    <a href={`/character?id=${selectedCharacter.id}`}>
+    <a
+      href={`/character?id=${selectedCharacter.id}`}
+      transition:name={`photo-${selectedCharacter.id}`}
+    >
       <CharacterCard imageSizes={"h-[40rem] w-[40rem]"} c={selectedCharacter} />
     </a>
   </div>
 
-  <div class="w-[80%] flex flex-col gap-10 mt-10">
+  <div
+    transition:name={`stats-${selectedCharacter.id}`}
+    class="w-[80%] flex flex-col gap-10 mt-10"
+  >
     <StatsNumber
       client:load
       showNameAtAll={false}
