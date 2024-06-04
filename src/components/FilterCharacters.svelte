@@ -193,7 +193,7 @@
           >
             <option value={"All"}>All powers</option>
             {#each allPowers as power}
-              <option value={power.value}>{power.name}</option>
+              <option value={power.value}>{power.id} - {power.name}</option>
             {/each}
           </select>
         </Label>
@@ -223,7 +223,7 @@
             >
               <option value="All">All Teams</option>
               {#each universeInfo.teams as team}
-                <option value={team.value}>{team.name}</option>
+                <option value={team.value}>{team.id} - {team.name}</option>
               {/each}
             </select>
           </Label>

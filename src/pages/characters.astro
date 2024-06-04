@@ -119,6 +119,7 @@ const universesWithTeams = await collectionUniverses
               comics: 0,
             },
           },
+          { $sort: { name: 1 } },
         ],
         as: "teams",
       },
@@ -131,7 +132,7 @@ const allUniverses = await collectionUniverses
   .find({})
   .sort({ _id: 1 })
   .toArray();
-const allPowers = await collectionPowers.find({}).sort({ _id: 1 }).toArray();
+const allPowers = await collectionPowers.find({}).sort({ name: 1 }).toArray();
 
 // const allTeams = await collectionTeams.find({}).sort({ id: -1 }).toArray();
 // allTeams.forEach((teamsToUpdate) => {
