@@ -13,6 +13,7 @@
   import type { WithId } from "mongodb";
   import type { Power, Universe, UniverseWithJoinTeams } from "$lib/types";
   // import { Slider } from "$lib/components/ui/slider/index.js";
+  //@ts-ignore
   import { navigate } from "astro:transitions/client";
   import Sheet from "src/components/Sheet.svelte";
   import { Close } from "$lib/components/ui/sheet";

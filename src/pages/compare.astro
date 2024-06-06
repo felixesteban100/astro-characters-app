@@ -71,11 +71,13 @@ const [secondCharacter] = await collectionCharacters
     <CharacterInfoBattle
       position={"first"}
       selectedCharacter={firstCharacter}
+      otherCharacterId={secondCharacter.id}
     />
 
     <CharacterInfoBattle
       position={"second"}
       selectedCharacter={secondCharacter}
+      otherCharacterId={firstCharacter.id}
     />
   </div>
 </Layout>

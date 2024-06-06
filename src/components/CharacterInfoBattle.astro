@@ -1,40 +1,56 @@
 ---
 import { Button } from "$lib/components/ui/button";
-import Stats from "./stats/Stats.svelte";
-import ImageCharacter from "./ImageCharacter.astro";
 import { Percent } from "lucide-astro";
 import StatsNumber from "./stats/StatsNumber.svelte";
-import Powers from "./stats/Powers.svelte";
 import CharacterCard from "./characters_page/CharacterCard.astro";
+import ChangeCharacterInfoBattle from "./ChangeCharacterInfoBattle.svelte";
+import { collectionCharacters } from "$lib/mongodb";
 
 interface Props {
   selectedCharacter: CharacterWithJoinTeamUniversePower;
   classNames?: string;
   position: string;
+  otherCharacterId: number;
 }
 
-const { selectedCharacter, position } = Astro.props;
+const { selectedCharacter, position, otherCharacterId } = Astro.props;
+
+const allCharacters_Id_Name = await collectionCharacters
+  .find({}, { projection: { id: 1, name: 1 } })
+  .toArray();
 ---
 
 <div class="w-full h-full flex flex-col justify-start items-center">
   <!-- id={`photo-${selectedCharacter.id}`} -->
   <div class="character-image">
     <a
-      class="hidden lg:block"
-      href={`/compare?${"first"}=${selectedCharacter.id}`}
-      transition:name={`reuse-${selectedCharacter.id}`}
-    >
-      <!-- Fight using {selectedCharacter.name} -->
-      <Button variant={"outline"} class={"mb-2"}>
-        Reuse {selectedCharacter.name}
-      </Button>
-    </a>
-    <a
       href={`/character?id=${selectedCharacter.id}`}
       transition:name={`photo-${selectedCharacter.id}`}
     >
       <CharacterCard imageSizes={"h-[40rem] w-[40rem]"} c={selectedCharacter} />
     </a>
+    <div class="flex justify-between w-full mt-5">
+      <a
+        class="hidden lg:block"
+        href={`/compare?${"first"}=${selectedCharacter.id}`}
+        transition:name={`reuse-${selectedCharacter.id}`}
+      >
+        <!-- Fight using {selectedCharacter.name} -->
+        <Button variant={"outline"} class={"mb-2"}>
+          Reuse {selectedCharacter.name}
+        </Button>
+      </a>
+
+      <div transition:name={`change-${selectedCharacter.id}`}>
+        <ChangeCharacterInfoBattle
+          selectedCharacter={selectedCharacter}
+          position={position}
+          otherCharacterId={otherCharacterId}
+          allCharacters_Id_Name={allCharacters_Id_Name}
+          client:load
+        />
+      </div>
+    </div>
   </div>
 
   <div
