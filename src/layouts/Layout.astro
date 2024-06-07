@@ -7,42 +7,85 @@ import Sparkles from "src/components/Sparkles.svelte";
 
 // things to fix:
 /* 
+  - FEATURES
+    - make each character_class to have a different color depending on the number range
 
--- give a description property to powers collection
+    - make each power tier to have a certain color depending on the number range
+  
+    - when added to the character colleciton use the superhero_class in the character card
 
---- make the viewTransition API to not scrool on top before changing page
+    - make the viewTransition API to not scrool on top before changing page?
+    
+    - add icons for each field in the appereance tan and biography tab (/character page)
+    
+    - add a new page called objects where you display the documents from the objects collection
+    
+    - add page for places where you display the documents from the places collection
 
---- add icons for each field in the appereance tan and biography tab (/character page)
--- add search bar for teams, universe, powers
-- add id to powers
--- add objects collection with the following propertyes: name, description, universe, carriers (charactersIds) so that we can aggergate the characters using a $lookup later, the same with powers (array of powers values)
-  - use chatGPT to populate the objects collection
-  I could use this ones: 
-  https://comicvine.gamespot.com/profile/van_cere/lists/dc-objects-items-and-artifacts/51733/
-  https://www.cbr.com/marvel-powerful-weapons-fans-forgot-existed/
--- add a new page called objects where you display the documents from the objects collection
+    - (I added one but I can't do zoom) add a library to see each image in the charactersImageDisplay.svelte component in fullscreen  
+      [https://www.npmjs.com/package/bigger-picture#options]
+      [https://madewithsvelte.com/bigger-picture]
+      maybe this one can work
 
--- do the exact same but with places: 
-  - create collection
-  - create page
-properties: name, description, universe, characters, images, location
+    - some images are not displaying (because are from a CORS site i guess or webp files) :/
 
+    - dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
 
+    - configure the swap page transition so that they slide in the same order they are in the navbar
+----------------------------------------------------
+  POPULATE ALL THE ADDED PROPERTIES  
 
-- (I added one but I can't do zoom) add a library to see each image in the charactersImageDisplay.svelte component in fullscreen  
-[https://www.npmjs.com/package/bigger-picture#options]
-[https://madewithsvelte.com/bigger-picture]
-maybe this one can work
+  - NEW PROPERTIES FOR CHARACTERS
+    description (long string), 
+    weaknesses (array of strings), 
+    origin (long string), 
+    enemies (array of characters ids)  
+    logo[if i can find where to get all the logos of all the characters first] (url of the image store on the web and took it from marveldatabase/), 
+    tier (ask chatgpt to rank them from 1 to 10), 
+    character_class (it is calculated by ( INTELLIGENCE^1.3 + (STRENGTH*0.5 )^2 + (SPEED*0.5)^2 + DURABILITY^1.6 + (POWER + (SUPERPOWERS_SCORES*SPL))^2 + COMBAT^1.8 ) ^ TIER) 
 
-- some images are not displaying (because are from a CORS site i guess or webp files) :/
-- dark mode toggling when changes page while using viewTransition (in the mean time I have just dark mode by default)
--- add description (long string), weaknesses (array of strings), origin (long string), enemies (array of characters ids) and logo[if i can find where to get all the logos of all the characters first] (url of the image store on the web and took it from marveldatabase/) properties to each character 
--- add leaders property as an array to each team { name, id }[]
-- configure the swap page transition so that they slide in the same order they are in the navbar
+    code used: 
+    {
+      $set: {
+        'appearance.description': "",
+        'weaknesses': [],
+        'biography.origin': '',
+        'connections.enemies': [],
+        'logo': '',
+        'tier': 0,
+        'character_class': 0
+      },
+    }
+
+  - NEW PROPERTIES FOR TEAMS
+      leaders (as an array to each team { name, id }[])
+
+  - NEW PROPERTIES FOR POWERS
+      description
+      score (ask chatgpt for a number from 1 to 100,000)
+      tier (ask chatgpt for a number from 1 to 10)
+
+----------------------------------------------------
+  - NEW COLLECTION PLACES:
+      name 
+      description 
+      universe
+      characters 
+      images 
+      location
+
+  - NEW COLLECTION OBJECTS:
+      name, 
+      description, 
+      universe, 
+  
+      I could use this ones to begging: 
+      https://comicvine.gamespot.com/profile/van_cere/lists/dc-objects-items-and-artifacts/51733/
+      https://www.cbr.com/marvel-powerful-weapons-fans-forgot-existed/
+  
 */
 
 const currentPath = Astro.url.pathname;
-
 interface Props {
   title?: string;
   otherLinks?: {

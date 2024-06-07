@@ -16,6 +16,7 @@ export type Character = {
         eyeColor: string;
         hairColor: string;
         age: string;
+        description: string;
     };
     biography: {
         fullName: string;
@@ -25,6 +26,7 @@ export type Character = {
         firstAppearance: string;
         publisher: string;
         alignment: string;
+        origin: ""
     };
     work: {
         occupation: string;
@@ -33,6 +35,7 @@ export type Character = {
     connections: {
         groupAffiliation: string[];
         relatives: string;
+        enemies: string[]
     };
     images: {
         xs: string;
@@ -41,15 +44,19 @@ export type Character = {
         lg: string;
         // mdi?: string;
         // md2?: string;
-        [key: string]: string
+        [key: string]: string;
     };
     _id: string;
     id: number;
     name: string;
     slug: string;
     comics?: string[];
-    powers: (string | number)[]
-}
+    powers: (string | number)[];
+    weaknesses: string[];
+    logo: string;
+    tier: number;
+    character_class: number;
+};
 
 export type CharacterWithJoinTeamUniversePower = {
     powerstats: {
@@ -131,6 +138,7 @@ export type Team = {
     // universe: { value: string }, // NEW 
     logo: string,
     comics: string[]
+    leaders: string[]
 }
 
 export type TeamWithJoinCharacterUniverse = {

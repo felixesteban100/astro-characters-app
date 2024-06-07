@@ -10,7 +10,8 @@
   import {
     /* type Character, */ type Universe,
     type CharacterWithJoinTeamUniversePower,
-  } from "$lib/types";
+    type Team,
+  } from "types/types";
   import Stats from "./stats/Stats.svelte";
   import CharacterImagesDisplay from "./CharacterImagesDisplay.svelte";
   // import CharacterTeamsDisplay from "./CharacterTeamsDisplay.svelte";

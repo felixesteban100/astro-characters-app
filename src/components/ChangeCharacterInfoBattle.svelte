@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as Command from "$lib/components/ui/command/index.js";
   import Dialog from "./Dialog.svelte";
-  import { type CharacterWithJoinTeamUniversePower } from "$lib/types";
+  import { type CharacterWithJoinTeamUniversePower } from "types/types";
   //@ts-ignore
   import { navigate } from "astro:transitions/client";
 
@@ -29,25 +29,22 @@
         <Command.Empty>No results found.</Command.Empty>
         <Command.Group heading="Suggestions">
           {#each allCharacters_Id_Name as character}
-            <!-- <a
-              href={`/compare?${position}=${character.id}&${otherPosition}=${otherCharacterId}`}
-            > -->
-            <button
-              on:click={() => {
-                open = false;
-                setTimeout(
-                  navigate(
-                    `/compare?${position}=${character.id}&${otherPosition}=${otherCharacterId}`,
-                  ),
-                  500,
-                );
-              }}
-            >
-              <Command.Item>
-                <span>{character.name}</span>
-              </Command.Item>
-            </button>
-            <!-- </a> -->
+            <Command.Item>
+              <button
+                on:click={() => {
+                  open = false;
+                  setTimeout(
+                    () =>
+                      navigate(
+                        `/compare?${position}=${character.id}&${otherPosition}=${otherCharacterId}`,
+                      ),
+                    500,
+                  );
+                }}
+              >
+                <span>{character.id}-{character.name}</span>
+              </button>
+            </Command.Item>
           {/each}
         </Command.Group>
       </Command.List>
