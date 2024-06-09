@@ -6,6 +6,7 @@ import Tabs from "src/components/Tabs.svelte";
 import { joinTeam_universe_power_toCharacter } from "$lib/charactersUtils";
 import ImageCharacter from "src/components/ImageCharacter.astro";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
+import type { CharacterWithJoinTeamUniversePower } from "types/types";
 
 const id = Astro.url.searchParams.get("id");
 const characterJoinTeamAndUniverse = await collectionCharacters

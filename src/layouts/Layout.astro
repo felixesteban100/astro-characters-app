@@ -93,9 +93,10 @@ interface Props {
     title: string;
   }[];
   animateFade?: boolean;
+  showTitle?: boolean;
 }
 
-const { title, otherLinks, animateFade } = Astro.props;
+const { title, otherLinks, animateFade, showTitle = true } = Astro.props;
 
 const links = [
   {
@@ -185,7 +186,13 @@ if (otherLinks) links.push(...otherLinks);
           transition:animate="none"
           transition:name={`title-animation`}
         >
-          <p class="font-bold text-3xl">{title}</p>
+          {
+            showTitle === true ? (
+              <p class="font-bold text-3xl">{title}</p>
+            ) : (
+              <div />
+            )
+          }
           <div>
             <div id="actionDoer">
               <slot name="page_title_other_content" />

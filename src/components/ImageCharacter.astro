@@ -3,7 +3,7 @@ import Image from "astro/components/Image.astro";
 
 interface Props {
   classes: string;
-  id: number;
+  id: string | number;
   src: string;
   height: number;
   width: number;
@@ -22,6 +22,7 @@ const { classes, id, src, height, width, alt, loading } = Astro.props;
   width={width}
   alt={alt}
   loading={loading}
+  id={id.toString()}
 />
 
 <!-- transition:name={`image-character-${id}`} -->
