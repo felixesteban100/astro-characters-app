@@ -9,6 +9,49 @@ export function BackgroundColorAligment(alignment: string) {
   return alignment === "good" ? "bg-green-800" : alignment === "bad" ? "bg-red-800" : "bg-yellow-800"
 }
 
+export function BackgroundColorTier(tier: number) {
+
+  switch (tier) {
+    case 1:
+      return "bg-red-500 text-black"
+
+    case 2:
+      return "bg-yellow-500 text-black"
+
+    case 3:
+      return "bg-green-500 text-black"
+
+    case 4:
+      return "bg-orange-500 text-black"
+
+    case 5:
+      return "bg-yellow-800 text-white"
+
+    case 6:
+      return "bg-pink-500 text-black"
+
+    case 7:
+      return "bg-blue-500 text-black"
+
+    case 8:
+      return "bg-cyan-500 text-black"
+
+    case 9:
+      return "bg-orange-500 text-black"
+
+    case 10:
+      return "bg-purple-500 text-black"
+
+
+    default:
+      return "bg-primary text-primary-foreground"
+
+  }
+}
+
+export function BackgroundColorScore(score: number) {
+  return "bg-secondary text-secondary-foreground"
+}
 
 export function getWinnerBetweenTwoCharacters(first: Character, second: Character, firstStats: number, secondStats: number) {
   return firstStats === secondStats ? "Tie" : firstStats > secondStats ? first.name : second.name

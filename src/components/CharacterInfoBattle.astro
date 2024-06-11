@@ -5,6 +5,7 @@ import StatsNumber from "./stats/StatsNumber.svelte";
 import CharacterCard from "./characters_page/CharacterCard.astro";
 import ChangeCharacterInfoBattle from "./ChangeCharacterInfoBattle.svelte";
 import { collectionCharacters } from "$lib/mongodb";
+import LoaderAstro from "./LoaderAstro.astro";
 
 interface Props {
   selectedCharacter: CharacterWithJoinTeamUniversePower;
@@ -22,11 +23,15 @@ const allCharacters_Id_Name = await collectionCharacters
 
 <div class="w-full h-full flex flex-col justify-start items-center">
   <!-- id={`photo-${selectedCharacter.id}`} -->
-  <div class="character-image">
+  <div>
     <a
       href={`/character?id=${selectedCharacter.id}`}
       transition:name={`photo-${selectedCharacter.id}`}
     >
+      <!-- class="character-image"
+      id={`photo-${selectedCharacter.id}`} -->
+      <!--  -->
+
       <CharacterCard imageSizes={"h-[40rem] w-[40rem]"} c={selectedCharacter} />
     </a>
     <div class="flex justify-between w-full mt-5">

@@ -84,6 +84,7 @@ document.addEventListener('astro:page-load', (e) => {
 document.addEventListener('astro:before-preparation', () => {
   const body = document.querySelector('body')
   const loaders = document.querySelector('#loader')
+  const loaders_dialog = document.querySelector('#loader-dialog')
   const actionDoer = document.querySelector('#actionDoer')
 
   if (screen.width < 800) {
@@ -92,6 +93,7 @@ document.addEventListener('astro:before-preparation', () => {
 
   body?.classList.add('cursor-wait')
   loaders?.classList.remove('hidden')
+  loaders_dialog?.classList.remove('hidden')
   actionDoer?.classList.add('hidden')
 })
 

@@ -60,11 +60,6 @@ import Sparkles from "src/components/Sparkles.svelte";
   - NEW PROPERTIES FOR TEAMS
       leaders (as an array to each team { name, id }[])
 
-  - NEW PROPERTIES FOR POWERS
-      description
-      score (ask chatgpt for a number from 1 to 100,000)
-      tier (ask chatgpt for a number from 1 to 10)
-
 ----------------------------------------------------
   - NEW COLLECTION PLACES:
       name 
@@ -201,9 +196,9 @@ if (otherLinks) links.push(...otherLinks);
           </div>
         </div>
         <div
-          transition:animate={animateFade
+          transition:animate={/* animateFade
             ? fade({ duration: "1s" })
-            : slide({ duration: "1s" })}
+            :  */ slide({ duration: "1s" })}
           transition:name={`page-animation`}
         >
           <slot name="content" />

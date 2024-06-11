@@ -1,8 +1,7 @@
 <script lang="ts">
   import * as Command from "$lib/components/ui/command/index.js";
+  import { Loader } from "lucide-svelte";
   import Dialog from "./Dialog.svelte";
-  import { type CharacterWithJoinTeamUniversePower } from "types/types";
-  //@ts-ignore
   import { navigate } from "astro:transitions/client";
 
   export let selectedCharacter: CharacterWithJoinTeamUniversePower;
@@ -23,6 +22,7 @@
     type the name of another character in order to replace the current one
   </p>
   <div slot="content">
+    <Loader id="loader-dialog" class={`hidden animate-spin text-primary`} />
     <Command.Root class="max-w-[450px] rounded-lg border shadow-md">
       <Command.Input placeholder="Type a command or search..." />
       <Command.List>

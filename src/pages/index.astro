@@ -3,7 +3,6 @@ import Layout from "../layouts/Layout.astro";
 import { collectionCharacters } from "../lib/mongodb";
 import HeroCard from "../components/HeroCard.astro";
 import { Rocket } from "lucide-astro";
-import type { Character } from "types/types";
 
 const randomCharacters = await collectionCharacters
   .aggregate<Character>([{ $sample: { size: 50 } }])

@@ -7,11 +7,6 @@
     Group,
     PictureInPicture,
   } from "lucide-svelte";
-  import {
-    /* type Character, */ type Universe,
-    type CharacterWithJoinTeamUniversePower,
-    type Team,
-  } from "types/types";
   import Stats from "./stats/Stats.svelte";
   import CharacterImagesDisplay from "./CharacterImagesDisplay.svelte";
   // import CharacterTeamsDisplay from "./CharacterTeamsDisplay.svelte";

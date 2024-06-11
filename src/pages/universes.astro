@@ -48,12 +48,21 @@ const universesJoinTeams = await collectionUniverses
 <Layout title="Universes">
   <div class="flex flex-col items-center justify-center" slot="content">
     <div
-      class="w-full grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 my-11 justify-center items-center"
+      class="w-full grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-[10rem] my-11 justify-center items-center"
     >
       {
         universesJoinTeams.map((universe) => {
           return (
-            <div class="flex flex-col justify-center items-center gap-5">
+            <div class="flex flex-col justify-between items-center gap-5 h-full">
+              <a
+                href={`/characters?universe=${universe.value}`}
+                class="hover:underline"
+              >
+                <p class="text-xl font-bold">
+                  <span class="text-primary">{universe.id} |</span>{" "}
+                  {universe.name}
+                </p>
+              </a>
               {universe.logo !== "" && (
                 <img
                   src={universe.logo}
@@ -63,9 +72,6 @@ const universesJoinTeams = await collectionUniverses
                   class={`w-[20rem] h-auto col-span-1`}
                 />
               )}
-              <a href={`/characters?universe=${universe.value}`}>
-                <p class="hover:underline">Go to {universe.name}</p>
-              </a>
 
               <Drawer client:load>
                 <p slot="trigger">More info</p>
@@ -87,10 +93,12 @@ const universesJoinTeams = await collectionUniverses
                       <p class="font-bold text-3xl">{universe.name}</p>
                       <img src={universe.logo} class="h-10 w-auto" alt="" />
                     </div>
-                    <p>Replace this with a publisher description</p>
+                    <ScrollArea class="h-24" client:load>
+                      <p>{universe.description}</p>
+                    </ScrollArea>
                     <div class="self-center">
                       <p class="font-medium mb-2">
-                        teams (total = {universe.teams.length}):{" "}
+                        Teams (total = {universe.teams.length}):{" "}
                       </p>
                       <ScrollArea class="h-72" client:load>
                         <div class="w-full justify-center items-center grid grid-cols-3 gap-5">

@@ -1,8 +1,5 @@
-import { Character as CharacterFromIndex } from './types'
-
-declare type Character = {} & CharacterFromIndex
-
-declare type CharacterWithJoinTeamUniversePower = {
+/* CHARACTER */
+declare type Character = {
     powerstats: {
         intelligence: number;
         strength: number;
@@ -20,6 +17,7 @@ declare type CharacterWithJoinTeamUniversePower = {
         eyeColor: string;
         hairColor: string;
         age: string;
+        description: string;
     };
     biography: {
         fullName: string;
@@ -27,16 +25,18 @@ declare type CharacterWithJoinTeamUniversePower = {
         aliases: string[];
         placeOfBirth: string;
         firstAppearance: string;
-        publisher: Omit<Universe, "teams">;
+        publisher: string;
         alignment: string;
+        origin: ""
     };
     work: {
         occupation: string;
         base: string;
     };
     connections: {
-        groupAffiliation: Omit<Team, "universe">[];
+        groupAffiliation: string[];
         relatives: string;
+        enemies: string[]
     };
     images: {
         xs: string;
@@ -45,16 +45,30 @@ declare type CharacterWithJoinTeamUniversePower = {
         lg: string;
         // mdi?: string;
         // md2?: string;
-        [key: string]: string
+        [key: string]: string;
     };
     _id: string;
     id: number;
     name: string;
     slug: string;
     comics?: string[];
+    powers: (string | number)[];
+    weaknesses: string[];
+    logo: string;
+    tier: number;
+    character_class: number;
+};
+declare type CharacterWithJoinTeamUniversePower = Omit<Character, "biography.publisher" | "connections.groupAffiliation" | "powers"> & {
+    biography: {
+        publisher: Omit<Universe, "teams">;
+    };
+    connections: {
+        groupAffiliation: Omit<Team, "universe">[];
+    };
     powers: Power[]
 }
 
+/* TEAM */
 declare type Team = {
     id: number;
     name: string,
@@ -65,18 +79,12 @@ declare type Team = {
     comics: string[]
     leaders: string[]
 }
-
-declare type TeamWithJoinCharacterUniverse = {
-    id: number
-    name: string,
-    value: string,
-    description: string,
+declare type TeamWithJoinCharacterUniverse = Omit<Team, "universe"> & {
     members: Omit<Character, "comics" | "slug" | "powerstats" | "appearance" | "biography" | "work" | "connections" | "powers">[],
     universe: Omit<Universe, "teams" | "comics">
-    logo: string,
-    comics: string[]
 }
 
+/* UNIVERSE */
 declare type Universe = {
     id: number;
     name: string,
@@ -84,23 +92,23 @@ declare type Universe = {
     teams: number[]
     logo: string,
     comics?: string[]
+    description: string
 }
-
-declare type UniverseWithJoinTeams = {
-    id: number;
-    name: string,
-    value: string,
+declare type UniverseWithJoinTeams = Omit<Universe, "teams"> & {
     teams: Omit<Team, "universe" | "comics">[]
-    logo: string,
-    comics?: string[]
 }
 
+/* POWER */
 declare type Power = {
     id: number;
     name: string,
     value: string,
     img: string,
+    description: string,
+    score: number
+    tier: number
 }
+
 
 declare type QueryOptions = {
     id?: number | { $in: number[] }
@@ -113,10 +121,6 @@ declare type QueryOptions = {
     "appearance.race"?: string | RegExp;
     "powers.value"?: string | RegExp;
 };
-/* {
-    [key: string]: any;
-  } */
-
 
 declare type CharacterInfo = {
     // name: string;
@@ -132,13 +136,4 @@ declare type CharacterAttributes = {
     'biography.publisher': string
 }
 
-declare type RandomImage = { selectedRandomImage: { key: string, value: string }/* , blurSelectedRandomImage: string */ }
-
-// declare type UniversesWithItsTeams = {
-//     info: {
-//         name: string;
-//         value: string;
-//     };
-//     logo: string;
-//     teams: { name: string; value: string; img: string }[];
-// };
+declare type RandomImage = { selectedRandomImage: { key: string, value: string } }
