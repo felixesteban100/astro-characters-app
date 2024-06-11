@@ -11,7 +11,6 @@
   import { Checkbox } from "../lib/components/ui/checkbox/index";
   import * as RadioGroup from "$lib/components/ui/radio-group/index";
   import type { WithId } from "mongodb";
-  import type { Power, Universe, UniverseWithJoinTeams } from "types/types";
   // import { Slider } from "$lib/components/ui/slider/index.js";
   //@ts-ignore
   import { navigate } from "astro:transitions/client";
