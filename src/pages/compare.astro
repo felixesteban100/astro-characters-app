@@ -6,6 +6,7 @@ import {
   joinTeam_universe_power_toCharacter,
 } from "../lib/charactersUtils";
 import CharacterInfoBattle from "../components/CharacterInfoBattle.astro";
+import Dialog from "src/components/Dialog.svelte";
 
 const first = Astro.url.searchParams.get("first");
 const second = Astro.url.searchParams.get("second");
@@ -59,25 +60,29 @@ const [secondCharacter] = await collectionCharacters
 // ];
 ---
 
-<Layout title={`${firstCharacter.name} vs ${secondCharacter.name}`}>
-  <!-- <p class="font-bold text-3xl" slot="page_title_other_content">
-    {secondCharacter.name}
-  </p> -->
-
+<Layout
+  title={`${firstCharacter.name} vs ${secondCharacter.name}`}
+  showTitle={false}
+>
+  <!-- grid-cols-1 md:grid-cols-2 -->
   <div
-    class="w-fit grid grid-cols-1 md:grid-cols-2 gap-10 justify-start items-start overflow-visible"
+    class="w-fit grid grid-cols-2 gap-10 justify-start items-start overflow-visible"
     slot="content"
   >
     <CharacterInfoBattle
       position={"first"}
       selectedCharacter={firstCharacter}
       otherCharacterId={secondCharacter.id}
+      showButtons={true}
+      showStats={true}
     />
 
     <CharacterInfoBattle
       position={"second"}
       selectedCharacter={secondCharacter}
       otherCharacterId={firstCharacter.id}
+      showButtons={true}
+      showStats={true}
     />
   </div>
 </Layout>

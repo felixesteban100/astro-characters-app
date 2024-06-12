@@ -1,13 +1,12 @@
 <script lang="ts">
   import {
-    BarChart,
     Axe,
     Shield,
     Brain,
-    CloudLightning,
     ChevronsUp,
     Sword,
     Percent,
+    Zap,
   } from "lucide-svelte";
   import StatsNumber from "./StatsNumber.svelte";
   import Powers from "./Powers.svelte";
@@ -48,7 +47,7 @@
     <Brain slot="icon" />
   </StatsNumber>
   <StatsNumber {showNameAtAll} statName="Power" statValue={powerstats.power}>
-    <CloudLightning slot="icon" />
+    <Zap slot="icon" />
   </StatsNumber>
   <StatsNumber {showNameAtAll} statName="Speed" statValue={powerstats.speed}>
     <ChevronsUp slot="icon" />

@@ -1,20 +1,35 @@
 ---
 import { Button } from "$lib/components/ui/button";
-import { Percent } from "lucide-astro";
+import {
+  Axe,
+  Brain,
+  ChevronsUp,
+  Percent,
+  Shield,
+  Sword,
+  Zap,
+} from "lucide-astro";
 import StatsNumber from "./stats/StatsNumber.svelte";
 import CharacterCard from "./characters_page/CharacterCard.astro";
 import ChangeCharacterInfoBattle from "./ChangeCharacterInfoBattle.svelte";
 import { collectionCharacters } from "$lib/mongodb";
-import LoaderAstro from "./LoaderAstro.astro";
 
 interface Props {
   selectedCharacter: CharacterWithJoinTeamUniversePower;
   classNames?: string;
   position: string;
   otherCharacterId: number;
+  showButtons?: boolean;
+  showStats?: boolean;
 }
 
-const { selectedCharacter, position, otherCharacterId } = Astro.props;
+const {
+  selectedCharacter,
+  position,
+  otherCharacterId,
+  showButtons = true,
+  showStats = true,
+} = Astro.props;
 
 const allCharacters_Id_Name = await collectionCharacters
   .find({}, { projection: { id: 1, name: 1 } })
@@ -32,49 +47,115 @@ const allCharacters_Id_Name = await collectionCharacters
       id={`photo-${selectedCharacter.id}`} -->
       <!--  -->
 
-      <CharacterCard imageSizes={"h-[40rem] w-[40rem]"} c={selectedCharacter} />
+      <CharacterCard
+        imageSizes={"h-[20rem] md:h-[40rem] w-[40rem]"}
+        c={selectedCharacter}
+      />
     </a>
-    <div class="flex justify-between w-full mt-5">
-      <a
-        class="hidden lg:block"
-        href={`/compare?${"first"}=${selectedCharacter.id}`}
-        transition:name={`reuse-${selectedCharacter.id}`}
+    {
+      showButtons && (
+        <div class="flex justify-between w-full mt-5">
+          <a
+            class="hidden lg:block"
+            href={`/compare?${"first"}=${selectedCharacter.id}`}
+            transition:name={`reuse-${selectedCharacter.id}`}
+          >
+            <Button variant={"outline"} class={"mb-2"}>
+              Reuse {selectedCharacter.name}
+            </Button>
+          </a>
+
+          <div transition:name={`change-${selectedCharacter.id}`}>
+            <ChangeCharacterInfoBattle
+              selectedCharacter={selectedCharacter}
+              position={position}
+              otherCharacterId={otherCharacterId}
+              allCharacters_Id_Name={allCharacters_Id_Name}
+              client:load
+            />
+          </div>
+        </div>
+      )
+    }
+  </div>
+
+  {
+    showStats && (
+      <div
+        transition:name={`stats-${selectedCharacter.id}`}
+        class="w-[80%] flex flex-col gap-5 mt-10"
       >
-        <!-- Fight using {selectedCharacter.name} -->
-        <Button variant={"outline"} class={"mb-2"}>
-          Reuse {selectedCharacter.name}
-        </Button>
-      </a>
-
-      <div transition:name={`change-${selectedCharacter.id}`}>
-        <ChangeCharacterInfoBattle
-          selectedCharacter={selectedCharacter}
-          position={position}
-          otherCharacterId={otherCharacterId}
-          allCharacters_Id_Name={allCharacters_Id_Name}
+        <StatsNumber
           client:load
-        />
+          showNameAtAll={false}
+          statName="Combat"
+          statValue={selectedCharacter.powerstats.combat}
+        >
+          <Sword slot="icon" />
+        </StatsNumber>
+
+        <StatsNumber
+          client:load
+          showNameAtAll={false}
+          statName="durability"
+          statValue={selectedCharacter.powerstats.durability}
+        >
+          <Shield slot="icon" />
+        </StatsNumber>
+
+        <StatsNumber
+          client:load
+          showNameAtAll={false}
+          statName="intelligence"
+          statValue={selectedCharacter.powerstats.intelligence}
+        >
+          <Brain slot="icon" />
+        </StatsNumber>
+
+        <StatsNumber
+          client:load
+          showNameAtAll={false}
+          statName="Intelligence"
+          statValue={selectedCharacter.powerstats.intelligence}
+        >
+          <Zap slot="icon" />
+        </StatsNumber>
+
+        <StatsNumber
+          client:load
+          showNameAtAll={false}
+          statName="Speed"
+          statValue={selectedCharacter.powerstats.speed}
+        >
+          <ChevronsUp slot="icon" />
+        </StatsNumber>
+
+        <StatsNumber
+          client:load
+          showNameAtAll={false}
+          statName="Strength"
+          statValue={selectedCharacter.powerstats.strength}
+        >
+          <Axe slot="icon" />
+        </StatsNumber>
+
+        <StatsNumber
+          client:load
+          showNameAtAll={false}
+          statName="Total"
+          statValue={selectedCharacter.powerstats.total}
+        >
+          <Percent slot="icon" />
+        </StatsNumber>
+
+        <ul class="mx-auto">
+          {selectedCharacter.powers.map((power) => (
+            <li>{power.name}</li>
+          ))}
+        </ul>
       </div>
-    </div>
-  </div>
-
-  <div
-    transition:name={`stats-${selectedCharacter.id}`}
-    class="w-[80%] flex flex-col gap-10 mt-10"
-  >
-    <StatsNumber
-      client:load
-      showNameAtAll={false}
-      statName="Total"
-      statValue={selectedCharacter.powerstats.total}
-    >
-      <Percent slot="icon" />
-    </StatsNumber>
-
-    <ul class="mx-auto">
-      {selectedCharacter.powers.map((power) => <li>{power.name}</li>)}
-    </ul>
-  </div>
+    )
+  }
 </div>
 
 <!-- <div

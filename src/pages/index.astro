@@ -3,9 +3,6 @@ import Layout from "../layouts/Layout.astro";
 import { collectionCharacters } from "../lib/mongodb";
 import Marquee from "$lib/components/magicui/marquee.astro";
 import OrbitingCircles from "$lib/components/magicui/orbing-circle.astro";
-import { Zap, Airplay, MoveDiagonal, Train } from "lucide-astro";
-import MarvelLogo from "../assets/marvel.svg";
-import Image from "astro/components/Image.astro";
 
 const repeat = 4;
 
@@ -31,30 +28,6 @@ function divideArray<T>(arr: T[], numChunks: number): T[][] {
 const [firstRow, secondRow] = divideArray(randomCharacters, 2);
 const reverse_1_marquee = false;
 const reverse_2_marquee = true;
-
-const duration_1 = 20;
-const delay_1 = 20;
-const radius_1 = 80;
-const reverse_1 = false;
-const classNames_1 = "h-[30px] w-[30px] border-none bg-transparent";
-
-const duration_2 = 20;
-const delay_2 = 10;
-const radius_2 = 80;
-const reverse_2 = false;
-const classNames_2 = "h-[30px] w-[30px] border-none bg-transparent";
-
-const duration_3 = 20;
-const delay_3 = 10;
-const radius_3 = 190;
-const reverse_3 = true;
-const classNames_3 = "h-[50px] w-[50px] border-none bg-transparent";
-
-const duration_4 = 20;
-const radius_4 = 190;
-const delay_4 = 20;
-const reverse_4 = true;
-const classNames_4 = "h-[50px] w-[50px] border-none bg-transparent";
 ---
 
 <Layout title="Welcome to Characters." showTitle={false}>
@@ -111,16 +84,6 @@ const classNames_4 = "h-[50px] w-[50px] border-none bg-transparent";
           class="invert"
         />
       </OrbitingCircles>
-
-      <!-- <OrbitingCircles
-        className="h-[50px] w-[50px] border-none bg-transparent"
-        duration={20}
-        delay={10}
-        radius={190}
-        reverse={true}
-      >
-        <MoveDiagonal slot="icon" />
-      </OrbitingCircles> -->
     </div>
 
     <div
