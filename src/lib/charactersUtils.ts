@@ -2,11 +2,11 @@ import { collectionCharacters } from "./mongodb";
 
 /* CHARACTERS PAGE */
 export function AlignmentTranslator(alignment: string) {
-  return alignment === "good" ? "Hero" : alignment === "bad" ? "Villain" : "Anti-Hero"
+  return alignment === "good" ? "Hero" : alignment === "bad" ? "Villain" : alignment === "neutral" ? "Anti-Hero" : "All"
 }
 
 export function BackgroundColorAligment(alignment: string) {
-  return alignment === "good" ? "bg-green-800" : alignment === "bad" ? "bg-red-800" : "bg-yellow-800"
+  return alignment === "good" ? "bg-green-800" : alignment === "bad" ? "bg-red-800" : alignment === "neutral" ? "bg-yellow-800" : ""
 }
 
 export function BackgroundColorTier(tier: number) {

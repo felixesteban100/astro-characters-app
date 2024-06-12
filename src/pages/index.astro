@@ -1,62 +1,141 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { collectionCharacters } from "../lib/mongodb";
-import HeroCard from "../components/HeroCard.astro";
-import { Rocket } from "lucide-astro";
+import Marquee from "$lib/components/magicui/marquee.astro";
+import OrbitingCircles from "$lib/components/magicui/orbing-circle.astro";
+import { Zap, Airplay, MoveDiagonal, Train } from "lucide-astro";
+import MarvelLogo from "../assets/marvel.svg";
+import Image from "astro/components/Image.astro";
+
+const repeat = 4;
 
 const randomCharacters = await collectionCharacters
-  .aggregate<Character>([{ $sample: { size: 50 } }])
+  .aggregate<Character>([{ $sample: { size: 8 } }])
   // .find()
   // .sort({ id: "desc" })
-  // .limit(50)
+  // .limit(10)
   .toArray();
 
-const firstRow = randomCharacters.slice(0, 15);
-const secondRow = randomCharacters.slice(15, 35);
-const thirdRow = randomCharacters.slice(35, 50);
+function divideArray<T>(arr: T[], numChunks: number): T[][] {
+  const chunkSize = Math.ceil(arr.length / numChunks);
+  const result: T[][] = [];
+
+  for (let i = 0; i < numChunks; i++) {
+    const start = i * chunkSize;
+    const end = start + chunkSize;
+    result.push(arr.slice(start, end));
+  }
+
+  return result;
+}
+const [firstRow, secondRow] = divideArray(randomCharacters, 2);
+const reverse_1_marquee = false;
+const reverse_2_marquee = true;
+
+const duration_1 = 20;
+const delay_1 = 20;
+const radius_1 = 80;
+const reverse_1 = false;
+const classNames_1 = "h-[30px] w-[30px] border-none bg-transparent";
+
+const duration_2 = 20;
+const delay_2 = 10;
+const radius_2 = 80;
+const reverse_2 = false;
+const classNames_2 = "h-[30px] w-[30px] border-none bg-transparent";
+
+const duration_3 = 20;
+const delay_3 = 10;
+const radius_3 = 190;
+const reverse_3 = true;
+const classNames_3 = "h-[50px] w-[50px] border-none bg-transparent";
+
+const duration_4 = 20;
+const radius_4 = 190;
+const delay_4 = 20;
+const reverse_4 = true;
+const classNames_4 = "h-[50px] w-[50px] border-none bg-transparent";
 ---
 
 <Layout title="Welcome to Characters." showTitle={false}>
   <div slot="content">
-    <div
-      class="overflow-hidden antialiased relative flex flex-col self-auto group/hero"
-    >
-      <div class="opacity-70">
-        <div class="flex space-x-20 group mb-20">
-          <div
-            class="group-hover:paused animate-loop-scroll flex flex-row-reverse space-x-reverse space-x-20"
-          >
-            {firstRow.map((character) => <HeroCard character={character} />)}
-          </div>
-        </div>
-        <div class="flex space-x-20 group mb-20">
-          <!-- animate-loop-scroll2 -->
-          <div class="group-hover:paused flex space-x-20 animate-loop-scroll">
-            {secondRow.map((character) => <HeroCard character={character} />)}
-          </div>
-        </div>
-        <div class="flex space-x-20 group">
-          <div
-            class="group-hover:paused flex flex-row-reverse space-x-reverse space-x-20 animate-loop-scroll"
-          >
-            {thirdRow.map((character) => <HeroCard character={character} />)}
-          </div>
-        </div>
-      </div>
-      <div
-        class="group-hover/hero:opacity-10 transition-opacity duration-700 pointer-events-none absolute flex justify-start items-center h-[80vh] w-[100vh]"
+    <!--  max-w-[50rem] -->
+    <div class="relative flex h-[300px] w-full items-center justify-center">
+      <span
+        class="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10"
+        transition:name="astro-characters"
       >
-        <div
-          class="text-stroke-custom-main text-secondary duration-1000 animate-title font-display text-4xl xl:text-9xl font-bold flex justify-center items-center gap-2 pl-5"
-        >
-          <!-- CH<Atom
-            className={`animate-logo-color h-[3rem] w-[3rem] xl:h-[8rem] xl:w-[8rem] `}
-          />R4CT3R5 -->
-          CH<Rocket
-            className={`animate-logo-color-rocket h-[3rem] w-[3rem] xl:h-[8rem] xl:w-[8rem] `}
-          />RACTERS
-        </div>
-      </div>
+        ASTRO-CHARACTERS 🚀
+        <span></span>
+      </span>
+
+      <OrbitingCircles
+        className="h-[50px] w-[50px] border-none bg-transparent"
+        duration={20}
+        delay={20}
+        radius={80}
+        reverse={false}
+        className_variables=`[--duration:20] [--radius:80] [--delay:100ms]`
+      >
+        <img
+          src="https://cdn.worldvectorlogo.com/logos/marvel.svg"
+          slot="icon"
+        />
+      </OrbitingCircles>
+
+      <OrbitingCircles
+        className="h-[30px] w-[30px] border-none bg-transparent"
+        duration={20}
+        delay={20}
+        radius={110}
+        reverse={true}
+        className_variables=`[--duration:20] [--radius:110] [--delay:20ms]`
+      >
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/DC_Comics_logo.svg/900px-DC_Comics_logo.svg.png"
+          slot="icon"
+        />
+      </OrbitingCircles>
+
+      <OrbitingCircles
+        className="h-[30px] w-[30px] border-none bg-transparent"
+        duration={80}
+        delay={20}
+        radius={130}
+        reverse={false}
+        className_variables=`[--duration:80] [--radius:130] [--delay:40ms]`
+      >
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/0/04/Shueisha_Logo.svg"
+          slot="icon"
+          class="invert"
+        />
+      </OrbitingCircles>
+
+      <!-- <OrbitingCircles
+        className="h-[50px] w-[50px] border-none bg-transparent"
+        duration={20}
+        delay={10}
+        radius={190}
+        reverse={true}
+      >
+        <MoveDiagonal slot="icon" />
+      </OrbitingCircles> -->
+    </div>
+
+    <div
+      class="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-background/10"
+    >
+      <Marquee
+        repeat={repeat}
+        reverse={reverse_1_marquee}
+        rowElements={firstRow}
+      />
+      <Marquee
+        repeat={repeat}
+        reverse={reverse_2_marquee}
+        rowElements={secondRow}
+      />
     </div>
   </div>
 </Layout>

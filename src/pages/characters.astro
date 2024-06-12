@@ -20,6 +20,8 @@ import FilterCharacters from "../components/FilterCharacters.svelte";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 import { Filter } from "lucide-astro";
 
+import Marquee from "src/components/Marquee.svelte";
+
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName") ?? "";
 const side = Astro.url.searchParams.get("side") ?? "All";

@@ -3,7 +3,7 @@
   import * as Drawer from "$lib/components/ui/drawer";
 </script>
 
-<Drawer.Root>
+<Drawer.Root backgroundColor="backdrop-blur-md">
   <div class="flex flex-col justify-center items-center">
     <slot name="display" />
     <Drawer.Trigger>
@@ -12,7 +12,9 @@
       </Button>
     </Drawer.Trigger>
   </div>
-  <Drawer.Content class="mb-32">
+  <Drawer.Content
+    class="mb-32 bg-background/20 border-none backdrop-blur-md after:backdrop-blur-md"
+  >
     <slot name="content" />
     <Drawer.Close>
       <slot name="close" />

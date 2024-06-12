@@ -8,11 +8,9 @@ interface Props {
 const { character } = Astro.props;
 ---
 
-<div
-  class={"group/product h-56 w-[20rem] relative flex-shrink-0"}
-  transition:name={`photo-${character.id}`}
->
-  <a
+<!-- transition:name={`photo-${character.id}`} -->
+<div class={"group/product h-56 w-[20rem] relative flex-shrink-0"}>
+  <!-- <a
     href={`character?id=${character.id}`}
     class="block group-hover/product:shadow-2xl character-image"
   >
@@ -23,9 +21,20 @@ const { character } = Astro.props;
       classes="object-cover object-left-top absolute h-full w-full inset-0"
       alt={character.name}
       loading={"eager"}
-      id={`photo-${character.id}`}
+      id={character.id}
     />
-  </a>
+  </a> -->
+  <div class="block group-hover/product:shadow-2xl character-image">
+    <ImageCharacter
+      src={character.images.md}
+      height={600}
+      width={600}
+      classes="object-cover object-left-top absolute h-full w-full inset-0"
+      alt={character.name}
+      loading={"eager"}
+      id={character.id}
+    />
+  </div>
   <div
     class="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"
   >
