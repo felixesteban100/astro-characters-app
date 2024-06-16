@@ -108,11 +108,11 @@
           <!-- <p>{howManyPerPageState}</p> -->
         </Label>
 
-        <Label class="flex flex-col gap-5">
-          Tiers Selected
+        <div class="space-y-5">
           {#each tiers as tier}
-            <div class="flex flex-row items-start space-x-3">
+            <div class="flex items-center gap-2">
               <Checkbox
+                id={`tier-${tier}`}
                 checked={tierRangeState.includes(tier)}
                 onCheckedChange={(v) => {
                   if (v) {
@@ -122,12 +122,16 @@
                   }
                 }}
               />
-              <Label class={`font-normal ${TextColorTier(tier)}`}>
+
+              <Label
+                for={`tier-${tier}`}
+                class={`font-normal ${TextColorTier(tier)}`}
+              >
                 Tier {tier}
               </Label>
             </div>
           {/each}
-        </Label>
+        </div>
 
         <!-- <p>name: {characterNameState}</p> -->
         <!-- <p>gender: {genderState}</p> -->
