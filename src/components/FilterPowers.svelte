@@ -5,14 +5,54 @@
   import { navigate } from "astro:transitions/client";
   import Sheet from "src/components/Sheet.svelte";
   import { Close } from "$lib/components/ui/sheet";
+  import { Checkbox } from "$lib/components/ui/checkbox";
 </script>
 
 <script lang="ts">
   export let powerName: string;
   export let howManyPerPage: number;
+  export let tierRange: number[];
+
+  const tiers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   $: powerNameState = powerName;
+  $: tierRangeState = tierRange;
   $: howManyPerPageState = howManyPerPage;
+
+  function addItem(tier: number) {
+    tierRangeState = [...tierRangeState, tier];
+  }
+
+  function removeItem(tier: number) {
+    tierRangeState = tierRangeState.filter((t) => t !== tier);
+  }
+
+  function TextColorTier(tier: number) {
+    switch (tier) {
+      case 1:
+        return "text-red-500";
+      case 2:
+        return "text-yellow-500";
+      case 3:
+        return "text-green-500";
+      case 4:
+        return "text-orange-500";
+      case 5:
+        return "text-yellow-800";
+      case 6:
+        return "text-pink-500";
+      case 7:
+        return "text-blue-500";
+      case 8:
+        return "text-cyan-500";
+      case 9:
+        return "text-orange-500";
+      case 10:
+        return "text-purple-500";
+      default:
+        return "text-primary";
+    }
+  }
 
   function goPageKeyShortcut(
     e: KeyboardEvent & {
@@ -29,7 +69,8 @@
 
   function goPageonClick() {
     navigate(
-      `/powers?powerName=${powerNameState}&howManyPerPage=${howManyPerPageState ?? 12}&currentPage=${1}`,
+      `/powers?powerName=${powerNameState}&howManyPerPage=${howManyPerPageState ?? 12}&currentPage=${1}&tierRange=${tierRangeState.toString()}`,
+      // `/powers?powerName=${powerNameState}&howManyPerPage=${howManyPerPageState ?? 12}&currentPage=${1}`,
     );
   }
 </script>
@@ -48,7 +89,7 @@
       <!-- svelte-ignore a11y-no-static-element-interactions -->
       <div class="flex flex-col gap-10">
         <Label class="flex flex-col gap-5">
-          PowerName
+          Power Name
           <Input
             id="name"
             placeholder="flight, energy projection, superhuman strength..."
@@ -57,7 +98,7 @@
         </Label>
 
         <Label class="flex flex-col gap-5">
-          howManyPerPageState
+          How many per page
           <!-- <Slider max={60} step={12} bind:value={[howManyPerPageState]} /> -->
           <Input
             type="number"
@@ -65,6 +106,27 @@
             bind:value={howManyPerPageState}
           />
           <!-- <p>{howManyPerPageState}</p> -->
+        </Label>
+
+        <Label class="flex flex-col gap-5">
+          Tiers Selected
+          {#each tiers as tier}
+            <div class="flex flex-row items-start space-x-3">
+              <Checkbox
+                checked={tierRangeState.includes(tier)}
+                onCheckedChange={(v) => {
+                  if (v) {
+                    addItem(tier);
+                  } else {
+                    removeItem(tier);
+                  }
+                }}
+              />
+              <Label class={`font-normal ${TextColorTier(tier)}`}>
+                Tier {tier}
+              </Label>
+            </div>
+          {/each}
         </Label>
 
         <!-- <p>name: {characterNameState}</p> -->
@@ -78,18 +140,9 @@
             <p>Press 'ENTER'</p>
           </div>
         </Close>
-        <!-- <a
-              href={`/characters?characterName=${characterNameState}&howManyPerPage=${howManyPerPageState ?? 12}&gender=${genderState}&side=${sideState}&race=${raceState}&power=${powerState}&universe=${universeState}&team=${teamState}&characterOrFullName=${characterOrFullNameState}&includesOrExact=${includesOrExactState}&sortBy=${sortByState}&sortDirection=${sortDirectionState}&currentPage=${1}`}
-              class="flex justify-center items-center gap-5"
-            >
-              <Button id="filter_characters" type="submit">Submit</Button>
-              |
-              <p>Press 'ENTER'</p>
-            </a> -->
       </div>
     </div>
   </div>
 </Sheet>
 
-<!-- <svelte:window on:keydown|preventDefault={(e) => goPage(e)} /> -->
 <svelte:window on:keydown={goPageKeyShortcut} />

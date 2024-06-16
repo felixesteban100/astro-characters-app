@@ -10,7 +10,6 @@ export function BackgroundColorAligment(alignment: string) {
 }
 
 export function BackgroundColorTier(tier: number) {
-
   switch (tier) {
     case 1:
       return "bg-red-500 text-black"

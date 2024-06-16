@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { collectionCharacters } from "../lib/mongodb";
 import Marquee from "$lib/components/magicui/marquee.astro";
 import OrbitingCircles from "$lib/components/magicui/orbing-circle.astro";
+import { Atom, Rocket } from "lucide-astro";
 
 const repeat = 4;
 
@@ -33,22 +34,29 @@ const reverse_2_marquee = true;
 <Layout title="Welcome to Characters." showTitle={false}>
   <div slot="content">
     <!--  max-w-[50rem] -->
-    <div class="relative flex h-[300px] w-full items-center justify-center">
-      <span
+    <div
+      class="relative flex h-[500px] w-full items-center justify-center mb-40"
+    >
+      <!-- <span
         class="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10"
-        transition:name="astro-characters"
       >
-        ASTRO-CHARACTERS 🚀
+        UNIVERSE
         <span></span>
-      </span>
+      </span> -->
+      <!-- <img
+        src="https://astro.build/assets/press/astro-logo-light-gradient.png"
+        alt=""
+        class="max-h-48 w-auto z-[50]"
+        transition:name="astro-characters"
+      /> -->
+      <Atom class="size-28 animate-logo-color-spin" />
 
       <OrbitingCircles
         className="h-[50px] w-[50px] border-none bg-transparent"
         duration={20}
-        delay={20}
+        delay={10}
         radius={80}
         reverse={false}
-        className_variables=`[--duration:20] [--radius:80] [--delay:100ms]`
       >
         <img
           src="https://cdn.worldvectorlogo.com/logos/marvel.svg"
@@ -57,12 +65,11 @@ const reverse_2_marquee = true;
       </OrbitingCircles>
 
       <OrbitingCircles
-        className="h-[30px] w-[30px] border-none bg-transparent"
+        className="h-[50px] w-[50px] border-none bg-transparent"
         duration={20}
         delay={20}
-        radius={110}
-        reverse={true}
-        className_variables=`[--duration:20] [--radius:110] [--delay:20ms]`
+        radius={80}
+        reverse={false}
       >
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/DC_Comics_logo.svg/900px-DC_Comics_logo.svg.png"
@@ -71,17 +78,55 @@ const reverse_2_marquee = true;
       </OrbitingCircles>
 
       <OrbitingCircles
-        className="h-[30px] w-[30px] border-none bg-transparent"
-        duration={80}
-        delay={20}
+        className="h-[50px] w-[50px] border-none bg-transparent"
+        duration={20}
+        delay={10}
         radius={130}
-        reverse={false}
-        className_variables=`[--duration:80] [--radius:130] [--delay:40ms]`
+        reverse={true}
       >
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/0/04/Shueisha_Logo.svg"
           slot="icon"
           class="invert"
+        />
+      </OrbitingCircles>
+
+      <OrbitingCircles
+        className="h-[40px] w-[40px] border-none bg-transparent"
+        duration={20}
+        delay={20}
+        radius={130}
+        reverse={true}
+      >
+        <img
+          src="https://minitex.umn.edu/sites/default/files/styles/manual_crop_1_1/public/images/2020-08/download%20%281%29.png?itok=MrU0D5k9"
+          slot="icon"
+        />
+      </OrbitingCircles>
+
+      <OrbitingCircles
+        className="h-[50px] w-[50px] border-none bg-transparent"
+        duration={20}
+        delay={10}
+        radius={180}
+        reverse={false}
+      >
+        <img
+          src="https://www.lucasfilm.com/app/uploads/logo_home2.png"
+          slot="icon"
+        />
+      </OrbitingCircles>
+
+      <OrbitingCircles
+        className="h-[40px] w-[40px] border-none bg-transparent"
+        duration={20}
+        delay={20}
+        radius={180}
+        reverse={false}
+      >
+        <img
+          src="https://idwmediaholdings.com/wp-content/uploads/2021/11/IDWLOGO-2016-white-1.png"
+          slot="icon"
         />
       </OrbitingCircles>
     </div>

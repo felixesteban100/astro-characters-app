@@ -209,7 +209,9 @@
           >
             <option value={"All"}>All universes</option>
             {#each allUniverses as universe}
-              <option value={universe.value}>{universe.name}</option>
+              <option value={universe.value}
+                >{universe.id} - {universe.name}
+              </option>
             {/each}
           </select>
         </Label>

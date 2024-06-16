@@ -13,6 +13,11 @@ import Drawer from "src/components/Drawer.svelte";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const powerName = Astro.url.searchParams.get("powerName") ?? "";
+const tierRange: number[] = JSON.parse(
+  `[${Astro.url.searchParams.get("tierRange")}]`,
+)
+  .map((c: string) => parseInt(c))
+  .filter((i: number) => (i ? true : false));
 
 const howManyPerPage = parseInt(
   Astro.url.searchParams.get("howManyPerPage") ??
@@ -21,14 +26,21 @@ const howManyPerPage = parseInt(
 
 const offset = (parseInt(currentPage) - 1) * howManyPerPage;
 
-const query: { name?: { $in: RegExp[] } } = {};
+const query: { name?: { $in: RegExp[] }; tier?: { $in: number[] } } = {};
 
-if (powerName !== "")
+if (powerName !== "") {
   query.name = {
     $in: powerName.split(",").map((c) => {
       return new RegExp(c.trim(), "ig");
     }),
   };
+}
+
+if (tierRange.length > 0) {
+  query.tier = {
+    $in: tierRange,
+  };
+}
 
 const powers = await collectionPowers
   .find(query)
@@ -44,17 +56,20 @@ const powersLenght = await collectionPowers.find(query).toArray();
   <FilterPowers
     howManyPerPage={howManyPerPage}
     powerName={powerName}
+    tierRange={tierRange}
     client:load
     slot="page_title_other_content"
   >
     <div class="flex gap-5" slot="trigger">
       <Filter />
       <span class="text-primary hidden lg:flex">|</span>
-      <span>(Press T)</span>
+      <span class="text-primary hidden lg:flex">(Press T)</span>
     </div>
   </FilterPowers>
 
   <div class="flex flex-col items-center justify-center" slot="content">
+    {powers.length === 0 && <p class="text-4xl">No powers found</p>}
+
     <div class="w-full grid 2xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-16">
       {
         powers.map((power) => {

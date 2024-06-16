@@ -133,7 +133,7 @@ const universesWithTeams = await collectionUniverses
 
 const allUniverses = await collectionUniverses
   .find({})
-  .sort({ _id: 1 })
+  .sort({ id: 1 })
   .toArray();
 const allPowers = await collectionPowers.find({}).sort({ name: 1 }).toArray();
 
@@ -212,7 +212,7 @@ function getTitle(): string {
     <div class="flex gap-5" slot="trigger">
       <Filter />
       <span class="text-primary hidden lg:flex">|</span>
-      <span>(Press T)</span>
+      <span class="text-primary hidden lg:flex">(Press T)</span>
     </div>
   </FilterCharacters>
 

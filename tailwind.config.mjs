@@ -1,3 +1,5 @@
+const plugin = require("tailwindcss/plugin");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -58,6 +60,11 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+
+      animationDelay: {
+        "-10000": "-10000ms",
+      },
+
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -118,7 +125,7 @@ module.exports = {
         "loop-scroll": "loop-scroll 50s linear infinite",
         "loop-scroll2": "loop-scroll2 50s linear infinite",
         "logo-color-spin":
-          "logo-color 8s linear infinite, spin 8s linear infinite",
+          /* "logo-color 8s linear infinite, */ "spin 8s linear infinite",
         "logo-color-rocket":
           "logo-color 8s linear infinite, bounce 2s linear infinite",
         fadeIn: "fadeIn 0.5s ease-in-out",
@@ -129,5 +136,18 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    // require("tailwindcss-animation-delay"),
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          "animate-delay": (value) => ({
+            animationDelay: value,
+          }),
+        },
+        { values: theme("transitionDelay") },
+      );
+    }),
+  ],
 };

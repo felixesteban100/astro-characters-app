@@ -12,9 +12,7 @@
       </Button>
     </Drawer.Trigger>
   </div>
-  <Drawer.Content
-    class="mb-32 bg-background/20 border-none backdrop-blur-md after:backdrop-blur-md"
-  >
+  <Drawer.Content class="mb-32 border-none ">
     <slot name="content" />
     <Drawer.Close>
       <slot name="close" />
