@@ -8,7 +8,7 @@ import { Atom, Rocket } from "lucide-astro";
 const repeat = 4;
 
 const randomCharacters = await collectionCharacters
-  .aggregate<Character>([{ $sample: { size: 8 } }])
+  .aggregate<Character>([{ $sample: { size: 12 } }])
   // .find()
   // .sort({ id: "desc" })
   // .limit(10)
@@ -26,29 +26,18 @@ function divideArray<T>(arr: T[], numChunks: number): T[][] {
 
   return result;
 }
-const [firstRow, secondRow] = divideArray(randomCharacters, 2);
+const [firstRow, secondRow, thirdRow] = divideArray(randomCharacters, 3);
 const reverse_1_marquee = false;
 const reverse_2_marquee = true;
+const reverse_3_marquee = false;
 ---
 
 <Layout title="Welcome to Characters." showTitle={false}>
   <div slot="content">
     <!--  max-w-[50rem] -->
-    <div
+    <!-- <div
       class="relative flex h-[500px] w-full items-center justify-center mb-40"
     >
-      <!-- <span
-        class="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10"
-      >
-        UNIVERSE
-        <span></span>
-      </span> -->
-      <!-- <img
-        src="https://astro.build/assets/press/astro-logo-light-gradient.png"
-        alt=""
-        class="max-h-48 w-auto z-[50]"
-        transition:name="astro-characters"
-      /> -->
       <Atom class="size-28 animate-logo-color-spin" />
 
       <OrbitingCircles
@@ -129,7 +118,7 @@ const reverse_2_marquee = true;
           slot="icon"
         />
       </OrbitingCircles>
-    </div>
+    </div> -->
 
     <div
       class="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-background/10"
@@ -143,6 +132,11 @@ const reverse_2_marquee = true;
         repeat={repeat}
         reverse={reverse_2_marquee}
         rowElements={secondRow}
+      />
+      <Marquee
+        repeat={repeat}
+        reverse={reverse_3_marquee}
+        rowElements={thirdRow}
       />
     </div>
   </div>
