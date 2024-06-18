@@ -83,18 +83,22 @@ document.addEventListener('astro:page-load', (e) => {
  */
 document.addEventListener('astro:before-preparation', () => {
   const body = document.querySelector('body')
-  const loaders = document.querySelector('#loader')
+  const loaders = document.querySelectorAll('#loader')
   const loaders_dialog = document.querySelector('#loader-dialog')
-  const actionDoer = document.querySelector('#actionDoer')
+  const actionDoers = document.querySelectorAll('#actionDoer')
 
   if (screen.width < 800) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   body?.classList.add('cursor-wait')
-  loaders?.classList.remove('hidden')
+  loaders.forEach(loader => {
+    loader?.classList.remove('hidden')
+  })
   loaders_dialog?.classList.remove('hidden')
-  actionDoer?.classList.add('hidden')
+  actionDoers.forEach(actionDoer => {
+    actionDoer?.classList.add('hidden')
+  })
 })
 
 

@@ -6,6 +6,7 @@ import {
 import Image from "astro/components/Image.astro";
 import ImageCharacter from "../ImageCharacter.astro";
 import { ObjectId } from "mongodb";
+import Tooltip from "../Tooltip.svelte";
 
 interface Props {
   // c: Character;
@@ -25,11 +26,13 @@ const isNew = (date: Date) => {
   const twentyDaysAgo = new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000);
   return date >= twentyDaysAgo;
 };
+
+const character_createdBy = new ObjectId(c._id).getTimestamp();
 ---
 
 <div class="group/character">
   <!--  {
-    isNew(new ObjectId(c._id).getTimestamp()) === true ? (
+    isNew(character_createdBy) === true ? (
       <div class="group-hover/character:scale-125 absolute z-50 p-2 bg-primary rounded-md -translate-y-2 -translate-x-2 font-semibold transition-all">
         <p class="text-primary-foreground">
           New
@@ -47,12 +50,25 @@ const isNew = (date: Date) => {
             <span class="text-primary">{c.id} |</span> {c.name}
           </p>
 
-          {isNew(new ObjectId(c._id).getTimestamp()) === true ? (
-            <div
-              class={`group-hover/character:scale-125 px-2 bg-primary rounded-full font-semibold transition-all`}
-            >
-              <p class="text-primary-foreground">New</p>
-            </div>
+          {isNew(character_createdBy) === true ? (
+            <Tooltip client:load>
+              <div
+                class={`group-hover/character:scale-125 px-2 bg-primary rounded-full font-semibold transition-all`}
+                slot="trigger"
+              >
+                <p class="text-primary-foreground">New</p>
+              </div>
+              <div slot="content">
+                <p class="text-primary-foreground">
+                  Created by: {character_createdBy}. (
+                  {Math.ceil(
+                    (character_createdBy.getTime() - new Date().getTime()) /
+                      (1000 * 60 * 60 * 24),
+                  )}
+                  days ago)
+                </p>
+              </div>
+            </Tooltip>
           ) : null}
         </div>
       )

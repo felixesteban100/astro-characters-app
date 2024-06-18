@@ -18,6 +18,7 @@
   export let characterInfo: /* Character */ CharacterWithJoinTeamUniversePower;
   export let publisherInfo: Omit<Universe, "teams">;
   export let teams: Omit<Team, "members" | "universe">[];
+  export let character_added_by: Date;
 
   const relativesArr = characterInfo.connections.relatives.split(",");
 </script>
@@ -87,6 +88,7 @@
     <Biography
       biography={characterInfo.biography}
       connections={characterInfo.connections}
+      {character_added_by}
     />
   </Tabs.Content>
   <Tabs.Content value="Connections">

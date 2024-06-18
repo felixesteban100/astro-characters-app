@@ -1,7 +1,15 @@
 ---
 import { Button } from "$lib/components/ui/button";
 import Sheet from "src/components/Sheet.svelte";
-import { Menu } from "lucide-astro";
+import {
+  Menu,
+  User,
+  MapPinned,
+  Users,
+  SmartphoneCharging,
+  GitCompareArrows,
+} from "lucide-astro";
+import LoaderAstro from "./LoaderAstro.astro";
 
 interface Props {
   currentPath: string;
@@ -9,6 +17,7 @@ interface Props {
   links: {
     href: string;
     title: string;
+    icon: string | undefined;
   }[];
 }
 
@@ -16,7 +25,7 @@ const { currentPath, links, title } = Astro.props;
 ---
 
 <nav
-  class="flex items-center justify-between xl:justify-start mx-auto py-4 gap-5"
+  class="flex items-center justify-between xl:justify-start w-[90vw] md:w-[80vw] max-w-[1700px] mx-auto py-4 gap-5"
 >
   <!-- {
     currentPath === "/" ? (
@@ -29,32 +38,43 @@ const { currentPath, links, title } = Astro.props;
     ) : ( -->
   <!-- transition:name="astro-characters" -->
   <a href="/" class="flex gap-2">
-    {
-      /* <p class="font-bold text-primary">ASTRO-CHARACTERS</p>
-    <p class="animate-bounce">🚀</p>*/
-    }
     <img
+      id="actionDoer"
       src="https://astro.build/assets/press/astro-logo-light-gradient.png"
       alt=""
       class="h-10 w-auto"
     />
+    <LoaderAstro />
   </a>
   <!--  ) } -->
   <div class={`items-center justify-between hidden xl:flex w-full md:w-auto`}>
     <menu
+      id="actionDoer"
       class="flex flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
     >
       {
         links.map((link) => (
           <li>
             <Button
-              variant={"link"}
-              class="hover:underline underline-offset-8 text-foreground"
+              variant={"ghost"}
+              class={`text-foreground rounded-lg ${
+                currentPath.includes(link.href) /* && title === link.title */
+                  ? "font-extrabold text-primary"
+                  : "font-extralight"
+              }`}
             >
-              <a
-                href={link.href}
-                class={`block py-2 px-3 ${currentPath.includes(link.href) /* && title === link.title */ && "underline"}`}
-              >
+              <a href={link.href} class={`py-2 px-3 flex gap-2 items-center`}>
+                {link.icon === "User" ? (
+                  <User />
+                ) : link.icon === "MapPinned" ? (
+                  <MapPinned />
+                ) : link.icon === "Users" ? (
+                  <Users />
+                ) : link.icon === "SmartphoneCharging" ? (
+                  <SmartphoneCharging />
+                ) : link.icon === "GitCompareArrows" ? (
+                  <GitCompareArrows />
+                ) : null}{" "}
                 {link.title}
               </a>
             </Button>
@@ -81,11 +101,28 @@ const { currentPath, links, title } = Astro.props;
         <menu class="flex flex-col p-4 md:p-0 mt-4 md:mt-0 md:border-0">
           {
             links.map((link) => (
-              <a
-                href={link.href}
-                class={`flex py-2 px-3 ${currentPath.includes(link.href) && title === link.title && "underline"}`}
-              >
-                <Button variant={"link"} class="text-foreground text-xl">
+              <a href={link.href} class={`flex  py-2 px-3 `}>
+                <Button
+                  variant={"ghost"}
+                  class={`text-xl gap-2 text-foreground rounded-lg ${
+                    currentPath.includes(
+                      link.href,
+                    ) /* && title === link.title */
+                      ? "font-bold text-primary"
+                      : "font-extralight"
+                  }`}
+                >
+                  {link.icon === "User" ? (
+                    <User />
+                  ) : link.icon === "MapPinned" ? (
+                    <MapPinned />
+                  ) : link.icon === "Users" ? (
+                    <Users />
+                  ) : link.icon === "SmartphoneCharging" ? (
+                    <SmartphoneCharging />
+                  ) : link.icon === "GitCompareArrows" ? (
+                    <GitCompareArrows />
+                  ) : null}{" "}
                   {link.title}
                 </Button>
               </a>
@@ -96,3 +133,17 @@ const { currentPath, links, title } = Astro.props;
     </Sheet>
   </div>
 </nav>
+
+<!-- <li>
+            <Button
+              variant={"link"}
+              class="hover:underline underline-offset-8 text-foreground"
+            >
+              <a
+                href={link.href}
+                class={`block py-2 px-3 ${currentPath.includes(link.href) /* && title === link.title */ && "underline"}`}
+              >
+                {link.title}
+              </a>
+            </Button>
+          </li> -->

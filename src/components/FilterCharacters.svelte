@@ -86,7 +86,7 @@
       <!-- svelte-ignore a11y-no-static-element-interactions -->
       <div class="flex flex-col gap-10">
         <Label class="flex flex-col gap-5">
-          CharacterName
+          Name
           <Input
             id="name"
             placeholder="batman, superman, iron man, spider-man..."
@@ -95,7 +95,7 @@
         </Label>
 
         <Label class="flex flex-col gap-5">
-          howManyPerPageState
+          How many characters per page
           <!-- <Slider max={60} step={12} bind:value={[howManyPerPageState]} /> -->
           <Input
             type="number"
@@ -106,21 +106,30 @@
         </Label>
 
         <div class="flex flex-col gap-5">
-          <Label class="flex gap-5 items-center justify-start"
-            ><Checkbox bind:checked={characterOrFullNameState} /> Fullname (Checked)
-            | CharacterName (Unchecked)
-          </Label>
-          <Label
-            class={`${sortByState === "names_sended" ? "text-primary" : ""} flex gap-5 items-center justify-start`}
-          >
+          <div class="flex gap-2 items-center">
+            <Checkbox id="name-field" bind:checked={characterOrFullNameState} />
+            <Label for="name-field">
+              Fullname (Checked) | CharacterName (Unchecked)
+            </Label>
+          </div>
+
+          <div class="flex gap-2 items-center">
             {#if sortByState !== "names_sended"}
-              <Checkbox bind:checked={includesOrExactState} />
-              Include charactes in name (checked) | Exact name (Unchecked)
+              <Checkbox id="regex-ornot" bind:checked={includesOrExactState} />
             {:else}
-              <Checkbox checked={true} disabled={true} />
-              Write Exact name to find character
+              <Checkbox id="regex-ornot" checked={true} disabled={true} />
             {/if}
-          </Label>
+            <Label
+              for="regex-ornot"
+              class={`${sortByState === "names_sended" ? "text-primary" : ""} flex gap-5 items-center justify-start`}
+            >
+              {#if sortByState !== "names_sended"}
+                Include charactes in name (checked) | Exact name (Unchecked)
+              {:else}
+                Write Exact name to find character
+              {/if}
+            </Label>
+          </div>
         </div>
 
         <Label class="flex flex-col gap-5">

@@ -97,6 +97,7 @@ const links = [
   {
     href: "/characters",
     title: "Characters",
+    icon: "User",
   },
   // {
   //   href: "/team-fight",
@@ -105,26 +106,31 @@ const links = [
   {
     href: "/universes",
     title: "Universes",
+    icon: "MapPinned",
   },
   {
     href: "/teams",
     title: "Teams",
+    icon: "Users",
   },
   {
     href: "/powers",
     title: "Powers",
+    icon: "SmartphoneCharging",
   },
   {
     href: "/random_characters",
     title: "Random Characters",
+    icon: "Users",
   },
   {
     href: "/compare",
     title: "Compare",
+    icon: "GitCompareArrows",
   },
 ];
 
-if (otherLinks) links.push(...otherLinks);
+if (otherLinks) links.push(...otherLinks.map((c) => ({ ...c, icon: "User" })));
 
 // const anim = {
 //   old: {
@@ -171,10 +177,21 @@ if (otherLinks) links.push(...otherLinks);
       <Sparkles client:only />
     </div>
 
+    <div
+      class="flex bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-foreground/10"
+    >
+      <Navbar
+        title={title ?? ""}
+        currentPath={currentPath}
+        links={links}
+        transition:animate="none"
+        transition:name={`title-animation`}
+      />
+    </div>
+
     <main class="w-[90vw] md:w-[80vw] mx-auto overflow-hidden max-w-[1700px]">
-      <Navbar title={title ?? ""} currentPath={currentPath} links={links} />
       <div
-        class={`mx-auto mb-10 ${title !== "Welcome to Characters." ? "lg:mt-10" : "mt-5"} ${currentPath.includes("/compare") && "flex flex-col items-center"}`}
+        class={`mx-auto mb-10 ${title !== "Welcome to Characters." ? "mt-5 lg:mt-10" : "mt-5"} ${currentPath.includes("/compare") && "flex flex-col items-center"}`}
       >
         <div
           class="flex justify-between items-center w-full mb-5"

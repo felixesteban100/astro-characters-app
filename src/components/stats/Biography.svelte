@@ -6,7 +6,7 @@
     // Brain,
     // CloudLightning,
     // ChevronsUp,
-    // Sword,
+    Sword,
     Smile,
     Frown,
     // Meh,
@@ -27,6 +27,7 @@
     groupAffiliation: Omit<Team, "members" | "universe">[];
     relatives: string;
   };
+  export let character_added_by: Date;
 </script>
 
 <div class="w-full flex justify-center items-center flex-col">
@@ -94,6 +95,13 @@
         .toString()
         .split(","),
     )}
+  >
+    <!-- <Sword slot="icon" /> -->
+  </StatsString>
+
+  <StatsString
+    statName="AddedByToTheDB"
+    statValue={character_added_by.toString()}
   >
     <!-- <Sword slot="icon" /> -->
   </StatsString>
