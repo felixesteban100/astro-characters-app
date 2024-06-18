@@ -98,6 +98,7 @@ document.addEventListener('astro:before-preparation', () => {
   loaders_dialog?.classList.remove('hidden')
   actionDoers.forEach(actionDoer => {
     actionDoer?.classList.add('hidden')
+    actionDoer?.classList.remove('xl:flex')
   })
 })
 

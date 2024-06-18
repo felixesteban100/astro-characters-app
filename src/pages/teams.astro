@@ -166,9 +166,14 @@ function getTitle() {
           return (
             <div class="flex flex-col justify-between items-center gap-5 p-5 h-full">
               <div class="flex flex-col justify-between items-center gap-5 h-full">
-                <p class="text-xl font-bold">
-                  <span class="text-primary">{team.id} |</span> {team.name}
-                </p>
+                <a
+                  href={`/characters?universe=${team.universe.value}&team=${team.value}`}
+                  class="hover:underline"
+                >
+                  <p class="text-xl font-bold">
+                    <span class="text-primary">{team.id} |</span> {team.name}
+                  </p>
+                </a>
 
                 {team.logo !== "" && (
                   <img
@@ -179,13 +184,6 @@ function getTitle() {
                     class={`w-[20rem] h-auto col-span-1`}
                   />
                 )}
-
-                <a
-                  href={`/characters?universe=${team.universe.value}&team=${team.value}`}
-                  class="hover:underline"
-                >
-                  Go to team
-                </a>
 
                 <Drawer client:load>
                   <p slot="trigger">More info</p>

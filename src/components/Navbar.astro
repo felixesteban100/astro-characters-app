@@ -25,66 +25,51 @@ const { currentPath, links, title } = Astro.props;
 ---
 
 <nav
-  class="flex items-center justify-between xl:justify-start w-[90vw] md:w-[80vw] max-w-[1700px] mx-auto py-4 gap-5"
+  class="flex flex-wrap items-center justify-between 2xl:justify-start w-[90vw] md:w-[80vw] max-w-[1700px] min-h-[4rem] mx-auto gap-5"
 >
-  <!-- {
-    currentPath === "/" ? (
-      <p class="flex gap-2">
-        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-      </p>
-    ) : ( -->
-  <!-- transition:name="astro-characters" -->
-  <a href="/" class="flex gap-2">
+  <LoaderAstro />
+  <a href="/" class="flex gap-2" id="actionDoer">
     <img
-      id="actionDoer"
       src="https://astro.build/assets/press/astro-logo-light-gradient.png"
       alt=""
-      class="h-10 w-auto"
+      class="h-10 w-15"
     />
-    <LoaderAstro />
   </a>
-  <!--  ) } -->
-  <div class={`items-center justify-between hidden xl:flex w-full md:w-auto`}>
-    <menu
-      id="actionDoer"
-      class="flex flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
-    >
-      {
-        links.map((link) => (
-          <li>
-            <Button
-              variant={"ghost"}
-              class={`text-foreground rounded-lg ${
-                currentPath.includes(link.href) /* && title === link.title */
-                  ? "font-extrabold text-primary"
-                  : "font-extralight"
-              }`}
-            >
-              <a href={link.href} class={`py-2 px-3 flex gap-2 items-center`}>
-                {link.icon === "User" ? (
-                  <User />
-                ) : link.icon === "MapPinned" ? (
-                  <MapPinned />
-                ) : link.icon === "Users" ? (
-                  <Users />
-                ) : link.icon === "SmartphoneCharging" ? (
-                  <SmartphoneCharging />
-                ) : link.icon === "GitCompareArrows" ? (
-                  <GitCompareArrows />
-                ) : null}{" "}
-                {link.title}
-              </a>
-            </Button>
-          </li>
-        ))
-      }
-    </menu>
-  </div>
-
-  <div class="flex justify-center xl:hidden">
+  <menu
+    id="actionDoer"
+    class="items-center justify-between hidden 2xl:flex w-full md:w-auto flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
+  >
+    {
+      links.map((link) => (
+        <li>
+          <Button
+            variant={"ghost"}
+            class={`text-foreground rounded-lg ${
+              currentPath.includes(link.href)
+                ? "font-extrabold text-primary"
+                : "font-extralight"
+            }`}
+          >
+            <a href={link.href} class={`py-2 px-3 flex gap-2 items-center`}>
+              {link.icon === "User" ? (
+                <User />
+              ) : link.icon === "MapPinned" ? (
+                <MapPinned />
+              ) : link.icon === "Users" ? (
+                <Users />
+              ) : link.icon === "SmartphoneCharging" ? (
+                <SmartphoneCharging />
+              ) : link.icon === "GitCompareArrows" ? (
+                <GitCompareArrows />
+              ) : null}{" "}
+              {link.title}
+            </a>
+          </Button>
+        </li>
+      ))
+    }
+  </menu>
+  <div class="flex 2xl:hidden justify-center">
     <Sheet
       variant={undefined}
       size={undefined}
@@ -105,9 +90,7 @@ const { currentPath, links, title } = Astro.props;
                 <Button
                   variant={"ghost"}
                   class={`text-xl gap-2 text-foreground rounded-lg ${
-                    currentPath.includes(
-                      link.href,
-                    ) /* && title === link.title */
+                    currentPath.includes(link.href)
                       ? "font-bold text-primary"
                       : "font-extralight"
                   }`}
@@ -133,17 +116,3 @@ const { currentPath, links, title } = Astro.props;
     </Sheet>
   </div>
 </nav>
-
-<!-- <li>
-            <Button
-              variant={"link"}
-              class="hover:underline underline-offset-8 text-foreground"
-            >
-              <a
-                href={link.href}
-                class={`block py-2 px-3 ${currentPath.includes(link.href) /* && title === link.title */ && "underline"}`}
-              >
-                {link.title}
-              </a>
-            </Button>
-          </li> -->
