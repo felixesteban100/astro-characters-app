@@ -4,7 +4,6 @@ import "../styles/globals.css";
 import {
   collectionCharacters,
   collectionPowers,
-  collectionTeams,
   collectionUniverses,
 } from "../lib/mongodb";
 
@@ -19,8 +18,6 @@ import Pagination from "../components/Pagination.svelte";
 import FilterCharacters from "../components/FilterCharacters.svelte";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 import { Filter } from "lucide-astro";
-
-import Marquee from "src/components/Marquee.svelte";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName") ?? "";
@@ -42,22 +39,6 @@ const howManyPerPage = parseInt(
   Astro.url.searchParams.get("howManyPerPage") ??
     CHARACTERS_PER_PAGE.toString(),
 );
-
-// if (Astro.request.method === "POST") {
-//   try {
-//     const data = await Astro.request.formData();
-//     const universeForm = data.get("universe");
-//     const teamForm = data.get("team");
-
-//     return Astro.redirect(
-//       `/characters?characterName=${data.get("characterName")}&howManyPerPage=${data.get("howManyPerPage")}&gender=${data.get("gender")}&side=${data.get("side")}&race=${data.get("race")}${universeForm ? `&universe=${universeForm}&team=${universeForm === universe ? teamForm : "All"}` : `&universe="All"&team="All"`}&currentPage=${1}`,
-//     );
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       console.error(error.message);
-//     }
-//   }
-// }
 
 const valuesFilter = {
   side,
@@ -89,8 +70,6 @@ const characterdDisplayLenght = await collectionCharacters
     ),
   )
   .toArray();
-
-// console.log("queryOptions", queryOptions);
 
 const charactersName =
   characterName.split(",").length < 0 ? [] : characterName.split(",");
@@ -178,6 +157,19 @@ function getTitle(): string {
 //     { $set: { score: powers_tier } },
 //   );
 // });
+
+// const allNames = await collectionCharacters
+//   .aggregate<{ name: string }[]>([
+//     {
+//       $project: {
+//         name: 1,
+//         _id: 0,
+//       },
+//     },
+//   ])
+//   .toArray();
+
+// console.log(allNames);
 ---
 
 <script>
