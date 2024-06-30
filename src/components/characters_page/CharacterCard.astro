@@ -59,7 +59,7 @@ const character_createdBy = new ObjectId(c._id).getTimestamp();
                 <p class="text-primary-foreground">New</p>
               </div>
               <div slot="content">
-                <p class="text-primary-foreground">
+                <p class="text-primary">
                   Created by: {character_createdBy}. (
                   {Math.ceil(
                     (character_createdBy.getTime() - new Date().getTime()) /
