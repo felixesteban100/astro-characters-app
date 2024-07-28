@@ -84,7 +84,7 @@
   <div slot="content">
     <div class="h-[850px] w-full overflow-y-scroll">
       <!-- svelte-ignore a11y-no-static-element-interactions -->
-      <div class="flex flex-col gap-10">
+      <div class="flex flex-col gap-10 p-2">
         <Label class="flex flex-col gap-5">
           Name
           <Input
@@ -136,7 +136,7 @@
           Sort By
           <select
             bind:value={sortByState}
-            class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+            class="bg-background border-[0.5px] text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
           >
             {#each SORT_BY_VALUES as sort}
               <option value={sort}>{sort}</option>
@@ -162,7 +162,7 @@
           Gender
           <select
             bind:value={genderState}
-            class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+            class="bg-background border-[0.5px] text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
           >
             {#each ALLGENDERS as gender}
               <option value={gender.value}>{gender.name}</option>
@@ -174,7 +174,7 @@
           Aligment
           <select
             bind:value={sideState}
-            class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+            class="bg-background border-[0.5px] text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
           >
             {#each ALLALIGMENTS as aligment}
               <option value={aligment.value}>{aligment.name}</option>
@@ -186,7 +186,7 @@
           Race
           <select
             bind:value={raceState}
-            class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+            class="bg-background border-[0.5px] text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
           >
             {#each ALLRACES as race}
               <option value={race.value}>{race.name}</option>
@@ -198,7 +198,7 @@
           Powers
           <select
             bind:value={powerState}
-            class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+            class="bg-background border-[0.5px] text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
           >
             <option value={"All"}>All powers</option>
             {#each allPowers as power}
@@ -214,7 +214,7 @@
             on:change={() => {
               teamState = "All";
             }}
-            class="bg-background border border-foreground/50 text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+            class="bg-background border-[0.5px] text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
           >
             <option value={"All"}>All universes</option>
             {#each allUniverses as universe}

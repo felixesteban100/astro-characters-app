@@ -242,15 +242,17 @@ function getTitle(): string {
 
     {
       characterdDisplayLenght.length > howManyPerPage && (
-        <div id="actionDoer">
+        <div>
           <LoaderAstro />
-          <Pagination
-            currentPage={currentPage}
-            countItems={characterdDisplayLenght.length}
-            howManyPerPage={howManyPerPage}
-            url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&howManyPerPage=${howManyPerPage}&currentPage=`}
-            client:only
-          />
+          <div id="actionDoer">
+            <Pagination
+              currentPage={currentPage}
+              countItems={characterdDisplayLenght.length}
+              howManyPerPage={howManyPerPage}
+              url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&howManyPerPage=${howManyPerPage}&currentPage=`}
+              client:only
+            />
+          </div>
         </div>
       )
     }
