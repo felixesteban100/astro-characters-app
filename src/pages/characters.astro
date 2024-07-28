@@ -18,6 +18,7 @@ import Pagination from "../components/Pagination.svelte";
 import FilterCharacters from "../components/FilterCharacters.svelte";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 import { Filter } from "lucide-astro";
+import LoaderAstro from "src/components/LoaderAstro.astro";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName") ?? "";
@@ -241,13 +242,16 @@ function getTitle(): string {
 
     {
       characterdDisplayLenght.length > howManyPerPage && (
-        <Pagination
-          currentPage={currentPage}
-          countItems={characterdDisplayLenght.length}
-          howManyPerPage={howManyPerPage}
-          url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&howManyPerPage=${howManyPerPage}&currentPage=`}
-          client:only
-        />
+        <div id="actionDoer">
+          <LoaderAstro />
+          <Pagination
+            currentPage={currentPage}
+            countItems={characterdDisplayLenght.length}
+            howManyPerPage={howManyPerPage}
+            url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&howManyPerPage=${howManyPerPage}&currentPage=`}
+            client:only
+          />
+        </div>
       )
     }
   </main>

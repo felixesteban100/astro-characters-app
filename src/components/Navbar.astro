@@ -1,4 +1,5 @@
 ---
+import ModeToggle from "$lib/components/mode-toggle.svelte";
 import { Button } from "$lib/components/ui/button";
 import Sheet from "src/components/Sheet.svelte";
 import {
@@ -25,94 +26,99 @@ const { currentPath, links, title } = Astro.props;
 ---
 
 <nav
-  class="flex flex-wrap items-center justify-between 2xl:justify-start w-[90vw] md:w-[80vw] max-w-[1700px] min-h-[4rem] mx-auto gap-5"
+  class="flex items-center justify-center w-[90%] md:w-[80%] max-w-[1700px] min-h-[4rem] mx-auto gap-5"
 >
-  <LoaderAstro />
-  <a href="/" class="flex gap-2" id="actionDoer">
-    <img
-      src="https://astro.build/assets/press/astro-logo-light-gradient.png"
-      alt=""
-      class="h-10 w-15"
-    />
-  </a>
-  <menu
-    id="actionDoer"
-    class="items-center justify-between hidden 2xl:flex w-full md:w-auto flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
-  >
-    {
-      links.map((link) => (
-        <li>
-          <Button
-            variant={"ghost"}
-            class={`text-foreground rounded-lg ${
-              currentPath.includes(link.href)
-                ? "font-extrabold text-primary"
-                : "font-extralight"
-            }`}
-          >
-            <a href={link.href} class={`py-2 px-3 flex gap-2 items-center`}>
-              {link.icon === "User" ? (
-                <User />
-              ) : link.icon === "MapPinned" ? (
-                <MapPinned />
-              ) : link.icon === "Users" ? (
-                <Users />
-              ) : link.icon === "SmartphoneCharging" ? (
-                <SmartphoneCharging />
-              ) : link.icon === "GitCompareArrows" ? (
-                <GitCompareArrows />
-              ) : null}{" "}
-              {link.title}
-            </a>
-          </Button>
-        </li>
-      ))
-    }
-  </menu>
-  <div class="flex 2xl:hidden justify-center">
-    <Sheet
-      variant={undefined}
-      size={undefined}
-      ButtonClassName=""
-      buttonTriggerId={"navbar"}
-      client:load
-      from="navbar"
+  <div class="flex justify-between items-center w-full">
+    <LoaderAstro />
+    <a href="/" class="flex gap-2" id="actionDoer">
+      <img
+        src="https://astro.build/assets/press/astro-logo-light-gradient.png"
+        alt=""
+        class="h-10 w-15 invert dark:invert-0"
+      />
+    </a>
+    <menu
+      id="actionDoer"
+      class="items-center justify-between hidden 2xl:flex w-full md:w-auto flex-col p-4 md:p-0 mt-4 font-medium md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
     >
-      <Menu slot="trigger" className="w-full" />
-      <div
-        slot="content"
-        class={`items-center justify-between flex w-full  md:w-auto`}
-      >
-        <menu class="flex flex-col p-4 md:p-0 mt-4 md:mt-0 md:border-0">
-          {
-            links.map((link) => (
-              <a href={link.href} class={`flex  py-2 px-3 `}>
-                <Button
-                  variant={"ghost"}
-                  class={`text-xl gap-2 text-foreground rounded-lg ${
-                    currentPath.includes(link.href)
-                      ? "font-bold text-primary"
-                      : "font-extralight"
-                  }`}
-                >
-                  {link.icon === "User" ? (
-                    <User />
-                  ) : link.icon === "MapPinned" ? (
-                    <MapPinned />
-                  ) : link.icon === "Users" ? (
-                    <Users />
-                  ) : link.icon === "SmartphoneCharging" ? (
-                    <SmartphoneCharging />
-                  ) : link.icon === "GitCompareArrows" ? (
-                    <GitCompareArrows />
-                  ) : null}{" "}
-                  {link.title}
-                </Button>
+      {
+        links.map((link) => (
+          <li>
+            <Button
+              variant={"ghost"}
+              class={`text-foreground rounded-lg ${
+                currentPath.includes(link.href)
+                  ? "font-extrabold text-primary"
+                  : "font-extralight"
+              }`}
+            >
+              <a href={link.href} class={`py-2 px-3 flex gap-2 items-center`}>
+                {link.icon === "User" ? (
+                  <User />
+                ) : link.icon === "MapPinned" ? (
+                  <MapPinned />
+                ) : link.icon === "Users" ? (
+                  <Users />
+                ) : link.icon === "SmartphoneCharging" ? (
+                  <SmartphoneCharging />
+                ) : link.icon === "GitCompareArrows" ? (
+                  <GitCompareArrows />
+                ) : null}{" "}
+                {link.title}
               </a>
-            ))
-          }
-        </menu>
+            </Button>
+          </li>
+        ))
+      }
+    </menu>
+    <div class="flex items-center gap-2" id="actionDoer">
+      <div class="flex 2xl:hidden justify-center">
+        <Sheet
+          variant={undefined}
+          size={undefined}
+          ButtonClassName=""
+          buttonTriggerId={"navbar"}
+          client:load
+          from="navbar"
+        >
+          <Menu slot="trigger" className="w-full" />
+          <div
+            slot="content"
+            class={`items-center justify-between flex flex-col w-full  md:w-auto`}
+          >
+            <menu class="flex flex-col p-4 md:p-0 mt-4 md:mt-0 md:border-0">
+              {
+                links.map((link) => (
+                  <a href={link.href} class={`flex  py-2 px-3 `}>
+                    <Button
+                      variant={"ghost"}
+                      class={`text-xl gap-2 text-foreground rounded-lg ${
+                        currentPath.includes(link.href)
+                          ? "font-bold text-primary"
+                          : "font-extralight"
+                      }`}
+                    >
+                      {link.icon === "User" ? (
+                        <User />
+                      ) : link.icon === "MapPinned" ? (
+                        <MapPinned />
+                      ) : link.icon === "Users" ? (
+                        <Users />
+                      ) : link.icon === "SmartphoneCharging" ? (
+                        <SmartphoneCharging />
+                      ) : link.icon === "GitCompareArrows" ? (
+                        <GitCompareArrows />
+                      ) : null}{" "}
+                      {link.title}
+                    </Button>
+                  </a>
+                ))
+              }
+            </menu>
+          </div>
+        </Sheet>
       </div>
-    </Sheet>
+      <ModeToggle client:load />
+    </div>
   </div>
 </nav>

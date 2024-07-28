@@ -97,7 +97,8 @@ const character_createdBy = new ObjectId(c._id).getTimestamp();
         <div
           class={`px-2 ${BackgroundColorAligment(c.biography.alignment)} rounded-full font-semibold transition-all`}
         >
-          <p class="text-secondary-foreground">
+          <!-- text-secondary-foreground -->
+          <p class="text-white">
             {AlignmentTranslator(c.biography.alignment)}
           </p>
         </div>
