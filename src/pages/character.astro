@@ -28,7 +28,6 @@ if (!selectedCharacter) {
 }
 ---
 
-<!-- title={`${selectedCharacter?.name}`} -->
 <Layout
   title={`${selectedCharacter?.name}`}
   otherLinks={[
@@ -43,31 +42,14 @@ if (!selectedCharacter) {
     slot="content"
   >
     <div class="flex flex-col justify-center items-start gap-5">
-      <!-- <p class="font-bold text-xl">
-          <span class="text-primary">{selectedCharacter.id} |</span>
-          {selectedCharacter.name}
-        </p> -->
-      <!-- <div
-        class="relative box characterId overflow-hidden"
-        transition:name={`photo-${selectedCharacter.id}`}
-      >
-        <ImageCharacter
-          classes={`object-cover h-[40rem] w-[40rem] rounded-md`}
-          width={500}
-          height={500}
-          src={selectedCharacter.images.md}
-          loading="eager"
-          alt={selectedCharacter.name}
-          id={selectedCharacter.id}
-        />
-      </div> -->
-      <div transition:name={`photo-${selectedCharacter.id}`}>
-        <CharacterCard
-          imageSizes={"h-[40rem] w-[40rem]"}
-          c={selectedCharacter}
-          showName={false}
-        />
-      </div>
+      <CharacterCard
+        imageSizes={"h-[40rem] w-[40rem]"}
+        c={selectedCharacter}
+        showName={false}
+        withTransitionName={true}
+        withLink={false}
+        otherClasses=""
+      />
     </div>
     <div class="h-[44rem] w-full lg:w-[70%]">
       <Tabs
@@ -80,42 +62,3 @@ if (!selectedCharacter) {
     </div>
   </div>
 </Layout>
-
-<!-- <CharacterFeatures
-              selectedCharacter={selectedCharacter}
-              tab={tab ?? "Stats"}
-              client:load
-            /> -->
-
-<!-- <div class="flex gap-10 justify-end">
-              <a
-                class="hover:underline"
-                href={`/${selectedCharacter?.id}?tab=Stats`}
-              >
-                Stats
-              </a>
-              <a
-                class="hover:underline"
-                href={`/${selectedCharacter?.id}?tab=Appereance`}
-              >
-                Appereance
-              </a>
-              <a
-                class="hover:underline"
-                href={`/${selectedCharacter?.id}?tab=Biography`}
-              >
-                Biography
-              </a>
-              <a
-                class="hover:underline"
-                href={`/${selectedCharacter?.id}?tab=Teams`}
-              >
-                Teams
-              </a>
-              <a
-                class="hover:underline"
-                href={`/${selectedCharacter?.id}?tab=Comics`}
-              >
-                Comics
-              </a>
-            </div> -->

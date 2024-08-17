@@ -6,8 +6,6 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
   import { Check } from "lucide-svelte";
-
-  console.log();
 </script>
 
 <DropdownMenu.Root>

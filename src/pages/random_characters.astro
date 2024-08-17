@@ -100,15 +100,12 @@ const charactersDictionary: { [key: string]: string } = {
           .map((c: CharacterWithJoinTeamUniversePower, index: number) => {
             return (
               <div class="flex flex-col gap-5 justify-center ">
-                {/* id={`photo-${c.id}`} */}
-                <a
-                  href={`character?id=${c.id}&animateFade=true`}
-                  class={`w-full h-full flex justify-center ${/* animateFade === "false" &&  */ "character-image"}`}
-                  transition:name={`photo-${c.id}`}
-                >
-                  {/* id={`photo-${c.id}`}  */}
-                  <CharacterCard c={c} />
-                </a>
+                <CharacterCard
+                  c={c}
+                  withTransitionName={true}
+                  withLink={true}
+                  otherClasses="w-full h-full flex justify-center character-image"
+                />
 
                 {/* href={`/random_characters?${charactersDictionary[`${index}`]}=${c.id}&animateFade=${true}`} */}
                 <a

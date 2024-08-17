@@ -9,13 +9,22 @@ import { ObjectId } from "mongodb";
 import Tooltip from "../Tooltip.svelte";
 
 interface Props {
-  // c: Character;
   c: CharacterWithJoinTeamUniversePower;
   imageSizes?: string;
   showName?: boolean;
+  otherClasses: string;
+  withLink: boolean;
+  withTransitionName: boolean;
 }
 
-const { c, imageSizes, showName = true } = Astro.props;
+const {
+  c,
+  imageSizes,
+  showName = true,
+  withLink,
+  withTransitionName,
+  otherClasses,
+} = Astro.props;
 
 const isNew = (date: Date) => {
   const now = new Date();
@@ -30,79 +39,75 @@ const isNew = (date: Date) => {
 const character_createdBy = new ObjectId(c._id).getTimestamp();
 ---
 
-<div class="group/character">
-  <!--  {
-    isNew(character_createdBy) === true ? (
-      <div class="group-hover/character:scale-125 absolute z-50 p-2 bg-primary rounded-md -translate-y-2 -translate-x-2 font-semibold transition-all">
-        <p class="text-primary-foreground">
-          New
-        </p>
-      </div>
-    ) : null
-  } -->
-  <div
-    class="flex flex-col justify-center items-start gap-4 xl:items-start w-fit h-fit"
-  >
-    {
-      showName === true && (
-        <div class="flex justify-center w-full gap-5">
-          <p class="font-bold text-xl">
-            <span class="text-primary">{c.id} |</span> {c.name}
-          </p>
+<a
+  href={withLink ? `/character?id=${c.id}` : undefined}
+  transition:name={withTransitionName === true ? `photo-${c.id}` : undefined}
+  class={otherClasses}
+  id={withTransitionName === true ? undefined : `photo-${c.id}`}
+>
+  <div class="group/character">
+    <div
+      class="flex flex-col justify-center items-start gap-4 xl:items-start w-fit h-fit"
+    >
+      {
+        showName === true && (
+          <div class="flex justify-center w-full gap-5">
+            <p class="font-bold text-xl">
+              <span class="text-primary">{c.id} |</span> {c.name}
+            </p>
 
-          {isNew(character_createdBy) === true ? (
-            <Tooltip client:load>
-              <div
-                class={`group-hover/character:scale-125 px-2 bg-primary rounded-full font-semibold transition-all`}
-                slot="trigger"
-              >
-                <p class="text-primary-foreground">New</p>
-              </div>
-              <div slot="content">
-                <p class="text-primary">
-                  Created by: {character_createdBy}. (
-                  {Math.ceil(
-                    (character_createdBy.getTime() - new Date().getTime()) /
-                      (1000 * 60 * 60 * 24),
-                  )}
-                  days ago)
-                </p>
-              </div>
-            </Tooltip>
-          ) : null}
-        </div>
-      )
-    }
-    <div class="relative box characterId flex justify-center">
-      <ImageCharacter
-        classes={`object-cover ${imageSizes ? imageSizes : "h-[25rem] w-[25rem]"} rounded-md transition-all duration-500 ${showName === true && "group-hover/character:opacity-30"}`}
-        width={800}
-        height={800}
-        src={c.images.md}
-        loading="eager"
-        alt={c.name}
-        id={c.id}
-      />
-    </div>
-    <div class="flex flex-col gap-2 w-full">
-      <div class="flex justify-between items-center gap-2">
-        <Image
-          src={c.biography.publisher.logo}
-          alt=""
+            {isNew(character_createdBy) === true ? (
+              <Tooltip client:load>
+                <div
+                  class={`group-hover/character:scale-125 px-2 bg-primary rounded-full font-semibold transition-all`}
+                  slot="trigger"
+                >
+                  <p class="text-primary-foreground">New</p>
+                </div>
+                <div slot="content">
+                  <p class="text-primary">
+                    Created by: {character_createdBy}. (
+                    {Math.ceil(
+                      (character_createdBy.getTime() - new Date().getTime()) /
+                        (1000 * 60 * 60 * 24),
+                    )}
+                    days ago)
+                  </p>
+                </div>
+              </Tooltip>
+            ) : null}
+          </div>
+        )
+      }
+      <div class="relative box characterId flex justify-center">
+        <ImageCharacter
+          classes={`object-cover ${imageSizes ? imageSizes : "h-[25rem] w-[25rem]"} rounded-md transition-all duration-500 ${showName === true && "group-hover/character:opacity-30"}`}
           width={800}
           height={800}
-          class="h-10 w-auto"
+          src={c.images.md}
+          loading="eager"
+          alt={c.name}
+          id={c.id}
         />
-        <!-- |{" "} -->
-        <div
-          class={`px-2 ${BackgroundColorAligment(c.biography.alignment)} rounded-full font-semibold transition-all`}
-        >
-          <!-- text-secondary-foreground -->
-          <p class="text-white">
-            {AlignmentTranslator(c.biography.alignment)}
-          </p>
+      </div>
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex justify-between items-center gap-2">
+          <Image
+            src={c.biography.publisher.logo}
+            alt=""
+            width={800}
+            height={800}
+            class="h-10 w-auto"
+          />
+          <div
+            class={`px-2 ${BackgroundColorAligment(c.biography.alignment)} rounded-full font-semibold transition-all`}
+          >
+            <p class="text-white">
+              {AlignmentTranslator(c.biography.alignment)}
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</a>

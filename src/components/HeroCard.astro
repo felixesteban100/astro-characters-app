@@ -8,22 +8,7 @@ interface Props {
 const { character } = Astro.props;
 ---
 
-<!-- transition:name={`photo-${character.id}`} -->
 <div class={"group/product h-56 w-[20rem] relative flex-shrink-0"}>
-  <!-- <a
-    href={`character?id=${character.id}`}
-    class="block group-hover/product:shadow-2xl character-image"
-  >
-    <ImageCharacter
-      src={character.images.md}
-      height={600}
-      width={600}
-      classes="object-cover object-left-top absolute h-full w-full inset-0"
-      alt={character.name}
-      loading={"eager"}
-      id={character.id}
-    />
-  </a> -->
   <div class="block group-hover/product:shadow-2xl character-image">
     <ImageCharacter
       src={character.images.md}

@@ -9,13 +9,12 @@
   } from "lucide-svelte";
   import Stats from "./stats/Stats.svelte";
   import CharacterImagesDisplay from "./CharacterImagesDisplay.svelte";
-  // import CharacterTeamsDisplay from "./CharacterTeamsDisplay.svelte";
-  // import CharacterTeamsDisplay from "./CharacterTeamsDisplay.astro";
   import Appereance from "./stats/Appereance.svelte";
   import Biography from "./stats/Biography.svelte";
-  //   import {organizedComicsProperty} from '../lib/charactersUtils';
 
-  export let characterInfo: /* Character */ CharacterWithJoinTeamUniversePower;
+  import { navigate } from "astro:transitions/client";
+
+  export let characterInfo: CharacterWithJoinTeamUniversePower;
   export let publisherInfo: Omit<Universe, "teams">;
   export let teams: Omit<Team, "members" | "universe">[];
   export let character_added_by: Date;
@@ -103,27 +102,31 @@
         {/if}
 
         {#each teams as team}
-          <a
-            href={`/characters?universe=${characterInfo.biography.publisher.value}&team=${team.value}`}
+          <button
+            on:click={() =>
+              navigate(
+                `/characters?universe=${characterInfo.biography.publisher.value}&team=${team.value}`,
+              )}
             class="hover:underline"
           >
-            <figure class="shrink-0">
+            <div class="shrink-0">
               <div class="overflow-hidden rounded-md">
                 <img
                   src={team.logo}
                   alt={`Photo by`}
                   width={300}
                   height={400}
+                  id={`team-${team.name}-${team.id}`}
                 />
               </div>
 
               <p class="pt-2 text-xs text-muted-foreground">
-                Team - <span class="font-semibold text-foreground"
-                  >{team.name}</span
-                >
+                Team - <span class="font-semibold text-foreground">
+                  {team.name}
+                </span>
               </p>
-            </figure>
-          </a>
+            </div>
+          </button>
         {/each}
       </div>
       <div class="flex flex-col gap-5 justify-center items-center">

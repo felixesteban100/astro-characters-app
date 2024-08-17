@@ -232,7 +232,9 @@ if (otherLinks) links.push(...otherLinks.map((c) => ({ ...c, icon: "User" })));
             showTitle === true ? (
               <p class="font-bold text-3xl">{title}</p>
             ) : (
-              <div />
+              <div>
+                <slot name="images_of_applied_filters" />
+              </div>
             )
           }
           <div>
