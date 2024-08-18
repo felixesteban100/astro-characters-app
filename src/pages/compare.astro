@@ -6,7 +6,6 @@ import {
   joinTeam_universe_power_toCharacter,
 } from "../lib/charactersUtils";
 import CharacterInfoBattle from "../components/CharacterInfoBattle.astro";
-import Dialog from "src/components/Dialog.svelte";
 
 const first = Astro.url.searchParams.get("first");
 const second = Astro.url.searchParams.get("second");
@@ -47,17 +46,6 @@ const [secondCharacter] = await collectionCharacters
     ),
   )
   .toArray();
-
-// const otherLinks = [
-//   {
-//     href: `/compare?first=${selectedCharacters[0].id}`,
-//     title: `compare using ${selectedCharacters[0].name}`,
-//   },
-//   {
-//     href: `/compare?first=${selectedCharacters[1].id}`,
-//     title: `compare using ${selectedCharacters[1].name}`,
-//   },
-// ];
 ---
 
 <Layout

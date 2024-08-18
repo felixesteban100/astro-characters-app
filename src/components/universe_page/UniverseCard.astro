@@ -1,0 +1,86 @@
+---
+import Drawer from "src/components/Drawer.svelte";
+import { ScrollArea } from "$lib/components/ui/scroll-area";
+
+interface Props {
+  universe: UniverseWithJoinTeams;
+}
+
+const { universe } = Astro.props;
+---
+
+<div class="flex flex-col justify-between items-center gap-5 h-full">
+  <a href={`/characters?universe=${universe.value}`} class="hover:underline">
+    <p class="text-xl font-bold">
+      <span class="text-primary">{universe.id} |</span>{" "}
+      {universe.name}
+    </p>
+  </a>
+  {
+    universe.logo !== "" && (
+      <img
+        src={universe.logo}
+        height={500}
+        width={500}
+        alt={universe.name}
+        class={`w-[20rem] h-auto col-span-1`}
+      />
+    )
+  }
+
+  <Drawer client:load>
+    <p slot="trigger">More info</p>
+    <div
+      class="flex flex-col justify-center items-center gap-5 px-10"
+      slot="content"
+    >
+      {
+        universe.logo !== "" && (
+          <img
+            src={universe.logo}
+            height={500}
+            width={500}
+            alt={universe.name}
+            class={`h-[5rem] w-auto col-span-1`}
+          />
+        )
+      }
+      <div class="flex flex-col justify-center gap-5 items-start max-w-[400px]">
+        <div class="flex justify-start items-center gap-5 w-full">
+          <p class="font-bold text-3xl">{universe.name}</p>
+          {/* <img src={universe.logo} class="h-10 w-auto" alt="" /> */}
+        </div>
+        <ScrollArea class="h-24" client:load>
+          <p>{universe.description}</p>
+        </ScrollArea>
+        <div class="self-center">
+          <p class="font-medium mb-2">
+            Teams (total = {universe.teams.length}):{" "}
+          </p>
+          <ScrollArea class="h-72" client:load>
+            <div
+              class="w-full justify-center items-center grid grid-cols-3 gap-5"
+            >
+              {
+                universe.teams.map((team) => {
+                  if (team.value === "All") return;
+
+                  return (
+                    <div>
+                      <img
+                        src={team.logo}
+                        alt=""
+                        class="h-auto w-36 object-cover"
+                      />
+                      {team.name}
+                    </div>
+                  );
+                })
+              }
+            </div>
+          </ScrollArea>
+        </div>
+      </div>
+    </div>
+  </Drawer>
+</div>

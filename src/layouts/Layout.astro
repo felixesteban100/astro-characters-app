@@ -228,15 +228,7 @@ if (otherLinks) links.push(...otherLinks.map((c) => ({ ...c, icon: "User" })));
           transition:animate="none"
           transition:name={`title-animation`}
         >
-          {
-            showTitle === true ? (
-              <p class="font-bold text-3xl">{title}</p>
-            ) : (
-              <div>
-                <slot name="images_of_applied_filters" />
-              </div>
-            )
-          }
+          <p class="font-bold text-3xl">{title}</p>
           <div>
             <div id="actionDoer">
               <slot name="page_title_other_content" />

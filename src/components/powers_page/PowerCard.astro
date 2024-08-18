@@ -1,0 +1,96 @@
+---
+import {
+  BackgroundColorScore,
+  BackgroundColorTier,
+} from "$lib/charactersUtils";
+// import { ObjectId } from "mongodb";
+import Drawer from "src/components/Drawer.svelte";
+
+interface Props {
+  power: Power;
+}
+
+const { power } = Astro.props;
+---
+
+<div class="group/power flex flex-col justify-center items-center gap-5">
+  <div class="flex flex-col gap-5 justify-center items-center">
+    <a href={`/characters?power=${power.value}`} class="hover:underline">
+      <p class="text-xl font-bold">
+        <span class="text-primary">{power.id} |</span>
+        {power.name}
+      </p>
+    </a>
+
+    {
+      power.img !== "" && (
+        <img
+          src={power.img}
+          height={500}
+          width={500}
+          alt={power.name}
+          class={`w-[20rem] h-[15rem] col-span-1 object-cover rounded-md`}
+        />
+      )
+    }
+
+    <div class="flex flex-col justify-center items-end gap-5 w-full">
+      <div class="flex justify-between items-center gap-2 w-full">
+        <p
+          class={`px-2 ${BackgroundColorTier(power.tier)} rounded-full font-semibold transition-all`}
+        >
+          Tier {power.tier}
+        </p>
+        <p
+          class={`px-2 ${BackgroundColorScore(power.score)} rounded-full font-semibold transition-all`}
+        >
+          + {power.score}
+        </p>
+      </div>
+
+      <Drawer client:load>
+        <p slot="trigger">More info</p>
+        <div
+          class="flex flex-col justify-center items-center gap-5 px-10 border-none"
+          slot="content"
+        >
+          <p class="font-bold text-3xl">{power.name}</p>
+          <div
+            class="w-auto h-[50%] overflow-hidden flex flex-col justify-center items-center gap-5"
+          >
+            {
+              power.img !== "" && (
+                <img
+                  src={power.img}
+                  height={500}
+                  width={500}
+                  alt={power.name}
+                  class={`object-cover`}
+                />
+              )
+            }
+
+            <div class="flex justify-between items-center gap-2 w-full">
+              <p
+                class={`px-2 ${BackgroundColorTier(power.tier)} rounded-full font-semibold transition-all`}
+              >
+                Tier {power.tier}
+              </p>
+              <p
+                class={`px-2 ${BackgroundColorScore(power.score)} rounded-full font-semibold transition-all`}
+              >
+                + {power.score}
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="flex flex-col justify-start gap-5 items-start max-w-[400px]"
+          >
+            <p>Description: {power.description}</p>
+          </div>
+        </div>
+      </Drawer>
+    </div>
+  </div>
+</div>

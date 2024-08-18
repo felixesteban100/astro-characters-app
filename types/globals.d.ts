@@ -100,6 +100,7 @@ declare type UniverseWithJoinTeams = Omit<Universe, "teams"> & {
 
 /* POWER */
 declare type Power = {
+    _id: string;
     id: number;
     name: string,
     value: string,

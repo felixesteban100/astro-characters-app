@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import {
   collectionCharacters,
   collectionPowers,
+  collectionTeams,
   collectionUniverses,
 } from "../lib/mongodb";
 
@@ -19,7 +20,10 @@ import FilterCharacters from "../components/FilterCharacters.svelte";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 import { Filter } from "lucide-astro";
 import LoaderAstro from "src/components/LoaderAstro.astro";
-import HeroSection from "src/components/HeroSection.astro";
+import PowerCard from "src/components/powers_page/PowerCard.astro";
+import UniverseCard from "src/components/universe_page/UniverseCard.astro";
+import TeamCard from "src/components/team_page/TeamCard.astro";
+import { getTeamAggregationOptions } from "$lib/constants/aggregations";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName") ?? "";
@@ -60,77 +64,75 @@ const queryOptions: QueryOptions = getQueryOptions({
 
 const offset = (parseInt(currentPage) - 1) * howManyPerPage;
 
-const characterdDisplayLenght = await collectionCharacters
-  .aggregate<CharacterWithJoinTeamUniversePower>(
-    joinTeam_universe_power_toCharacter(
-      queryOptions,
-      sortBy,
-      sortDirection,
-      0,
-      1000,
-      [],
-    ),
-  )
-  .toArray();
-
 const charactersName =
   characterName.split(",").length < 0 ? [] : characterName.split(",");
 
-const characterJoinTeamAndUniverse = await collectionCharacters
-  .aggregate<CharacterWithJoinTeamUniversePower>(
-    joinTeam_universe_power_toCharacter(
-      queryOptions,
-      sortBy,
-      sortDirection,
-      offset,
-      howManyPerPage,
-      charactersName,
-    ),
-  )
-  .toArray();
-
-const universesWithTeams = await collectionUniverses
-  .aggregate<UniverseWithJoinTeams>([
-    {
-      $lookup: {
-        from: "teams",
-        localField: "id",
-        foreignField: "universe",
-        pipeline: [
-          {
-            $project: {
-              universe: 0,
-              comics: 0,
+const [
+  characterdDisplayLenght,
+  characterJoinTeamAndUniverse,
+  universesWithTeams,
+  allUniverses,
+  allPowers,
+  [teamSelected],
+] = await Promise.all([
+  collectionCharacters
+    .aggregate<CharacterWithJoinTeamUniversePower>(
+      joinTeam_universe_power_toCharacter(
+        queryOptions,
+        sortBy,
+        sortDirection,
+        0,
+        1000,
+        [],
+      ),
+    )
+    .toArray(),
+  collectionCharacters
+    .aggregate<CharacterWithJoinTeamUniversePower>(
+      joinTeam_universe_power_toCharacter(
+        queryOptions,
+        sortBy,
+        sortDirection,
+        offset,
+        howManyPerPage,
+        charactersName,
+      ),
+    )
+    .toArray(),
+  collectionUniverses
+    .aggregate<UniverseWithJoinTeams>([
+      {
+        $lookup: {
+          from: "teams",
+          localField: "id",
+          foreignField: "universe",
+          pipeline: [
+            {
+              $project: {
+                universe: 0,
+                comics: 0,
+              },
             },
-          },
-          { $sort: { name: 1 } },
-        ],
-        as: "teams",
+            { $sort: { name: 1 } },
+          ],
+          as: "teams",
+        },
       },
-    },
-    { $match: { teams: { $exists: true, $not: { $size: 0 } } } },
-  ])
-  .toArray();
-
-const allUniverses = await collectionUniverses
-  .find({})
-  .sort({ id: 1 })
-  .toArray();
-const allPowers = await collectionPowers.find({}).sort({ name: 1 }).toArray();
-
-// const allTeams = await collectionTeams.find({}).sort({ id: -1 }).toArray();
-// allTeams.forEach((teamsToUpdate) => {
-//   teamsToUpdate.members.forEach(async (character) => {
-//     const changeNameForIdPowers = await collectionCharacters.updateOne(
-//       { name: character.name },
-//       {
-//         $addToSet: {
-//           "connections.groupAffiliation": teamsToUpdate.id,
-//         },
-//       },
-//     );
-//   });
-// });
+      { $match: { teams: { $exists: true, $not: { $size: 0 } } } },
+    ])
+    .toArray(),
+  collectionUniverses.find({}).sort({ id: 1 }).toArray(),
+  collectionPowers.find({}).sort({ name: 1 }).toArray(),
+  collectionTeams
+    .aggregate<TeamWithJoinCharacterUniverse>([
+      ...getTeamAggregationOptions({ name: team }),
+      { $unwind: "$universe" },
+      { $sort: { [`_id`]: -1 } },
+      { $skip: offset },
+      { $limit: CHARACTERS_PER_PAGE },
+    ])
+    .toArray(),
+]);
 
 const attritutesFilteredArr = Object.entries({
   ...valuesFilter,
@@ -145,7 +147,6 @@ function getTitle(): string {
         } else {
           acc = value.toString();
         }
-
         return acc;
       }, "")
     : "Characters";
@@ -154,10 +155,6 @@ function getTitle(): string {
 const [universeSelected] = universesWithTeams.filter(
   (c) => c.value === universe,
 );
-
-const [teamSelected] = universeSelected
-  ? universeSelected?.teams.filter((c) => c.value === team)
-  : [undefined];
 
 const [powerSelected] =
   allPowers && power ? allPowers.filter((c) => c.value === power) : [undefined];
@@ -199,118 +196,61 @@ const [powerSelected] =
     </div>
   </FilterCharacters>
 
-  <div slot="images_of_applied_filters">
-    {
-      attritutesFilteredArr.length > 0 ? (
-        <div class="flex flex-col md:flex-row justify-start items-center gap-5">
-          {universeSelected && (
-            <figure class="shrink-0 flex flex-col justify-center items-center h-full">
-              <div class="overflow-hidden rounded-md">
-                <img
-                  src={universeSelected.logo}
-                  alt={universeSelected.name}
-                  width={60}
-                  height={60}
-                />
-              </div>
-
-              <p class="pt-2 text-xs text-muted-foreground">
-                Universe -{" "}
-                <span class="font-semibold text-foreground">
-                  {universeSelected.name}
-                </span>
-              </p>
-            </figure>
-          )}
-          {teamSelected && (
-            <figure class="shrink-0 flex flex-col justify-center items-center h-full">
-              <div class="overflow-hidden rounded-md">
-                <img
-                  src={teamSelected.logo}
-                  alt={`Photo by`}
-                  width={120}
-                  height={120}
-                />
-              </div>
-
-              <p class="pt-2 text-xs text-muted-foreground">
-                Team -{" "}
-                <span class="font-semibold text-foreground">
-                  {teamSelected.name}
-                </span>
-              </p>
-            </figure>
-          )}
-          {powerSelected && (
-            <figure class="shrink-0 flex flex-col justify-center items-center h-full">
-              <div class="overflow-hidden rounded-md">
-                <img
-                  src={powerSelected.img}
-                  alt={`Photo by`}
-                  width={60}
-                  height={60}
-                />
-              </div>
-
-              <p class="pt-2 text-xs text-muted-foreground">
-                Power -{" "}
-                <span class="font-semibold text-foreground">
-                  {powerSelected.name}
-                </span>
-              </p>
-            </figure>
-          )}
-        </div>
-      ) : (
-        <p class="font-bold text-3xl">{getTitle()}</p>
-      )
-    }
-  </div>
-
-  <main
-    class="mb-32 flex flex-col justify-center items-center gap-5 mt-10"
-    slot="content"
-  >
-    <!-- <HeroSection /> -->
-
-    {
-      characterJoinTeamAndUniverse.length < 1 ? (
-        <p class="text-5xl w-full text-center">No characters found</p>
-      ) : null
-    }
-
-    <div
-      class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-y-16 gap-10 w-full`}
-    >
+  <main slot="content">
+    <div>
       {
-        characterJoinTeamAndUniverse.map((c) => {
-          return (
-            <CharacterCard
-              c={c}
-              withTransitionName={false}
-              withLink={true}
-              otherClasses="w-full h-full flex justify-center character-image"
-            />
-          );
-        })
+        attritutesFilteredArr.length > 0 ? (
+          <div class="flex flex-col md:flex-row justify-start items-center gap-5">
+            {universeSelected && <UniverseCard universe={universeSelected} />}
+            {teamSelected && <TeamCard team={teamSelected} />}
+            {powerSelected && <PowerCard power={powerSelected} />}
+          </div>
+        ) : null
       }
     </div>
 
-    {
-      characterdDisplayLenght.length > howManyPerPage && (
-        <div>
-          <LoaderAstro />
-          <div id="actionDoer">
-            <Pagination
-              currentPage={currentPage}
-              countItems={characterdDisplayLenght.length}
-              howManyPerPage={howManyPerPage}
-              url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&howManyPerPage=${howManyPerPage}&currentPage=`}
-              client:only
-            />
+    <div class="mb-32 flex flex-col justify-center items-center gap-5 mt-10">
+      <!-- <HeroSection /> -->
+
+      {
+        characterJoinTeamAndUniverse.length < 1 ? (
+          <p class="text-5xl w-full text-center">No characters found</p>
+        ) : null
+      }
+
+      <div
+        class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-y-16 gap-10 w-full`}
+      >
+        {
+          characterJoinTeamAndUniverse.map((c) => {
+            return (
+              <CharacterCard
+                c={c}
+                withTransitionName={false}
+                withLink={true}
+                otherClasses="w-full h-full flex justify-center character-image"
+              />
+            );
+          })
+        }
+      </div>
+
+      {
+        characterdDisplayLenght.length > howManyPerPage && (
+          <div>
+            <LoaderAstro />
+            <div id="actionDoer">
+              <Pagination
+                currentPage={currentPage}
+                countItems={characterdDisplayLenght.length}
+                howManyPerPage={howManyPerPage}
+                url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&howManyPerPage=${howManyPerPage}&currentPage=`}
+                client:only
+              />
+            </div>
           </div>
-        </div>
-      )
-    }
+        )
+      }
+    </div>
   </main>
 </Layout>

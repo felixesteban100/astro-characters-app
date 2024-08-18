@@ -1,12 +1,12 @@
 ---
 import { CHARACTERS_PER_PAGE } from "$lib/constants/constants";
 import Pagination from "src/components/Pagination.svelte";
-import Drawer from "src/components/Drawer.svelte";
 import { collectionTeams } from "../lib/mongodb";
+import { getTeamAggregationOptions } from "../lib/constants/aggregations";
 import Layout from "src/layouts/Layout.astro";
 import Sheet from "src/components/Sheet.svelte";
 import { Filter } from "lucide-astro";
-import { ScrollArea } from "$lib/components/ui/scroll-area";
+import TeamCard from "src/components/team_page/TeamCard.astro";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const universe = Astro.url.searchParams.get("universe") ?? "All";
@@ -15,55 +15,15 @@ const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
 const queryOptions = universe !== "All" ? { "universe.value": universe } : {};
 
-// const teams = await collectionTeams
-//   .find(queryOptions)
-//   .limit(CHARACTERS_PER_PAGE)
-//   .skip(offset)
-//   .toArray();
-
-// const teamsLenght = await collectionTeams.countDocuments(queryOptions);
-
-const aggregationOptions = [
-  {
-    $lookup: {
-      from: "universes",
-      localField: "universe",
-      foreignField: "id",
-      pipeline: [{ $project: { teams: 0, comics: 0 } }],
-      as: "universe",
-    },
-  },
-  {
-    $lookup: {
-      from: "characters",
-      localField: "id",
-      foreignField: "connections.groupAffiliation",
-      pipeline: [
-        {
-          $project: {
-            slug: 0,
-            powerstats: 0,
-            appearance: 0,
-            biography: 0,
-            work: 0,
-            connections: 0,
-            powers: 0,
-          },
-        },
-      ],
-      as: "members",
-    },
-  },
-  { $match: { ...queryOptions } },
-];
+const teamAggregationOptions = getTeamAggregationOptions(queryOptions);
 
 const teamsLenght = await collectionTeams
-  .aggregate<TeamWithJoinCharacterUniverse>(aggregationOptions)
+  .aggregate<TeamWithJoinCharacterUniverse>(teamAggregationOptions)
   .toArray();
 
 const teamsJoinUniverse = await collectionTeams
   .aggregate<TeamWithJoinCharacterUniverse>([
-    ...aggregationOptions,
+    ...teamAggregationOptions,
     { $unwind: "$universe" },
     { $sort: { [`_id`]: -1 } },
     { $skip: offset },
@@ -73,33 +33,7 @@ const teamsJoinUniverse = await collectionTeams
 
 const universesWithTeams: string[] = ["Marvel Comics", "DC Comics", "Shueisha"];
 
-// const imgUniverse: { [key: string]: string } = {
-//   "Marvel Comics":
-//     "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png",
-//   "DC Comics":
-//     "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/DC_Comics_logo.svg/1200px-DC_Comics_logo.svg.png",
-//   Shueisha:
-//     "https://www.shueisha.co.jp/wp-content/themes/shueisha/image/en/mv/mv_subtitle_01.png",
-// };
-
 function getTitle() {
-  // {
-  //     universe !== "All" ? (
-  //       <div class="flex justify-start gap-5 items-center">
-  //         <p class="font-bold text-3xl">{universe}</p>
-  //         <img
-  //           src={imgUniverse[`${universe}`]}
-  //           class="h-10 w-auto"
-  //           width={200}
-  //           height={200}
-  //           alt=""
-  //         />
-  //       </div>
-  //     ) : (
-  //       <p class="font-bold text-3xl">All Universe's teams</p>
-  //     )
-  //   }
-
   return universe !== "All" ? universe : "Teams";
 }
 ---
@@ -163,82 +97,7 @@ function getTitle() {
     >
       {
         teamsJoinUniverse.map((team) => {
-          return (
-            <div class="flex flex-col justify-between items-center gap-5 p-5 h-full">
-              <div class="flex flex-col justify-between items-center gap-5 h-full">
-                <a
-                  href={`/characters?universe=${team.universe.value}&team=${team.value}`}
-                  class="hover:underline"
-                >
-                  <p class="text-xl font-bold">
-                    <span class="text-primary">{team.id} |</span> {team.name}
-                  </p>
-                </a>
-
-                {team.logo !== "" && (
-                  <img
-                    src={team.logo}
-                    height={500}
-                    width={500}
-                    alt={team.name}
-                    class={`w-[20rem] h-auto col-span-1`}
-                  />
-                )}
-
-                <Drawer client:load>
-                  <p slot="trigger">More info</p>
-                  <div
-                    class="flex flex-col justify-center items-center gap-5 px-10"
-                    slot="content"
-                  >
-                    {team.logo !== "" && (
-                      <img
-                        src={team.logo}
-                        height={500}
-                        width={500}
-                        alt={team.name}
-                        class={`w-[15rem] h-auto col-span-1`}
-                      />
-                    )}
-                    <div class="flex flex-col justify-center gap-5 items-start max-w-[400px]">
-                      <div class="flex justify-between items-center gap-5 w-full">
-                        <p class="font-bold text-3xl">{team.name}</p>
-                        <img
-                          src={team.universe.logo}
-                          class="h-10 w-auto"
-                          alt=""
-                        />
-                      </div>
-                      <p>{team.description}</p>
-                      <div class="self-center" slot="close">
-                        <p class="font-medium mb-2">
-                          Members (total = {team.members.length}):{" "}
-                        </p>
-                        <ScrollArea class="h-72" client:load>
-                          <div class="w-full justify-center items-center grid grid-cols-3 gap-5">
-                            {team.members.map((c) => {
-                              // href={`character?id=${c.id}`}
-                              //hover:underline
-                              return (
-                                <div class=" flex flex-col gap-2 justify-center items-center w-full">
-                                  <img
-                                    src={c.images.md}
-                                    alt=""
-                                    class="h-20 w-20 object-cover"
-                                  />
-                                  {c.name}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </ScrollArea>
-                      </div>
-                    </div>
-                  </div>
-                </Drawer>
-              </div>
-            </div>
-          );
+          return <TeamCard {team} />;
         })
       }
     </div>
