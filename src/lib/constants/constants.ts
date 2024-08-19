@@ -57,6 +57,8 @@ export const ALLGENDERS = [
 
 export const SORT_BY_VALUES = ["names_sended", "name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
 
+export const NAME_FIELD_VALUES = ["name", "fullName", "aliases", "alterEgos"]
+
 export const COMICS_DEFAULT = [
   "https://img.freepik.com/free-vector/comics-poster-template_225004-800.jpg?w=2000",
   "https://img.freepik.com/free-vector/comics-poster-template_225004-800.jpg?w=2000",

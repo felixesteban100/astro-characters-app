@@ -27,6 +27,7 @@ import { getTeamAggregationOptions } from "$lib/constants/aggregations";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName") ?? "";
+const nameField = Astro.url.searchParams.get("nameField") ?? "name";
 const side = Astro.url.searchParams.get("side") ?? "All";
 const universe = Astro.url.searchParams.get("universe") ?? "All";
 const team = Astro.url.searchParams.get("team") ?? "All";
@@ -58,7 +59,7 @@ const valuesFilter = {
 const queryOptions: QueryOptions = getQueryOptions({
   ...valuesFilter,
   characterName,
-  characterOrFullName,
+  nameField,
   includesOrExact,
 });
 
@@ -176,10 +177,10 @@ const [powerSelected] =
 
 <Layout title={getTitle()} showTitle={false}>
   <FilterCharacters
-    characterOrFullName={characterOrFullName}
+    characterName={characterName}
+    nameField={nameField}
     howManyPerPage={howManyPerPage}
     includesOrExact={includesOrExact}
-    characterName={characterName}
     gender={gender}
     side={side}
     race={race}
@@ -253,7 +254,7 @@ const [powerSelected] =
                 currentPage={currentPage}
                 countItems={characterdDisplayLenght.length}
                 howManyPerPage={howManyPerPage}
-                url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&characterOrFullName=${characterOrFullName}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&howManyPerPage=${howManyPerPage}&currentPage=`}
+                url={`/characters?characterName=${characterName ?? ""}&gender=${gender ?? "both"}&side=${side ?? "All"}&race=${race ?? "All"}&power=${power ?? "All"}&universe=${universe ?? "All"}&team=${team ?? "All"}&nameField=${nameField}&includesOrExact=${includesOrExact}&sortBy=${sortBy}&sortDirection=${sortDirection}&howManyPerPage=${howManyPerPage}&currentPage=`}
                 client:only
               />
             </div>

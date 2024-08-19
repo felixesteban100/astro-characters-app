@@ -6,6 +6,7 @@
     ALLALIGMENTS,
     ALLGENDERS,
     ALLRACES,
+    NAME_FIELD_VALUES,
     SORT_BY_VALUES,
   } from "../lib/constants/constants";
   import { Checkbox } from "../lib/components/ui/checkbox/index";
@@ -16,15 +17,16 @@
   import { navigate } from "astro:transitions/client";
   import Sheet from "src/components/Sheet.svelte";
   import { Close } from "$lib/components/ui/sheet";
+  import { Select } from "$lib/components/ui/select";
 </script>
 
 <script lang="ts">
-  export let characterOrFullName: boolean;
+  export let characterName: string;
+  export let nameField: string;
   export let howManyPerPage: number;
   export let includesOrExact: boolean;
   export let sortBy: string;
   export let sortDirection: string;
-  export let characterName: string;
   export let gender: string;
   export let side: string;
   export let race: string;
@@ -37,7 +39,7 @@
   export let allPowers: WithId<Power>[];
 
   $: characterNameState = characterName;
-  $: characterOrFullNameState = characterOrFullName;
+  $: nameFieldState = nameField;
   $: howManyPerPageState = howManyPerPage;
   $: sortByState = sortBy;
   $: sortDirectionState = sortDirection;
@@ -67,7 +69,7 @@
 
   function goPageonClick() {
     navigate(
-      `/characters?characterName=${characterNameState}&howManyPerPage=${howManyPerPageState ?? 12}&gender=${genderState}&side=${sideState}&race=${raceState}&power=${powerState}&universe=${universeState}&team=${teamState}&characterOrFullName=${characterOrFullNameState}&includesOrExact=${sortByState === "names_sended" ? false : includesOrExactState}&sortBy=${sortByState}&sortDirection=${sortDirectionState}&currentPage=${1}`,
+      `/characters?characterName=${characterNameState}&howManyPerPage=${howManyPerPageState ?? 12}&gender=${genderState}&side=${sideState}&race=${raceState}&power=${powerState}&universe=${universeState}&team=${teamState}&nameField=${nameFieldState}&includesOrExact=${sortByState === "names_sended" ? false : includesOrExactState}&sortBy=${sortByState}&sortDirection=${sortDirectionState}&currentPage=${1}`,
     );
   }
 </script>
@@ -85,34 +87,34 @@
     <div class="h-[850px] w-full overflow-y-scroll">
       <!-- svelte-ignore a11y-no-static-element-interactions -->
       <div class="flex flex-col gap-10 p-2">
-        <Label class="flex flex-col gap-5">
-          Name
+        <Label class="flex flex-col gap-5 capitalize">
+          {nameFieldState}
           <Input
             id="name"
-            placeholder="batman, superman, iron man, spider-man..."
+            placeholder={nameFieldState === "name"
+              ? "batman, superman, iron man, spider-man..."
+              : nameFieldState === "fullName"
+                ? "bruce wayne, clark kent, tony stark, peter parker..."
+                : nameFieldState === "aliases"
+                  ? "dark knight, man of steel, your friendly neighbor spider-man..."
+                  : "batman, superman, iron man, spider-man..."}
             bind:value={characterNameState}
           />
         </Label>
 
         <Label class="flex flex-col gap-5">
-          How many characters per page
-          <!-- <Slider max={60} step={12} bind:value={[howManyPerPageState]} /> -->
-          <Input
-            type="number"
-            id="howManyPerPageState"
-            bind:value={howManyPerPageState}
-          />
-          <!-- <p>{howManyPerPageState}</p> -->
+          Name field
+          <select
+            bind:value={nameFieldState}
+            class="capitalize bg-background border-[0.5px] text-foreground text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+          >
+            {#each NAME_FIELD_VALUES as name}
+              <option class="capitalize" value={name}>{name}</option>
+            {/each}
+          </select>
         </Label>
 
         <div class="flex flex-col gap-5">
-          <div class="flex gap-2 items-center">
-            <Checkbox id="name-field" bind:checked={characterOrFullNameState} />
-            <Label for="name-field">
-              Fullname (Checked) | CharacterName (Unchecked)
-            </Label>
-          </div>
-
           <div class="flex gap-2 items-center">
             {#if sortByState !== "names_sended"}
               <Checkbox id="regex-ornot" bind:checked={includesOrExactState} />
@@ -239,6 +241,17 @@
             </select>
           </Label>
         {/if}
+
+        <Label class="flex flex-col gap-5">
+          How many characters per page
+          <!-- <Slider max={60} step={12} bind:value={[howManyPerPageState]} /> -->
+          <Input
+            type="number"
+            id="howManyPerPageState"
+            bind:value={howManyPerPageState}
+          />
+          <!-- <p>{howManyPerPageState}</p> -->
+        </Label>
 
         <!-- <p>name: {characterNameState}</p> -->
         <!-- <p>gender: {genderState}</p> -->

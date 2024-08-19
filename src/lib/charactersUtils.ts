@@ -65,49 +65,26 @@ export function getCharacterStatsNumber(selectedCharacter: Character) {
 
 export function getQueryOptions({
   characterName,
+  nameField,
   side,
   universe,
   team,
   gender,
   race,
   power,
-  characterOrFullName,
   includesOrExact,
 }: {
   characterName: string | null,
+  nameField: string,
   side: string | null,
   universe: string | null,
   team: string | null,
   gender: string | null,
   race: string | null,
   power: string | null,
-  characterOrFullName: boolean,
   includesOrExact: boolean
 }) {
   const queryOptions: QueryOptions = {};
-
-  // if (characterName && characterName !== "") {
-  //   const characterNames = characterName.split(",");
-  //   const names: string = characterNames.reduce((acc, name, index) => {
-  //     if (index === 0) return `${name}`;
-  //     acc = `${acc}|${name.trim()}`;
-  //     return acc;
-  //   }, "");
-
-  //   if (includesOrExact) {
-  //     if (characterOrFullName === false) {
-  //       queryOptions.name = new RegExp(names, "ig"); // works
-  //     } else {
-  //       queryOptions["biography.fullName"] = new RegExp(names, "ig"); // works
-  //     }
-  //   } else {
-  //     if (characterOrFullName === false) {
-  //       queryOptions.name = new RegExp(`^(${names})$`, "i");
-  //     } else {
-  //       queryOptions["biography.fullName"] = new RegExp(`^(${names})$`, "i");
-  //     }
-  //   }
-  // }
 
   if (characterName && characterName !== "") {
     const characterNames = characterName.split(",");
@@ -123,10 +100,10 @@ export function getQueryOptions({
       return acc;
     }, new Array<RegExp>());
 
-    if (characterOrFullName === false) {
+    if (nameField === "name") {
       queryOptions.name = { $in: names };
     } else {
-      queryOptions["biography.fullName"] = { $in: names }
+      queryOptions[`biography.${nameField as "fullName"}`] = { $in: names }
     }
   }
 
