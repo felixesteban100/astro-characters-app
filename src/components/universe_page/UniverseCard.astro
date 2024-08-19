@@ -4,13 +4,20 @@ import { ScrollArea } from "$lib/components/ui/scroll-area";
 
 interface Props {
   universe: UniverseWithJoinTeams;
+  unableLink?: boolean;
 }
 
-const { universe } = Astro.props;
+const { universe, unableLink } = Astro.props;
 ---
 
-<div class="flex flex-col justify-between items-center gap-5 h-full">
-  <a href={`/characters?universe=${universe.value}`} class="hover:underline">
+<div
+  transition:name={`${universe.id}-universe`}
+  class="flex flex-col justify-between items-center gap-5 h-full"
+>
+  <a
+    href={unableLink ? undefined : `/characters?universe=${universe.value}`}
+    class={unableLink ? "" : "hover:underline"}
+  >
     <p class="text-xl font-bold">
       <span class="text-primary">{universe.id} |</span>{" "}
       {universe.name}

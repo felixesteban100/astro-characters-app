@@ -9,28 +9,23 @@ import { Button } from "$lib/components/ui/button";
 import { Shuffle } from "lucide-astro";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 
-// const someCharacters = await collectionCharacters
-//   // .find()
-//   // .sort("random")
-//   // .limit(12)
-//   // .toArray();
-//   .aggregate([{ $sample: { size: 12 } }])
-//   .toArray();
-
-// const animateFade = Astro.url.searchParams.get("animateFade");
 const first = Astro.url.searchParams.get("first");
 const second = Astro.url.searchParams.get("second");
 const third = Astro.url.searchParams.get("third");
 const fourth = Astro.url.searchParams.get("fourth");
 
-const firstId =
-  first && first != "null" ? first : await getRandomIdRecursively();
-const secondId =
-  second && second != "null" ? second : await getRandomIdRecursively();
-const thirdId =
-  third && third != "null" ? third : await getRandomIdRecursively();
-const fourthId =
-  fourth && fourth != "null" ? fourth : await getRandomIdRecursively();
+const [firstGenerated, secondGenerated, thirdGenerated, fourthGenerated] =
+  await Promise.all([
+    getRandomIdRecursively(),
+    getRandomIdRecursively(),
+    getRandomIdRecursively(),
+    getRandomIdRecursively(),
+  ]);
+
+const firstId = first && first != "null" ? first : firstGenerated;
+const secondId = second && second != "null" ? second : secondGenerated;
+const thirdId = third && third != "null" ? third : thirdGenerated;
+const fourthId = fourth && fourth != "null" ? fourth : fourthGenerated;
 
 if (
   !first ||
@@ -43,7 +38,6 @@ if (
   fourth === "null"
 ) {
   return Astro.redirect(
-    // `/random_characters?first=${firstId}&second=${secondId}&third=${thirdId}&fourth=${fourthId}&animateFade=${animateFade}`,
     `/random_characters?first=${firstId}&second=${secondId}&third=${thirdId}&fourth=${fourthId}`,
   );
 }

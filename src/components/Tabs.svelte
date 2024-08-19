@@ -12,8 +12,6 @@
   import Appereance from "./stats/Appereance.svelte";
   import Biography from "./stats/Biography.svelte";
 
-  import { navigate } from "astro:transitions/client";
-
   export let characterInfo: CharacterWithJoinTeamUniversePower;
   export let publisherInfo: Omit<Universe, "teams">;
   export let teams: Omit<Team, "members" | "universe">[];
@@ -101,33 +99,19 @@
           <p class="text-xl font-medium">No teams</p>
         {/if}
 
-        {#each teams as team}
+        <!-- {#each teams as team}
           <button
             on:click={() =>
               navigate(
                 `/characters?universe=${characterInfo.biography.publisher.value}&team=${team.value}`,
               )}
-            class="hover:underline"
+            class="appearance-none"
           >
-            <div class="shrink-0">
-              <div class="overflow-hidden rounded-md">
-                <img
-                  src={team.logo}
-                  alt={`Photo by`}
-                  width={300}
-                  height={400}
-                  id={`team-${team.name}-${team.id}`}
-                />
-              </div>
-
-              <p class="pt-2 text-xs text-muted-foreground">
-                Team - <span class="font-semibold text-foreground">
-                  {team.name}
-                </span>
-              </p>
-            </div>
+            <slot name="teamCard" />
           </button>
-        {/each}
+        {/each} -->
+
+        <slot name="teamsRenderedElements" />
       </div>
       <div class="flex flex-col gap-5 justify-center items-center">
         <p class="text-3xl font-bold">Relatives</p>
@@ -154,3 +138,29 @@
 </Tabs.Root>
 
 <!-- characterInfoPublisher={characterInfo.biography.publisher} -->
+
+<!-- <button
+            on:click={() =>
+              navigate(
+                `/characters?universe=${characterInfo.biography.publisher.value}&team=${team.value}`,
+              )}
+            class="hover:underline"
+          >
+            <div class="shrink-0">
+              <div class="overflow-hidden rounded-md">
+                <img
+                  src={team.logo}
+                  alt={`Photo by`}
+                  width={300}
+                  height={400}
+                  id={`team-${team.name}-${team.id}`}
+                />
+              </div>
+
+              <p class="pt-2 text-xs text-muted-foreground">
+                Team - <span class="font-semibold text-foreground">
+                  {team.name}
+                </span>
+              </p>
+            </div>
+          </button> -->

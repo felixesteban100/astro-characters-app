@@ -42,14 +42,15 @@ if (tierRange.length > 0) {
   };
 }
 
-const powers = await collectionPowers
-  .find(query)
-  .sort({ id: -1 })
-  .limit(howManyPerPage)
-  .skip(offset)
-  .toArray();
-
-const powersLenght = await collectionPowers.find(query).toArray();
+const [powers, powersLenght] = await Promise.all([
+  collectionPowers
+    .find(query)
+    .sort({ id: -1 })
+    .limit(howManyPerPage)
+    .skip(offset)
+    .toArray(),
+  collectionPowers.find(query).toArray(),
+]);
 ---
 
 <Layout title="Powers">

@@ -1,11 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import { collectionCharacters } from "../lib/mongodb";
+import { collectionCharacters, collectionTeams } from "../lib/mongodb";
 import Tabs from "src/components/Tabs.svelte";
 import { joinTeam_universe_power_toCharacter } from "$lib/charactersUtils";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 import { ObjectId } from "mongodb";
+import TeamCard from "src/components/team_page/TeamCard.astro";
+import { getTeamAggregationOptions } from "$lib/constants/aggregations";
 
 const id = Astro.url.searchParams.get("id");
 const characterJoinTeamAndUniverse = await collectionCharacters
@@ -22,6 +24,25 @@ const characterJoinTeamAndUniverse = await collectionCharacters
   .toArray();
 
 const selectedCharacter = characterJoinTeamAndUniverse[0];
+
+const teamAggregationOptions = getTeamAggregationOptions(undefined);
+
+const teamsJoinUniverse = await collectionTeams
+  .aggregate<TeamWithJoinCharacterUniverse>([
+    ...teamAggregationOptions,
+    {
+      $match: {
+        name: {
+          $in: selectedCharacter.connections.groupAffiliation.map(
+            (c) => c.value,
+          ),
+        },
+      },
+    },
+    { $unwind: "$universe" },
+    { $sort: { [`_id`]: -1 } },
+  ])
+  .toArray();
 
 if (!selectedCharacter) {
   return Astro.redirect(`/not-found`);
@@ -58,7 +79,34 @@ if (!selectedCharacter) {
         teams={selectedCharacter.connections.groupAffiliation}
         character_added_by={new ObjectId(selectedCharacter._id).getTimestamp()}
         client:load
-      />
+      >
+        <div slot="teamsRenderedElements">
+          {
+            teamsJoinUniverse.map((c) => {
+              return (
+                <a
+                  href={`/characters?universe=${selectedCharacter.biography.publisher.value}&team=${c.value}`}
+                >
+                  <TeamCard team={c} />
+                </a>
+              );
+            })
+          }
+        </div>
+      </Tabs>
     </div>
   </div>
 </Layout>
+
+{
+  /* <button
+              onclick={() =>
+                navigate(
+                  `/characters?universe=${selectedCharacter.biography.publisher.value}&team=${c.value}`,
+                )
+              }
+              class="appearance-none"
+            >
+              <TeamCard team={c} />;
+            </button> */
+}

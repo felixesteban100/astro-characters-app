@@ -10,42 +10,48 @@ import CharacterInfoBattle from "../components/CharacterInfoBattle.astro";
 const first = Astro.url.searchParams.get("first");
 const second = Astro.url.searchParams.get("second");
 
-const firstId = first ?? (await getRandomIdRecursively());
-const secondId = second ?? (await getRandomIdRecursively());
+const [firstGenerated, secondGenerated] = await Promise.all([
+  getRandomIdRecursively(),
+  getRandomIdRecursively(),
+]);
+
+const firstId = first ?? firstGenerated;
+const secondId = second ?? secondGenerated;
 
 if (!first || !second) {
   return Astro.redirect(`/compare?first=${firstId}&second=${secondId}`);
 }
 
-const [firstCharacter] = await collectionCharacters
-  .aggregate<CharacterWithJoinTeamUniversePower>(
-    joinTeam_universe_power_toCharacter(
-      {
-        id: parseInt(firstId),
-      },
-      "id",
-      "desc",
-      0,
-      2,
-      [],
-    ),
-  )
-  .toArray();
-
-const [secondCharacter] = await collectionCharacters
-  .aggregate<CharacterWithJoinTeamUniversePower>(
-    joinTeam_universe_power_toCharacter(
-      {
-        id: parseInt(secondId),
-      },
-      "id",
-      "desc",
-      0,
-      2,
-      [],
-    ),
-  )
-  .toArray();
+const [[firstCharacter], [secondCharacter]] = await Promise.all([
+  collectionCharacters
+    .aggregate<CharacterWithJoinTeamUniversePower>(
+      joinTeam_universe_power_toCharacter(
+        {
+          id: parseInt(firstId),
+        },
+        "id",
+        "desc",
+        0,
+        2,
+        [],
+      ),
+    )
+    .toArray(),
+  collectionCharacters
+    .aggregate<CharacterWithJoinTeamUniversePower>(
+      joinTeam_universe_power_toCharacter(
+        {
+          id: parseInt(secondId),
+        },
+        "id",
+        "desc",
+        0,
+        2,
+        [],
+      ),
+    )
+    .toArray(),
+]);
 ---
 
 <Layout

@@ -125,7 +125,12 @@ const [
   collectionPowers.find({}).sort({ name: 1 }).toArray(),
   collectionTeams
     .aggregate<TeamWithJoinCharacterUniverse>([
-      ...getTeamAggregationOptions({ name: team }),
+      ...getTeamAggregationOptions(undefined),
+      {
+        $match: {
+          name: team,
+        },
+      },
       { $unwind: "$universe" },
       { $sort: { [`_id`]: -1 } },
       { $skip: offset },
@@ -201,9 +206,13 @@ const [powerSelected] =
       {
         attritutesFilteredArr.length > 0 ? (
           <div class="flex flex-col md:flex-row justify-start items-center gap-5">
-            {universeSelected && <UniverseCard universe={universeSelected} />}
-            {teamSelected && <TeamCard team={teamSelected} />}
-            {powerSelected && <PowerCard power={powerSelected} />}
+            {universeSelected && (
+              <UniverseCard universe={universeSelected} unableLink={true} />
+            )}
+            {teamSelected && <TeamCard team={teamSelected} unableLink={true} />}
+            {powerSelected && (
+              <PowerCard power={powerSelected} unableLink={true} />
+            )}
           </div>
         ) : null
       }

@@ -30,18 +30,19 @@ const aggregationOptions = [
   { $match: {} },
 ];
 
-const universesJoinTeamsLenght = await collectionUniverses
-  .aggregate<UniverseWithJoinTeams>(aggregationOptions)
-  .toArray();
-
-const universesJoinTeams = await collectionUniverses
-  .aggregate<UniverseWithJoinTeams>([
-    ...aggregationOptions,
-    { $sort: { [`id`]: 1 } },
-    { $skip: offset },
-    { $limit: CHARACTERS_PER_PAGE },
-  ])
-  .toArray();
+const [universesJoinTeamsLenght, universesJoinTeams] = await Promise.all([
+  collectionUniverses
+    .aggregate<UniverseWithJoinTeams>(aggregationOptions)
+    .toArray(),
+  collectionUniverses
+    .aggregate<UniverseWithJoinTeams>([
+      ...aggregationOptions,
+      { $sort: { [`id`]: 1 } },
+      { $skip: offset },
+      { $limit: CHARACTERS_PER_PAGE },
+    ])
+    .toArray(),
+]);
 ---
 
 <Layout title="Universes">

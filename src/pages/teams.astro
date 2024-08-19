@@ -13,23 +13,22 @@ const universe = Astro.url.searchParams.get("universe") ?? "All";
 
 const offset = (parseInt(currentPage) - 1) * CHARACTERS_PER_PAGE;
 
-const queryOptions = universe !== "All" ? { "universe.value": universe } : {};
+const teamAggregationOptions = getTeamAggregationOptions(universe);
 
-const teamAggregationOptions = getTeamAggregationOptions(queryOptions);
-
-const teamsLenght = await collectionTeams
-  .aggregate<TeamWithJoinCharacterUniverse>(teamAggregationOptions)
-  .toArray();
-
-const teamsJoinUniverse = await collectionTeams
-  .aggregate<TeamWithJoinCharacterUniverse>([
-    ...teamAggregationOptions,
-    { $unwind: "$universe" },
-    { $sort: { [`_id`]: -1 } },
-    { $skip: offset },
-    { $limit: CHARACTERS_PER_PAGE },
-  ])
-  .toArray();
+const [teamsLenght, teamsJoinUniverse] = await Promise.all([
+  collectionTeams
+    .aggregate<TeamWithJoinCharacterUniverse>(teamAggregationOptions)
+    .toArray(),
+  collectionTeams
+    .aggregate<TeamWithJoinCharacterUniverse>([
+      ...teamAggregationOptions,
+      { $unwind: "$universe" },
+      { $sort: { [`_id`]: -1 } },
+      { $skip: offset },
+      { $limit: CHARACTERS_PER_PAGE },
+    ])
+    .toArray(),
+]);
 
 const universesWithTeams: string[] = ["Marvel Comics", "DC Comics", "Shueisha"];
 

@@ -58,12 +58,13 @@ declare type Character = {
     tier: number;
     character_class: number;
 };
-declare type CharacterWithJoinTeamUniversePower = Omit<Character, "biography.publisher" | "connections.groupAffiliation" | "powers"> & {
+declare type CharacterWithJoinTeamUniversePower = Omit<Character, "biography.publisher" | "connections" | "powers"> & {
     biography: {
         publisher: Omit<Universe, "teams">;
     };
     connections: {
-        groupAffiliation: Omit<Team, "universe">[];
+        groupAffiliation: /* TeamWithJoinCharacterUniverse[] */ Omit<Team, "universe">[];
+        relatives: string
     };
     powers: Power[]
 }

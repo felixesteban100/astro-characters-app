@@ -162,95 +162,88 @@ export async function getRandomIdRecursively() {
 
 export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions, sortBy: string, sortDirection: string, offset: number, howManyPerPage: number, charactersNames: string[]) => {
 
-  if (charactersNames.length > 1 && sortBy === "names_sended") {
-    // console.log("queryOptions", queryOptions)
-    // console.log("charactersNames", charactersNames)
-    // console.log("sortBy", sortBy)
-    // console.log("ok ok ")
+  const baseLookups = [
+    {
+      $lookup: {
+        from: "powers",
+        localField: "powers",
+        foreignField: "id",
+        as: "powers",
+      },
+    },
+    {
+      $lookup: {
+        from: "universes",
+        localField: "biography.publisher",
+        foreignField: "value",
+        pipeline: [{ $project: { teams: 0 } }],
+        as: "biography.publisher",
+      },
+    },
+    { $unwind: "$biography.publisher" },
+    {
+      $lookup: {
+        from: "teams",
+        localField: "connections.groupAffiliation",
+        foreignField: "id",
+        pipeline: [{ "$project": { "universe": 0 } }],
+        as: "connections.groupAffiliation",
+      },
+    },
+    { $match: { ...queryOptions/* , name: { $in: queryOptions.name } */ } },
+    { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
+    { $skip: offset },
+    { $limit: howManyPerPage },
+  ]
 
-    return [
-      {
-        $lookup: {
-          from: "powers",
-          localField: "powers",
-          foreignField: "id",
-          as: "powers",
-        },
-      },
-      {
-        $lookup: {
-          from: "universes",
-          localField: "biography.publisher",
-          foreignField: "value",
-          pipeline: [{ $project: { teams: 0 } }],
-          as: "biography.publisher",
-        },
-      },
-      { $unwind: "$biography.publisher" },
-      {
-        $lookup: {
-          from: "teams",
-          localField: "connections.groupAffiliation",
-          foreignField: "id",
-          pipeline: [{ "$project": { "universe": 0 } }],
-          as: "connections.groupAffiliation",
-        },
-      },
-
-      { $match: { ...queryOptions/* , name: { $in: queryOptions.name } */ } },
-      {
-        $addFields: {
-          names_sended: {
-            $indexOfArray: [charactersNames.map(c => c.toLowerCase().trim()), { $toLower: "$name" }]
-          }
-        }
-      },
-      { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
-      { $skip: offset },
-      { $limit: howManyPerPage },
-    ]
-  } else {
-    // console.log("queryOptions", queryOptions)
-    // console.log("charactersNames", charactersNames)
-    // console.log("sortBy", sortBy)
-    // console.log("ok ok ")
-
-    return [
-      {
-        $lookup: {
-          from: "powers",
-          localField: "powers",
-          foreignField: "id",
-          as: "powers",
-        },
-      },
-      {
-        $lookup: {
-          from: "universes",
-          localField: "biography.publisher",
-          foreignField: "value",
-          pipeline: [{ $project: { teams: 0 } }],
-          as: "biography.publisher",
-        },
-      },
-      { $unwind: "$biography.publisher" },
-      {
-        $lookup: {
-          from: "teams",
-          localField: "connections.groupAffiliation",
-          foreignField: "id",
-          pipeline: [{ "$project": { "universe": 0 } }],
-          as: "connections.groupAffiliation",
-        },
-      },
-
-      { $match: { ...queryOptions } },
-      { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
-      { $skip: offset },
-      { $limit: howManyPerPage },
-    ];
-  }
+  // if (charactersNames.length > 1 && sortBy === "names_sended") {
+  //   return [
+  //     ...baseLookups,
+  //     {
+  //       $addFields: {
+  //         names_sended: {
+  //           $indexOfArray: [charactersNames.map(c => c.toLowerCase().trim()), { $toLower: "$name" }]
+  //         }
+  //       }
+  //     },
+  //   ]
+  // }
+  return baseLookups
 }
+
+/* {
+        $lookup: {
+          from: "powers",
+          localField: "powers",
+          foreignField: "id",
+          as: "powers",
+        },
+      },
+      {
+        $lookup: {
+          from: "universes",
+          localField: "biography.publisher",
+          foreignField: "value",
+          pipeline: [{ $project: { teams: 0 } }],
+          as: "biography.publisher",
+        },
+      },
+      { $unwind: "$biography.publisher" },
+      {
+        $lookup: {
+          from: "teams",
+          localField: "connections.groupAffiliation",
+          foreignField: "id",
+          pipeline: [{ "$project": { "universe": 0 } }],
+          as: "connections.groupAffiliation",
+        },
+      },
+ */
+
+
+/*  */
+
+/*  */
 
 /* {
       "$lookup": {
