@@ -11,6 +11,7 @@
   import CharacterImagesDisplay from "./CharacterImagesDisplay.svelte";
   import Appereance from "./stats/Appereance.svelte";
   import Biography from "./stats/Biography.svelte";
+  import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte";
 
   export let characterInfo: CharacterWithJoinTeamUniversePower;
   export let publisherInfo: Omit<Universe, "teams">;
@@ -21,10 +22,13 @@
 </script>
 
 <Tabs.Root
-  value="Stats"
+  value="Biography"
   class="h-[44rem] w-full flex justify-start flex-col items-center gap-5"
 >
   <Tabs.List class="grid w-full grid-cols-5 bg-accent">
+    <Tabs.Trigger class="text-base-content hidden md:block" value="Biography">
+      Biography
+    </Tabs.Trigger>
     <Tabs.Trigger class="text-base-content hidden md:block" value="Stats">
       Stats
     </Tabs.Trigger>
@@ -43,9 +47,7 @@
     >
       <Eye size={20} />
     </Tabs.Trigger>
-    <Tabs.Trigger class="text-base-content hidden md:block" value="Biography">
-      Biography
-    </Tabs.Trigger>
+
     <Tabs.Trigger
       class="text-base-content md:hidden flex justify-center"
       value="Biography"
@@ -71,16 +73,6 @@
       <PictureInPicture size={20} />
     </Tabs.Trigger>
   </Tabs.List>
-  <Tabs.Content class="h-full w-[90%]" value="Stats">
-    <Stats
-      powerstats={characterInfo.powerstats}
-      powers={characterInfo.powers}
-      showNameAtAll={true}
-    />
-  </Tabs.Content>
-  <Tabs.Content class="h-full w-[90%]" value="Appereance">
-    <Appereance appereance={characterInfo.appearance} />
-  </Tabs.Content>
   <Tabs.Content class="h-full w-[90%]" value="Biography">
     <Biography
       biography={characterInfo.biography}
@@ -88,8 +80,17 @@
       {character_added_by}
     />
   </Tabs.Content>
+  <Tabs.Content class="h-full w-[90%]" value="Stats">
+    <ScrollArea class="h-full">
+      <Stats powerstats={characterInfo.powerstats} showNameAtAll={true} />
+      <slot name="powersRenderedElements" />
+    </ScrollArea>
+  </Tabs.Content>
+  <Tabs.Content class="h-full w-[90%]" value="Appereance">
+    <Appereance appereance={characterInfo.appearance} />
+  </Tabs.Content>
+
   <Tabs.Content value="Connections">
-    <!-- <slot name="character-images-display"/> -->
     <div
       class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px] space-y-5"
     >
@@ -98,18 +99,6 @@
         {#if teams.length < 1}
           <p class="text-xl font-medium">No teams</p>
         {/if}
-
-        <!-- {#each teams as team}
-          <button
-            on:click={() =>
-              navigate(
-                `/characters?universe=${characterInfo.biography.publisher.value}&team=${team.value}`,
-              )}
-            class="appearance-none"
-          >
-            <slot name="teamCard" />
-          </button>
-        {/each} -->
 
         <slot name="teamsRenderedElements" />
       </div>
@@ -136,31 +125,3 @@
     />
   </Tabs.Content>
 </Tabs.Root>
-
-<!-- characterInfoPublisher={characterInfo.biography.publisher} -->
-
-<!-- <button
-            on:click={() =>
-              navigate(
-                `/characters?universe=${characterInfo.biography.publisher.value}&team=${team.value}`,
-              )}
-            class="hover:underline"
-          >
-            <div class="shrink-0">
-              <div class="overflow-hidden rounded-md">
-                <img
-                  src={team.logo}
-                  alt={`Photo by`}
-                  width={300}
-                  height={400}
-                  id={`team-${team.name}-${team.id}`}
-                />
-              </div>
-
-              <p class="pt-2 text-xs text-muted-foreground">
-                Team - <span class="font-semibold text-foreground">
-                  {team.name}
-                </span>
-              </p>
-            </div>
-          </button> -->

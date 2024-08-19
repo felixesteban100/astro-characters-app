@@ -9,7 +9,6 @@
     Zap,
   } from "lucide-svelte";
   import StatsNumber from "./StatsNumber.svelte";
-  import Powers from "./Powers.svelte";
 
   export let powerstats: {
     intelligence: number;
@@ -20,15 +19,12 @@
     combat: number;
     total: number;
   };
-  export let powers: Power[];
 
   export let showNameAtAll: boolean = false;
 </script>
 
 <!-- class="w-full flex justify-center items-center flex-col" -->
-<div
-  class=" whitespace-nowrap h-[44rem] w-full flex justify-start items-center flex-col"
->
+<div class=" whitespace-nowrap w-full flex justify-start items-center flex-col">
   <StatsNumber {showNameAtAll} statName="Combat" statValue={powerstats.combat}>
     <Sword slot="icon" />
   </StatsNumber>
@@ -62,5 +58,5 @@
   <StatsNumber {showNameAtAll} statName="Total" statValue={powerstats.total}>
     <Percent slot="icon" />
   </StatsNumber>
-  <Powers {powers} />
+  <!-- <Powers {powers} /> -->
 </div>

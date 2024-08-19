@@ -1,16 +1,21 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import { collectionCharacters, collectionTeams } from "../lib/mongodb";
+import {
+  collectionCharacters,
+  collectionPowers,
+  collectionTeams,
+} from "../lib/mongodb";
 import Tabs from "src/components/Tabs.svelte";
 import { joinTeam_universe_power_toCharacter } from "$lib/charactersUtils";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 import { ObjectId } from "mongodb";
 import TeamCard from "src/components/team_page/TeamCard.astro";
 import { getTeamAggregationOptions } from "$lib/constants/aggregations";
+import PowerCard from "src/components/powers_page/PowerCard.astro";
 
 const id = Astro.url.searchParams.get("id");
-const characterJoinTeamAndUniverse = await collectionCharacters
+const [selectedCharacter] = await collectionCharacters
   .aggregate<CharacterWithJoinTeamUniversePower>(
     joinTeam_universe_power_toCharacter(
       { id: parseInt(id ?? "") },
@@ -23,26 +28,26 @@ const characterJoinTeamAndUniverse = await collectionCharacters
   )
   .toArray();
 
-const selectedCharacter = characterJoinTeamAndUniverse[0];
-
 const teamAggregationOptions = getTeamAggregationOptions(undefined);
 
-const teamsJoinUniverse = await collectionTeams
-  .aggregate<TeamWithJoinCharacterUniverse>([
-    ...teamAggregationOptions,
-    {
-      $match: {
-        name: {
-          $in: selectedCharacter.connections.groupAffiliation.map(
-            (c) => c.value,
-          ),
+const [teamsJoinUniverse] = await Promise.all([
+  collectionTeams
+    .aggregate<TeamWithJoinCharacterUniverse>([
+      ...teamAggregationOptions,
+      {
+        $match: {
+          name: {
+            $in: selectedCharacter.connections.groupAffiliation.map(
+              (c) => c.value,
+            ),
+          },
         },
       },
-    },
-    { $unwind: "$universe" },
-    { $sort: { [`_id`]: -1 } },
-  ])
-  .toArray();
+      { $unwind: "$universe" },
+      { $sort: { [`_id`]: -1 } },
+    ])
+    .toArray(),
+]);
 
 if (!selectedCharacter) {
   return Astro.redirect(`/not-found`);
@@ -93,20 +98,17 @@ if (!selectedCharacter) {
             })
           }
         </div>
+        <div
+          slot="powersRenderedElements"
+          class="flex flex-col gap-2 justify-center items-center mt-10"
+        >
+          {
+            selectedCharacter.powers.map((c) => {
+              return <PowerCard power={c} />;
+            })
+          }
+        </div>
       </Tabs>
     </div>
   </div>
 </Layout>
-
-{
-  /* <button
-              onclick={() =>
-                navigate(
-                  `/characters?universe=${selectedCharacter.biography.publisher.value}&team=${c.value}`,
-                )
-              }
-              class="appearance-none"
-            >
-              <TeamCard team={c} />;
-            </button> */
-}
