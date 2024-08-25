@@ -1,6 +1,6 @@
 ---
 import "../styles/globals.css";
-import { ViewTransitions, slide, fade } from "astro:transitions";
+import { ViewTransitions } from "astro:transitions";
 import LoaderAstro from "src/components/LoaderAstro.astro";
 import Navbar from "src/components/Navbar.astro";
 import Sparkles from "src/components/Sparkles.svelte";
@@ -91,11 +91,9 @@ interface Props {
     href: string;
     title: string;
   }[];
-  animateFade?: boolean;
-  showTitle?: boolean;
 }
 
-const { title, otherLinks, animateFade, showTitle = true } = Astro.props;
+const { title, otherLinks } = Astro.props;
 
 const links = [
   {
@@ -135,6 +133,25 @@ const links = [
 ];
 
 if (otherLinks) links.push(...otherLinks.map((c) => ({ ...c, icon: "User" })));
+
+const anim = {
+  old: {
+    name: "translate-out",
+    duration: "cubic-bezier(0.4, 0, 0.2, 1)",
+    fillMode: "both",
+    // direction: "reverse",
+  },
+  new: {
+    name: "translate-in",
+    duration: "cubic-bezier(0.4, 0, 0.2, 1)",
+    fillMode: "both",
+  },
+};
+
+const customTransition = {
+  forwards: anim,
+  backwards: anim,
+};
 ---
 
 <script is:inline>
@@ -209,7 +226,7 @@ if (otherLinks) links.push(...otherLinks.map((c) => ({ ...c, icon: "User" })));
           </div>
         </div>
         <div
-          transition:animate={slide({ duration: "1s" })}
+          transition:animate={customTransition}
           transition:name={`page-animation`}
         >
           <slot name="content" />

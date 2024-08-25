@@ -128,18 +128,18 @@
 
   ::view-transition-new(*):only-child {
     animation:
-      500ms cubic-bezier(0, 0, 0.2, 1) both fade-in,
-      500ms cubic-bezier(0.4, 0, 0.2, 1) both scale-in;
-    animation-delay: 500ms;
+      /* 500ms cubic-bezier(0, 0, 0.2, 1) both fade-in, */ 500ms
+      cubic-bezier(0.4, 0, 0.2, 1) both translate-in /* scale-in */;
+    /* animation-delay: 500ms; */
   }
 
   /* :not(title-animation) */
 
   ::view-transition-old(*):only-child {
     animation:
-      500ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
-      500ms cubic-bezier(0.4, 0, 0.2, 1) both scale-out;
-    animation-delay: 100ms;
+      /* 500ms cubic-bezier(0.4, 0, 1, 1) both fade-out, */ 500ms
+      cubic-bezier(0.4, 0, 0.2, 1) both translate-out /* scale-out */;
+    /* animation-delay: 100ms; */
   }
 
   @keyframes fade-in {
@@ -154,7 +154,7 @@
     }
   }
 
-  @keyframes scale-in {
+  /* @keyframes scale-in {
     from {
       transform: scale(0.7);
     }
@@ -163,6 +163,39 @@
   @keyframes scale-out {
     to {
       transform: scale(0.7);
+    }
+  } */
+
+  @keyframes translate-in {
+    from {
+      transform: translateX(-100vw);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+
+  @keyframes translate-out {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(100vw);
+    }
+  }
+
+  @keyframes bump {
+    0% {
+      opacity: 0;
+      transform: scale(1) translateX(200px);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateX(0);
     }
   }
 }
