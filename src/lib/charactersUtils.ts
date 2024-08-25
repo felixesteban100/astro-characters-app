@@ -41,7 +41,6 @@ export function BackgroundColorTier(tier: number) {
     case 10:
       return "bg-purple-500 text-black"
 
-
     default:
       return "bg-primary text-primary-foreground"
 
@@ -167,24 +166,25 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions, 
         as: "connections.groupAffiliation",
       },
     },
-    { $match: { ...queryOptions/* , name: { $in: queryOptions.name } */ } },
+    { $match: { ...queryOptions } },
     { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
     { $skip: offset },
     { $limit: howManyPerPage },
   ]
 
-  // if (charactersNames.length > 1 && sortBy === "names_sended") {
-  //   return [
-  //     ...baseLookups,
-  //     {
-  //       $addFields: {
-  //         names_sended: {
-  //           $indexOfArray: [charactersNames.map(c => c.toLowerCase().trim()), { $toLower: "$name" }]
-  //         }
-  //       }
-  //     },
-  //   ]
-  // }
+  if (charactersNames.length > 1 && sortBy === "names_sended") {
+
+    return [
+      {
+        $addFields: {
+          names_sended: {
+            $indexOfArray: [charactersNames.map(c => c.toLowerCase().trim()), { $toLower: "$name" }]
+          }
+        }
+      },
+      ...baseLookups,
+    ]
+  }
   return baseLookups
 }
 

@@ -135,27 +135,6 @@ const links = [
 ];
 
 if (otherLinks) links.push(...otherLinks.map((c) => ({ ...c, icon: "User" })));
-
-// const anim = {
-//   old: {
-//     name: "fadeIn",
-//     duration: "0.2s",
-//     easing: "linear",
-//     fillMode: "forwards",
-//   },
-//   new: {
-//     name: "fadeOut",
-//     duration: "0.3s",
-//     easing: "linear",
-//     fillMode: "backwards",
-//   },
-// };
-
-// const this_animation_does_nothing_because_it_is_being_customized_in_css_using_classes =
-//   {
-//     forwards: anim,
-//     backwards: anim,
-//   };
 ---
 
 <script is:inline>
@@ -183,12 +162,6 @@ if (otherLinks) links.push(...otherLinks.map((c) => ({ ...c, icon: "User" })));
   }
 </script>
 
-<!-- <script>
-  let lastClick;
-  addEventListener("click", (event) => (lastClick = event));
-
-  console.log("lastClick", lastClick);
-</script> -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -198,7 +171,6 @@ if (otherLinks) links.push(...otherLinks.map((c) => ({ ...c, icon: "User" })));
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <ViewTransitions fallback="swap" />
-    <!-- <ViewTransitions /> -->
     <script src="../scripts/transitions.ts"></script>
   </head>
   <body>
@@ -237,19 +209,12 @@ if (otherLinks) links.push(...otherLinks.map((c) => ({ ...c, icon: "User" })));
           </div>
         </div>
         <div
-          transition:animate={/* animateFade
-            ? fade({ duration: "1s" })
-            :  */ slide({ duration: "1s" })}
+          transition:animate={slide({ duration: "1s" })}
           transition:name={`page-animation`}
         >
           <slot name="content" />
         </div>
       </div>
     </main>
-  </body><!-- transition:animate={currentPath.includes("/compare") /* ||
-          currentPath.includes("/random_characters") */
-            ? fade({ duration: "1s" })
-            : slide({ duration: "1s" })}--><!-- transition:animate={animateFade === true
-            ? fade({ duration: "1s" })
-            : slide({ duration: "1s" })} -->
+  </body>
 </html>

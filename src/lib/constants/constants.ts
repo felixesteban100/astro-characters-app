@@ -19,7 +19,7 @@ export const ALLRACES = [
   { value: "Inhuman", name: "Inhuman 🧬" },
   { value: "Asgardian", name: "Asgardian 👽" },
   { value: "Cosmic Entity", name: "Cosmic Entity 🌌" },
-] /* as const; */
+]
 
 export const ALLALIGMENTS = [
   {
@@ -55,9 +55,25 @@ export const ALLGENDERS = [
   },
 ] /* as const; */
 
-export const SORT_BY_VALUES = ["names_sended", "name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
+export const SORT_BY_VALUES = [
+  { name: "names_sended", value: "names_sended" },
+  { name: "name", value: "name" },
+  { name: "id", value: "id" },
+  { name: "_id", value: "_id" },
+  { name: "powerstats.power", value: "powerstats.power" },
+  { name: "powerstats.intelligence", value: "powerstats.intelligence" },
+  { name: "powerstats.strength", value: "powerstats.strength" },
+  { name: "powerstats.durability", value: "powerstats.durability" },
+  { name: "powerstats.combat", value: "powerstats.combat" },
+  { name: "powerstats.speed", value: "powerstats.speed" },
+]
 
-export const NAME_FIELD_VALUES = ["name", "fullName", "aliases", "alterEgos"]
+export const NAME_FIELD_VALUES = [
+  { name: "name", value: "name" },
+  { name: "fullName", value: "fullName" },
+  { name: "aliases", value: "aliases" },
+  { name: "alterEgos", value: "alterEgos" },
+]
 
 export const COMICS_DEFAULT = [
   "https://img.freepik.com/free-vector/comics-poster-template_225004-800.jpg?w=2000",

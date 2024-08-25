@@ -114,8 +114,8 @@ declare type Power = {
 
 declare type QueryOptions = {
     id?: number | { $in: number[] }
-    name?: { $in: RegExp[] }/* RegExp | */ /* RegExp[] */ /* { "$or": RegExp[] } */;
-    "biography.fullName"?: { $in: RegExp[] } /* RegExp | */ /* RegExp[] *//* { "$or": RegExp[] }; */
+    name?: { $in: RegExp[] }
+    "biography.fullName"?: { $in: RegExp[] }
     "biography.alignment"?: string;
     "biography.publisher.value"?: string;
     "connections.groupAffiliation.value"?: string | RegExp;
@@ -125,8 +125,6 @@ declare type QueryOptions = {
 };
 
 declare type CharacterInfo = {
-    // name: string;
-    // id: string;
     link: string
 } & Character
 
@@ -139,3 +137,10 @@ declare type CharacterAttributes = {
 }
 
 declare type RandomImage = { selectedRandomImage: { key: string, value: string } }
+
+
+declare type ItemsForFilter =
+    | { id?: string; name: string; value: string }[]
+    | WithId<Power>[]
+    | WithId<Universe>[]
+    | Omit<Team, "comics" | "universe">[]
