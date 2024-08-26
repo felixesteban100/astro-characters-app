@@ -93,7 +93,7 @@
     <div
       class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px] space-y-5"
     >
-      <div class="flex flex-col gap-5 justify-center items-center">
+      <div class="flex flex-col justify-center items-center">
         <p class="text-3xl font-bold">Teams</p>
         {#if teams.length < 1}
           <p class="text-xl font-medium">No teams</p>

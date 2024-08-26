@@ -37,20 +37,20 @@
   export let allPowers: WithId<Power>[];
 
   $: characterNameState = characterName;
+  $: howManyPerPageState = howManyPerPage;
+  $: sortDirectionState = sortDirection;
 
   let nameFieldState = {
     value: nameField,
     label: nameField,
   };
-  $: howManyPerPageState = howManyPerPage;
 
   let sortByState = {
     value: sortBy,
     label: sortBy,
   };
-  $: sortDirectionState = sortDirection;
 
-  $: includesOrExactState =
+  let includesOrExactState =
     sortByState.value === "names_sended" ? false : includesOrExact;
 
   let genderState = getStateVariableFormatted(
