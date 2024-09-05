@@ -125,19 +125,25 @@ const [
   collectionUniverses.find({}).sort({ id: 1 }).toArray(),
   collectionPowers.find({}).sort({ name: 1 }).toArray(),
   collectionTeams
-    .aggregate<TeamWithJoinCharacterUniverse>([
-      ...getTeamAggregationOptions(undefined),
-      {
-        $match: {
-          name: team,
-        },
-      },
-      { $unwind: "$universe" },
-      { $sort: { [`_id`]: -1 } },
-      { $skip: offset },
-      { $limit: CHARACTERS_PER_PAGE },
-    ])
+    .find({
+      name: team,
+    })
     .toArray(),
+
+  // collectionTeams
+  //   .aggregate<TeamWithJoinCharacterUniverse>([
+  //     ...getTeamAggregationOptions(undefined),
+  //     {
+  //       $match: {
+  //         name: team,
+  //       },
+  //     },
+  //     { $unwind: "$universe" },
+  //     { $sort: { [`_id`]: -1 } },
+  //     { $skip: offset },
+  //     { $limit: CHARACTERS_PER_PAGE },
+  //   ])
+  //   .toArray(),
 ]);
 
 const attritutesFilteredArr = Object.entries({
@@ -164,6 +170,8 @@ const [universeSelected] = universesWithTeams.filter(
 
 const [powerSelected] =
   allPowers && power ? allPowers.filter((c) => c.value === power) : [undefined];
+
+console.log(team);
 ---
 
 <script>
