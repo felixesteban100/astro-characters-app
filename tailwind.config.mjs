@@ -1,3 +1,5 @@
+import fluid, { extract, screens, fontSize } from "fluid-tailwind";
+
 const plugin = require("tailwindcss/plugin");
 
 /** @type {import('tailwindcss').Config} */
@@ -9,15 +11,20 @@ module.exports = {
   //   './app/**/*.{ts,tsx}',
   //   './src/**/*.{ts,tsx}',
   // ],
-  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  content: {
+    files: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+    extract,
+  },
   prefix: "",
   theme: {
+    screens,
+    fontSize,
     container: {
       center: true,
       padding: "2rem",
-      screens: {
+      /* screens: {
         "2xl": "1400px",
-      },
+      }, */
     },
     extend: {
       colors: {
@@ -149,5 +156,6 @@ module.exports = {
         { values: theme("transitionDelay") },
       );
     }),
+    fluid,
   ],
 };

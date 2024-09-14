@@ -16,6 +16,7 @@
     "@astrojs/svelte": "^5.2.0",
     "@astrojs/tailwind": "^5.1.0",
     "@astrojs/vercel": "^7.3.6",
+    "@fluid-tailwind/tailwind-merge": "^0.0.2",
     "@hookform/resolvers": "^3.3.4",
     "@nanostores/react": "^0.7.2",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -62,6 +63,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "fluid-tailwind": "^1.0.3",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "prettier-plugin-svelte": "^3.2.2",

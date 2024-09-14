@@ -34,8 +34,7 @@ const team = Astro.url.searchParams.get("team") ?? "All";
 const gender = Astro.url.searchParams.get("gender") ?? "both";
 const race = Astro.url.searchParams.get("race") ?? "All";
 const power = Astro.url.searchParams.get("power") ?? "All";
-const characterOrFullName =
-  Astro.url.searchParams.get("characterOrFullName") === "true";
+// const characterOrFullName = Astro.url.searchParams.get("characterOrFullName") === "true";
 const includesOrExact =
   Astro.url.searchParams.get("includesOrExact") === "true";
 
@@ -171,7 +170,7 @@ const [universeSelected] = universesWithTeams.filter(
 const [powerSelected] =
   allPowers && power ? allPowers.filter((c) => c.value === power) : [undefined];
 
-console.log(team);
+// console.log(team);
 ---
 
 <script>
@@ -236,6 +235,7 @@ console.log(team);
         ) : null
       }
 
+      <!-- class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-y-16 gap-10 w-full`} -->
       <div
         class={`grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-center items-center gap-y-16 gap-10 w-full`}
       >
