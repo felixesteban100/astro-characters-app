@@ -86,7 +86,7 @@ const [powers, powersLenght] = await Promise.all([
       powersLenght.length > howManyPerPage && (
         <Pagination
           currentPage={currentPage}
-          url={`/powers?powerName=${powerName}&howManyPerPage=${howManyPerPage}&currentPage=`}
+          url={`/powers?powerName=${powerName}&howManyPerPage=${howManyPerPage}&tierRange=${tierRange}&currentPage=`}
           countItems={powersLenght.length}
           howManyPerPage={howManyPerPage}
           client:only
