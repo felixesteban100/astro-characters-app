@@ -27,7 +27,7 @@ declare type Character = {
         firstAppearance: string;
         publisher: string;
         alignment: string;
-        origin: ""
+        origin: string
     };
     work: {
         occupation: string;

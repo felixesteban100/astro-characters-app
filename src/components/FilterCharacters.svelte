@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
   import Button from "$lib/components/ui/button/button.svelte";
   import { Input } from "$lib/components/ui/input/index";
+  import { Textarea } from "$lib/components/ui/textarea";
   import {
     ALLALIGMENTS,
     ALLGENDERS,
@@ -75,7 +76,7 @@
     "All universes",
   );
 
-  let universeInfo = universesWithTeams.find(
+  $: universeInfo = universesWithTeams.find(
     (c) => c.value === universeState.value,
   );
 
@@ -133,7 +134,18 @@
       <div class="flex flex-col gap-10 p-2">
         <Label class="flex flex-col gap-5 capitalize">
           {nameFieldState.label}
-          <Input
+          <!-- <Input
+            id="name"
+            placeholder={nameFieldState.value === "name"
+              ? "batman, superman, iron man, spider-man..."
+              : nameFieldState.value === "fullName"
+                ? "bruce wayne, clark kent, tony stark, peter parker..."
+                : nameFieldState.value === "aliases"
+                  ? "dark knight, man of steel, your friendly neighbor spider-man..."
+                  : "batman, superman, iron man, spider-man..."}
+            bind:value={characterNameState}
+          /> -->
+          <Textarea
             id="name"
             placeholder={nameFieldState.value === "name"
               ? "batman, superman, iron man, spider-man..."

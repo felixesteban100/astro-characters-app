@@ -337,3 +337,28 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions, 
 //   );
 // }
 // //add description to all teams
+
+
+
+
+
+
+
+/* const currentCharactersToUpdate: { [key: string]: string } = {};
+// {"db property of collection": "value I want to fill that property with"}
+
+for (let i = 0; i < Object.entries(currentCharactersToUpdate).length; i++) {
+  const [key, value] = Object.entries(currentCharactersToUpdate)[i];
+
+  const setData = await collectionCharacters.updateOne(
+    { name: key },
+    {
+      $set: {
+        "biography.origin": value,
+      },
+    },
+  );
+}
+
+console.log(characterJoinTeamAndUniverse.map((c) => c.name).join(", "));
+ */

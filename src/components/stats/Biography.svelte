@@ -16,6 +16,7 @@
 
   export let biography: {
     fullName: string;
+    origin: string;
     alterEgos: string;
     aliases: string[];
     placeOfBirth: string;
@@ -31,6 +32,9 @@
 </script>
 
 <div class="w-full flex justify-center items-center flex-col">
+  <p class="p-2 text-xl text-center">{biography.origin}</p>
+  <!-- <StatsString statName={"Origin"} statValue={biography.origin}>
+  </StatsString> -->
   <StatsString statName="FullName" statValue={biography.fullName}>
     <!-- <Sword slot="icon" /> -->
   </StatsString>

@@ -198,4 +198,8 @@
       transform: scale(1) translateX(0);
     }
   }
+
+  textarea {
+    field-sizing: normal; /* used to be `form-sizing` but changed to this */
+  }
 }
