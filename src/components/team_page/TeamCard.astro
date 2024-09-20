@@ -5,9 +5,10 @@ import { ScrollArea } from "$lib/components/ui/scroll-area";
 interface Props {
   team: TeamWithJoinCharacterUniverse | Team;
   unableLink?: boolean;
+  unableMoreInfo?: boolean;
 }
 
-const { team, unableLink } = Astro.props;
+const { team, unableLink, unableMoreInfo } = Astro.props;
 ---
 
 <div
@@ -40,7 +41,7 @@ const { team, unableLink } = Astro.props;
     }
 
     {
-      !unableLink && (
+      !unableMoreInfo && (
         <Drawer client:load>
           <p slot="trigger">More info</p>
           <div

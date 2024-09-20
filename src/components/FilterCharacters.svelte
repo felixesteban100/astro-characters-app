@@ -80,6 +80,8 @@
     (c) => c.value === universeState.value,
   );
 
+  console.log(universeState.value);
+
   let teamState = getStateVariableFormatted(
     team,
     universeInfo?.teams,
@@ -91,12 +93,17 @@
     arrItems: ItemsForFilter | undefined,
     labelForAllValue: string,
   ) {
+    if (labelForAllValue === "All universes") {
+      console.log(labelForAllValue, arrItems);
+    }
+
     return {
       value: value,
       label:
         value === "All" || value === "both" || arrItems === undefined
           ? labelForAllValue
-          : arrItems.filter((c) => c.value === value)[0].name,
+          : arrItems.filter((c) => c.value === value)[0]?.name ??
+            labelForAllValue,
     };
   }
 

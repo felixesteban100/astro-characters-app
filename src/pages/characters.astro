@@ -217,7 +217,9 @@ const [powerSelected] =
             {universeSelected && (
               <UniverseCard universe={universeSelected} unableLink={true} />
             )}
-            {teamSelected && <TeamCard team={teamSelected} unableLink={true} />}
+            {teamSelected && (
+              <TeamCard team={teamSelected} unableLink unableMoreInfo={true} />
+            )}
             {powerSelected && (
               <PowerCard power={powerSelected} unableLink={true} />
             )}
