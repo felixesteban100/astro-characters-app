@@ -91,14 +91,20 @@
     arrItems: ItemsForFilter | undefined,
     labelForAllValue: string,
   ) {
-    return {
+    const result = {
       value: value,
-      label:
+      label: value === "All" || value === "both" ? labelForAllValue : value,
+    };
+
+    if (labelForAllValue !== "All teams") {
+      result.label =
         value === "All" || value === "both" || arrItems === undefined
           ? labelForAllValue
           : arrItems.filter((c) => c.value === value)[0]?.name ??
-            labelForAllValue,
-    };
+            labelForAllValue;
+    }
+
+    return result;
   }
 
   function goPageKeyShortcut(
