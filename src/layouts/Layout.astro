@@ -142,14 +142,16 @@ if (otherLinks) links.push(...otherLinks.map((c) => ({ ...c, icon: "User" })));
 const anim = {
   old: {
     name: "translate-out",
-    duration: "cubic-bezier(0.4, 0, 0.2, 1)",
+    duration: "1s cubic-bezier(0.4, 0, 0.2, 1)",
     fillMode: "both",
+    delay: "100ms",
     // direction: "reverse",
   },
   new: {
     name: "translate-in",
-    duration: "cubic-bezier(0.4, 0, 0.2, 1)",
+    duration: "1s cubic-bezier(0.4, 0, 0.2, 1)",
     fillMode: "both",
+    delay: "500ms",
   },
 };
 
@@ -201,8 +203,9 @@ const customTransition = {
       <Sparkles client:only />
     </div>
 
+    <!-- sticky top-0 z-50  -->
     <div
-      class="flex bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-foreground/10"
+      class="flex bg-background/80 backdrop-blur-md border-b border-foreground/10"
     >
       <Navbar
         title={title ?? ""}
