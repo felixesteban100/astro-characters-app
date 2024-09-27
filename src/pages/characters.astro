@@ -23,7 +23,6 @@ import LoaderAstro from "src/components/LoaderAstro.astro";
 import PowerCard from "src/components/powers_page/PowerCard.astro";
 import UniverseCard from "src/components/universe_page/UniverseCard.astro";
 import TeamCard from "src/components/team_page/TeamCard.astro";
-import { getTeamAggregationOptions } from "$lib/constants/aggregations";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const characterName = Astro.url.searchParams.get("characterName") ?? "";
@@ -34,7 +33,6 @@ const team = Astro.url.searchParams.get("team") ?? "All";
 const gender = Astro.url.searchParams.get("gender") ?? "both";
 const race = Astro.url.searchParams.get("race") ?? "All";
 const power = Astro.url.searchParams.get("power") ?? "All";
-// const characterOrFullName = Astro.url.searchParams.get("characterOrFullName") === "true";
 const includesOrExact =
   Astro.url.searchParams.get("includesOrExact") === "true";
 
@@ -170,7 +168,23 @@ const [universeSelected] = universesWithTeams.filter(
 const [powerSelected] =
   allPowers && power ? allPowers.filter((c) => c.value === power) : [undefined];
 
-// update the robin's origin chatgpt got it wrong with the order of the robins xD
+// console.log(characterJoinTeamAndUniverse);
+
+const currentCharactersToUpdate: { [key: string]: string } = {};
+// {"db property of collection": "value I want to fill that property with"}
+
+for (let i = 0; i < Object.entries(currentCharactersToUpdate).length; i++) {
+  const [key, value] = Object.entries(currentCharactersToUpdate)[i];
+
+  const setData = await collectionCharacters.updateOne(
+    { name: key },
+    {
+      $set: {
+        "biography.origin": value,
+      },
+    },
+  );
+}
 ---
 
 <script>

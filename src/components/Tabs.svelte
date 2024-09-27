@@ -74,20 +74,25 @@
     </Tabs.Trigger>
   </Tabs.List>
   <Tabs.Content class="h-full w-[90%]" value="Biography">
-    <Biography
-      biography={characterInfo.biography}
-      connections={characterInfo.connections}
-      {character_added_by}
-    />
+    <ScrollArea class="h-full">
+      <Biography
+        biography={characterInfo.biography}
+        connections={characterInfo.connections}
+        {character_added_by}
+      />
+      <br />
+    </ScrollArea>
   </Tabs.Content>
   <Tabs.Content class="h-full w-[90%]" value="Stats">
     <ScrollArea class="h-full">
       <Stats powerstats={characterInfo.powerstats} showNameAtAll={true} />
       <slot name="powersRenderedElements" />
+      <br />
     </ScrollArea>
   </Tabs.Content>
   <Tabs.Content class="h-full w-[90%]" value="Appereance">
     <Appereance appereance={characterInfo.appearance} />
+    <br />
   </Tabs.Content>
   <Tabs.Content value="Connections">
     <div
@@ -114,6 +119,7 @@
         {/each}
       </div>
     </div>
+    <br />
   </Tabs.Content>
   <Tabs.Content value="Gallery">
     <CharacterImagesDisplay
@@ -122,5 +128,6 @@
       characterInfoImages={characterInfo.images}
       characterInfoName={characterInfo.name}
     />
+    <br />
   </Tabs.Content>
 </Tabs.Root>

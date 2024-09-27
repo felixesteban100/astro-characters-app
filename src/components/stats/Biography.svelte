@@ -31,7 +31,7 @@
   export let character_added_by: Date;
 </script>
 
-<div class="w-full flex justify-center items-center flex-col">
+<div class="w-full flex justify-center items-center flex-col h-full">
   <p class="p-2 text-xl text-center">{biography.origin}</p>
   <!-- <StatsString statName={"Origin"} statValue={biography.origin}>
   </StatsString> -->

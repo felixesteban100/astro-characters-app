@@ -1,11 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import {
-  collectionCharacters,
-  collectionPowers,
-  collectionTeams,
-} from "../lib/mongodb";
+import { collectionCharacters, collectionTeams } from "../lib/mongodb";
 import Tabs from "src/components/Tabs.svelte";
 import { joinTeam_universe_power_toCharacter } from "$lib/charactersUtils";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
@@ -28,6 +24,10 @@ const [selectedCharacter] = await collectionCharacters
   )
   .toArray();
 
+if (!selectedCharacter) {
+  return Astro.redirect(`/not-found`);
+}
+
 const teamAggregationOptions = getTeamAggregationOptions(undefined);
 
 const [teamsJoinUniverse] = await Promise.all([
@@ -48,10 +48,6 @@ const [teamsJoinUniverse] = await Promise.all([
     ])
     .toArray(),
 ]);
-
-if (!selectedCharacter) {
-  return Astro.redirect(`/not-found`);
-}
 ---
 
 <Layout

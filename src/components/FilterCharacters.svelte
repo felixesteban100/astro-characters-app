@@ -187,7 +187,8 @@
               class={`${sortByState.value === "names_sended" ? "text-primary" : ""} flex gap-5 items-center justify-start`}
             >
               {#if sortByState.value !== "names_sended"}
-                Include charactes in name (checked) | Exact name (Unchecked)
+                Include charactes in name (checked) and can use RegExp patterns
+                | Exact name (Unchecked)
               {:else}
                 Write Exact name to find character
               {/if}

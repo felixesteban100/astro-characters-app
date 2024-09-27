@@ -91,10 +91,10 @@ export function getQueryOptions({
     const options: string = includesOrExact ? "ig" : "i"
 
     const names: RegExp[] = characterNames.reduce((acc, name, index) => {
-      if (index === 0) {
-        acc.push(new RegExp(includesOrExact ? name.trim() : `^(${name.trim()})$`, options))
-        return acc
-      };
+      // if (index === 0) {
+      //   acc.push(new RegExp(includesOrExact ? name.trim() : `^(${name.trim()})$`, options))
+      //   return acc
+      // };
       acc.push(new RegExp(includesOrExact ? name.trim() : `^(${name.trim()})$`, options))
       return acc;
     }, new Array<RegExp>());
