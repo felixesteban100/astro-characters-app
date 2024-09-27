@@ -81,12 +81,14 @@
         {character_added_by}
       />
       <br />
+      <br />
     </ScrollArea>
   </Tabs.Content>
   <Tabs.Content class="h-full w-[90%]" value="Stats">
     <ScrollArea class="h-full">
       <Stats powerstats={characterInfo.powerstats} showNameAtAll={true} />
       <slot name="powersRenderedElements" />
+      <br />
       <br />
     </ScrollArea>
   </Tabs.Content>
@@ -96,7 +98,7 @@
   </Tabs.Content>
   <Tabs.Content value="Connections">
     <div
-      class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px] space-y-5"
+      class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px] space-y-5 px-5"
     >
       <div class="flex flex-col justify-center items-center">
         <p class="text-3xl font-bold">Teams</p>
@@ -108,7 +110,7 @@
       </div>
       <div class="flex flex-col gap-5 justify-center items-center">
         <p class="text-3xl font-bold">Relatives</p>
-        {#if relativesArr.length < 1}
+        {#if relativesArr.length < 1 || relativesArr[0] === "-"}
           <p class="text-xl font-medium">No relatives</p>
         {/if}
 
@@ -119,6 +121,7 @@
         {/each}
       </div>
     </div>
+    <br />
     <br />
   </Tabs.Content>
   <Tabs.Content value="Gallery">

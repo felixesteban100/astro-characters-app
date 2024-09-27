@@ -6,9 +6,14 @@
     // Brain,
     // CloudLightning,
     // ChevronsUp,
+    Calendar,
+    Pencil,
+    ALargeSmall,
     Sword,
     Smile,
     Frown,
+    Annoyed,
+    Users,
     // Meh,
   } from "lucide-svelte";
   // import StatsNumber from "./StatsNumber.svelte";
@@ -31,15 +36,18 @@
   export let character_added_by: Date;
 </script>
 
-<div class="w-full flex justify-center items-center flex-col h-full">
+<div class="w-full flex justify-center items-center flex-col h-full px-5">
   <p class="p-2 text-xl text-center">{biography.origin}</p>
   <!-- <StatsString statName={"Origin"} statValue={biography.origin}>
   </StatsString> -->
   <StatsString statName="FullName" statValue={biography.fullName}>
-    <!-- <Sword slot="icon" /> -->
+    <ALargeSmall slot="icon" />
   </StatsString>
-  <StatsString statName="Alter Egos" statValue={biography.alterEgos}>
-    <!-- <Sword slot="icon" /> -->
+  <StatsString
+    statName="Alter Egos"
+    statValue={biography.alterEgos !== "-" ? biography.alterEgos : "Unknown"}
+  >
+    <ALargeSmall slot="icon" />
   </StatsString>
   <StatsString
     statName="Aliases"
@@ -48,18 +56,26 @@
       type: "conjunction",
     }).format(biography.aliases)}
   >
-    <!-- <Sword slot="icon" /> -->
+    <ALargeSmall slot="icon" />
   </StatsString>
-  <StatsString statName="Place of birth" statValue={biography.placeOfBirth}>
-    <!-- <Sword slot="icon" /> -->
+  <StatsString
+    statName="Place of birth"
+    statValue={biography.placeOfBirth !== "-"
+      ? biography.placeOfBirth
+      : "Unknown"}
+  >
+    <Calendar slot="icon" />
   </StatsString>
   <StatsString
     statName="First Appearance"
-    statValue={biography.firstAppearance}
+    statValue={biography.firstAppearance !== "-"
+      ? biography.firstAppearance
+      : "Unknown"}
   >
-    <!-- <Sword slot="icon" /> -->
+    <Calendar slot="icon" />
   </StatsString>
   <StatsString statName="Publisher" statValue={biography.publisher.name}>
+    <Pencil slot="icon" />
     <img
       src={biography.publisher.logo}
       class="h-10 w-auto"
@@ -75,17 +91,17 @@
         ? "Villain"
         : "Anti-hero"}
   >
-    {#if biography.alignment === "good"}
-      <Smile slot="alignment" />
-    {/if}
-    {#if biography.alignment === "bad"}
-      <Frown slot="alignment" />
-    {/if}
-    <!-- {:else if biography.alignment === "bad"}
-      <Frown slot="alignment" />
-    {:else if biography.alignment === "neutral"}
-      <Meh slot="alignment" />
-    {/if} -->
+    <div slot="icon">
+      {#if biography.alignment === "good"}
+        <Smile />
+      {/if}
+      {#if biography.alignment === "bad"}
+        <Frown />
+      {/if}
+      {#if biography.alignment === "neutral"}
+        <Annoyed />
+      {/if}
+    </div>
   </StatsString>
 
   <StatsString
@@ -100,13 +116,13 @@
         .split(","),
     )}
   >
-    <!-- <Sword slot="icon" /> -->
+    <Users slot="icon" />
   </StatsString>
 
   <StatsString
     statName="AddedByToTheDB"
     statValue={character_added_by.toString()}
   >
-    <!-- <Sword slot="icon" /> -->
+    <Calendar slot="icon" />
   </StatsString>
 </div>

@@ -133,6 +133,7 @@
   ButtonClassName=""
   buttonTriggerId={"filterCharacters"}
   from="characters"
+  side="right"
 >
   <slot name="trigger" slot="trigger" />
 

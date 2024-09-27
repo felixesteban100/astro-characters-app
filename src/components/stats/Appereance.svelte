@@ -1,4 +1,13 @@
 <script lang="ts">
+  import {
+    Ruler,
+    Weight,
+    Eye,
+    PaintBucket,
+    Calendar,
+    Activity,
+    Earth,
+  } from "lucide-svelte";
   /* import {
     BarChart,
     Axe,
@@ -21,36 +30,52 @@
   };
 </script>
 
-<div class="w-full flex justify-center items-center flex-col">
+<div class="w-full flex justify-center items-center flex-col px-5">
   <StatsString statName="Gender" statValue={appereance.gender}>
     <!-- {#if appereance.gender === "female"}
       <Sword slot="icon" />
     {:else if appereance.gender === "male"}
       <Sword slot="icon" />
     {/if} -->
+    <Activity slot="icon" />
   </StatsString>
   <StatsString statName="Race" statValue={appereance.race ?? "unknown"}>
-    <!-- <Sword slot="icon" /> -->
+    <Earth slot="icon" />
   </StatsString>
   <StatsString
     statName="Height"
-    statValue={`${appereance.height[0] ?? "unknown''"} | ${appereance.height[1] ?? "unknown cm"}`}
+    statValue={`${appereance.height[0] && appereance.height[0] !== "-" ? appereance.height[0] : "unknown"} | ${appereance.height[1] && appereance.height[1] !== "-" ? appereance.height[1] : "unknown cm"}`}
   >
-    <!-- <Sword slot="icon" /> -->
+    <Ruler slot="icon" />
   </StatsString>
   <StatsString
     statName="Weight"
-    statValue={`${appereance.weight[0] ?? "unknown lb"} | ${appereance.weight[1] ?? "unknown kg"}`}
+    statValue={`${appereance.weight[0] && !appereance.weight[0].includes("-") ? appereance.weight[0] : "unknown lb"} | ${appereance.weight[1] && !appereance.weight[1].includes("-") ? appereance.weight[1] : "unknown kg"}`}
   >
-    <!-- <Sword slot="icon" /> -->
+    <Weight slot="icon" />
   </StatsString>
-  <StatsString statName="Eye color" statValue={appereance.eyeColor}>
-    <!-- <Sword slot="icon" /> -->
+  <StatsString
+    statName="Eye color"
+    statValue={appereance.eyeColor && appereance.eyeColor !== "-"
+      ? appereance.eyeColor
+      : "Unknown"}
+  >
+    <Eye slot="icon" />
   </StatsString>
-  <StatsString statName="Hair color" statValue={appereance.hairColor}>
-    <!-- <Sword slot="icon" /> -->
+  <StatsString
+    statName="Hair color"
+    statValue={appereance.hairColor && appereance.hairColor !== "-"
+      ? appereance.hairColor
+      : "Unknown"}
+  >
+    <PaintBucket slot="icon" />
   </StatsString>
-  <StatsString statName="Age" statValue={appereance.age}>
-    <!-- <Sword slot="icon" /> -->
+  <StatsString
+    statName="Age"
+    statValue={appereance.age && appereance.age !== "-"
+      ? appereance.age
+      : "Unknown"}
+  >
+    <Calendar slot="icon" />
   </StatsString>
 </div>

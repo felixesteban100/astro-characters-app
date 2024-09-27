@@ -14,6 +14,7 @@
   export let size: "default" | "sm" | "lg" | "icon" | undefined;
   export let buttonTriggerId: string;
   export let from: string;
+  export let side: "right" | "top" | "left" | "bottom";
 </script>
 
 <Sheet.Root>
@@ -28,7 +29,7 @@
     </Button>
   </Sheet.Trigger>
   {#if from === "teams" || from === "navbar"}
-    <Sheet.Content>
+    <Sheet.Content side={side ?? "left"}>
       <Sheet.Close class="w-full">
         <slot name="content" />
       </Sheet.Close>
