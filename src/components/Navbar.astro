@@ -3,6 +3,7 @@ import ModeToggle from "$lib/components/mode-toggle.svelte";
 import { Button } from "$lib/components/ui/button";
 import Sheet from "src/components/Sheet.svelte";
 import {
+  Home,
   Menu,
   User,
   MapPinned,
@@ -60,12 +61,15 @@ const { currentPath, links, title } = Astro.props;
                   <Button
                     variant={"ghost"}
                     class={`text-xl gap-2 text-foreground rounded-lg ${
-                      currentPath.includes(link.href)
+                      currentPath.includes(link.href) &&
+                      title.includes(link.title)
                         ? "font-bold text-primary"
                         : "font-extralight"
                     }`}
                   >
-                    {link.icon === "User" ? (
+                    {link.icon === "Home" ? (
+                      <Home />
+                    ) : link.icon === "User" ? (
                       <User />
                     ) : link.icon === "MapPinned" ? (
                       <MapPinned />

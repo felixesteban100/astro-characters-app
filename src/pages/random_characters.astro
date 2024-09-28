@@ -8,53 +8,64 @@ import { getRandomIdRecursively } from "../lib/charactersUtils";
 import { Button } from "$lib/components/ui/button";
 import { Shuffle } from "lucide-astro";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
+import ChangeHowManyInput from "src/components/random_characters/ChangeHowManyInput.svelte";
 
-const first = Astro.url.searchParams.get("first");
-const second = Astro.url.searchParams.get("second");
-const third = Astro.url.searchParams.get("third");
-const fourth = Astro.url.searchParams.get("fourth");
+const all = Astro.url.searchParams.get("all");
+const howMany = parseInt(Astro.url.searchParams.get("howMany") ?? "4");
 
-const [firstGenerated, secondGenerated, thirdGenerated, fourthGenerated] =
-  await Promise.all([
-    getRandomIdRecursively(),
-    getRandomIdRecursively(),
-    getRandomIdRecursively(),
-    getRandomIdRecursively(),
-  ]);
+let allArray = all ? all.split("-") : [];
 
-const firstId = first && first != "null" ? first : firstGenerated;
-const secondId = second && second != "null" ? second : secondGenerated;
-const thirdId = third && third != "null" ? third : thirdGenerated;
-const fourthId = fourth && fourth != "null" ? fourth : fourthGenerated;
-
-if (
-  !first ||
-  first === "null" ||
-  !second ||
-  second === "null" ||
-  !third ||
-  third === "null" ||
-  !fourth ||
-  fourth === "null"
-) {
-  return Astro.redirect(
-    `/random_characters?first=${firstId}&second=${secondId}&third=${thirdId}&fourth=${fourthId}`,
+if (all && allArray.includes("undefined")) {
+  allArray = await Promise.all(
+    allArray.map(async (c: string, index: number) => {
+      if (c === "undefined") {
+        return await getRandomIdRecursively();
+      }
+      return c;
+    }),
   );
 }
 
-const arrayOfIds = [
-  parseInt(firstId),
-  parseInt(secondId),
-  parseInt(thirdId),
-  parseInt(fourthId),
-];
+let allGenerated: number[] =
+  allArray.length > 0 ? allArray.map((c) => parseInt(c)) : [];
+
+if (allGenerated.length === 0) {
+  for (let i = 0; i < howMany; i++) {
+    const element = await getRandomIdRecursively();
+    allGenerated.push(parseInt(element));
+  }
+}
+
+if (allGenerated.length < howMany) {
+  const howManyAreLeft = howMany - allGenerated.length;
+
+  for (let index = 0; index < howManyAreLeft; index++) {
+    allGenerated.push(parseInt(await getRandomIdRecursively()));
+  }
+
+  return Astro.redirect(
+    `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}`,
+  );
+}
+
+if (allGenerated.length > howMany) {
+  return Astro.redirect(
+    `/random_characters?all=${`${[...allGenerated].splice(0, howMany).join("-")}`}&howMany=${howMany}`,
+  );
+}
+
+if (!all || all === "null" || all.includes("undefined")) {
+  return Astro.redirect(
+    `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}`,
+  );
+}
 
 const selectedCharacters = await collectionCharacters
   .aggregate<CharacterWithJoinTeamUniversePower>(
     joinTeam_universe_power_toCharacter(
       {
         id: {
-          $in: arrayOfIds,
+          $in: allGenerated,
         },
       },
       "id",
@@ -66,20 +77,59 @@ const selectedCharacters = await collectionCharacters
   )
   .toArray();
 
-const charactersDictionary: { [key: string]: string } = {
-  "0": "first",
-  "1": "second",
-  "2": "third",
-  "3": "fourth",
-};
+function updateArrayExceptOne(indexToKeep: number) {
+  return allGenerated.map((item, index) => {
+    // If the current index is the one we want to keep, return the original value
+    if (index === indexToKeep) {
+      return item;
+    }
+    // Otherwise, return the new value
+    return "undefined";
+  });
+}
+
+function updateOneExceptArray(indexToKeep: number) {
+  return allGenerated.map((item, index) => {
+    // If the current index is the one we want to keep, return the original value
+    if (index === indexToKeep) {
+      return "undefined";
+    }
+    // Otherwise, return the new value
+    return item;
+  });
+}
+
+function swapItems(arr: number[], index1: number, index2: number) {
+  // Ensure indices are valid
+  if (
+    index1 < 0 ||
+    index1 >= allGenerated.length ||
+    index2 < 0 ||
+    index2 >= allGenerated.length
+  ) {
+    throw new Error("Invalid indices");
+  }
+
+  // Swap the elements by interchanging their positions in the global array
+  const temp = arr[index1];
+  arr[index1] = arr[index2];
+  arr[index2] = temp;
+
+  // Return the modified global array
+  return arr;
+}
 ---
 
 <Layout title={`Random Characters`}>
-  <a slot="page_title_other_content" href={`/random_characters`}>
-    <Button variant="ghost" size="icon">
-      <Shuffle />
-    </Button>
-  </a>
+  <div slot="page_title_other_content" class="flex gap-2">
+    <ChangeHowManyInput {howMany} all={[...allGenerated]} client:load />
+
+    <a href={`/random_characters?howMany=${howMany}`}>
+      <Button variant="ghost" size="icon">
+        <Shuffle />
+      </Button>
+    </a>
+  </div>
 
   <main
     class="mb-32 flex flex-col justify-center items-center gap-5"
@@ -90,42 +140,73 @@ const charactersDictionary: { [key: string]: string } = {
     >
       {
         selectedCharacters
-          .sort((a, b) => arrayOfIds.indexOf(a.id) - arrayOfIds.indexOf(b.id))
-          .map((c: CharacterWithJoinTeamUniversePower, index: number) => {
-            return (
-              <div class="flex flex-col gap-5 justify-center ">
-                <CharacterCard
-                  c={c}
-                  withTransitionName={true}
-                  withLink={true}
-                  otherClasses="w-full h-full flex justify-center character-image"
-                />
+          .sort(
+            (a, b) => allGenerated.indexOf(a.id) - allGenerated.indexOf(b.id),
+          )
+          .map(
+            (
+              c: CharacterWithJoinTeamUniversePower,
+              index_allGenerated: number,
+            ) => {
+              return (
+                <div class="flex flex-col gap-5 justify-center ">
+                  <CharacterCard
+                    c={c}
+                    withTransitionName={true}
+                    withLink={true}
+                    otherClasses="w-full h-full flex justify-center character-image"
+                  />
 
-                <a
-                  href={`/random_characters?${charactersDictionary[`${index}`]}=${c.id}`}
-                  class="hover:underline"
-                  transition:name={`random-${c.id}`}
-                >
-                  Random all but {charactersDictionary[`${index}`]} character
-                </a>
+                  <a
+                    href={`/random_characters?all=${updateArrayExceptOne(index_allGenerated).join("-")}&howMany=${howMany}`}
+                    class="hover:underline"
+                    transition:name={`random-${c.id}`}
+                  >
+                    {/* Random all but {charactersDictionary[`${index}`]} character */}
+                    Random all but {index_allGenerated + 1} character
+                  </a>
 
-                <a
-                  href={`/random_characters?first=${index === 0 ? null : firstId}&second=${index === 1 ? null : secondId}&third=${index === 2 ? null : thirdId}&fourth=${index === 3 ? null : fourthId}`}
-                  class="hover:underline"
-                  transition:name={`random-self-${c.id}`}
-                >
-                  Random {index + 1} character only
-                </a>
-                <a
-                  href={`/compare?first=${c.id}`}
-                  class="hover:underline"
-                  transition:name={`compare-${c.id}`}
-                >
-                  Compare using {index + 1} character
-                </a>
-              </div>
-            );
-          })
+                  <a
+                    href={`/random_characters?all=${updateOneExceptArray(index_allGenerated).join("-")}&howMany=${howMany}`}
+                    class="hover:underline"
+                    transition:name={`random-self-${c.id}`}
+                  >
+                    Random {index_allGenerated + 1} character only
+                  </a>
+
+                  <div transition:name={`position-${c.id}`}>
+                    Swap {index_allGenerated + 1} with the position
+                    {allGenerated.map((_, i) => {
+                      if (i + 1 === index_allGenerated + 1) return;
+
+                      const result = swapItems(
+                        [...allGenerated],
+                        index_allGenerated,
+                        i,
+                      ).join("-");
+
+                      return (
+                        <a
+                          href={`/random_characters?all=${result}&howMany=${howMany}`}
+                          class="hover:underline"
+                        >
+                          {i + 1}
+                        </a>
+                      );
+                    })}
+                  </div>
+
+                  <a
+                    href={`/compare?first=${c.id}`}
+                    class="hover:underline"
+                    transition:name={`compare-${c.id}`}
+                  >
+                    Compare using {index_allGenerated + 1} character
+                  </a>
+                </div>
+              );
+            },
+          )
       }
     </div>
   </main>

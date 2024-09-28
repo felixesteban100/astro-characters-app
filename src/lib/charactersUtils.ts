@@ -125,11 +125,11 @@ export function getQueryOptions({
 
 export async function getRandomIdRecursively() {
   try {
-    const randomCharacter = await collectionCharacters.findOne({ id: parseInt((Math.floor(Math.random() * 780) + 1).toString()) })
+    const randomCharacter = await collectionCharacters.findOne({ id: parseInt((Math.floor(Math.random() * 862) + 1).toString()) })
     if (!randomCharacter) {
       return getRandomIdRecursively()
     }
-    return randomCharacter?.id.toString()
+    return randomCharacter.id.toString()
   } catch (error) {
     console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);
@@ -167,13 +167,19 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions, 
       },
     },
     { $match: { ...queryOptions } },
-    { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
+    // { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
     { $skip: offset },
-    { $limit: howManyPerPage },
+    // { $limit: howManyPerPage },
   ]
 
-  if (charactersNames.length > 1 && sortBy === "names_sended") {
+  if (sortBy === 'random') {
+    return [
+      ...baseLookups,
+      { $sample: { size: howManyPerPage } },
+    ]
+  }
 
+  if (charactersNames.length > 1 && sortBy === "names_sended") {
     return [
       {
         $addFields: {
@@ -185,6 +191,9 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions, 
       ...baseLookups,
     ]
   }
+
+
+
   return baseLookups
 }
 
