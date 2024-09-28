@@ -57,7 +57,7 @@ export const ALLGENDERS = [
 
 export const SORT_BY_VALUES = [
   { name: "names_sended", value: "names_sended" },
-  { name: "random", value: "random" },
+  // { name: "random", value: "random" },
   { name: "name", value: "name" },
   { name: "id", value: "id" },
   { name: "_id", value: "_id" },

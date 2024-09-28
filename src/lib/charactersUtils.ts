@@ -167,9 +167,9 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions, 
       },
     },
     { $match: { ...queryOptions } },
-    // { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
+    { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
     { $skip: offset },
-    // { $limit: howManyPerPage },
+    { $limit: howManyPerPage },
   ]
 
   if (sortBy === 'random') {
