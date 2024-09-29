@@ -34,24 +34,24 @@ if (allGenerated.length === 0) {
     const element = await getRandomIdRecursively();
     allGenerated.push(parseInt(element));
   }
-}
+} else {
+  if (allGenerated.length < howMany) {
+    const howManyAreLeft = howMany - allGenerated.length;
 
-if (allGenerated.length < howMany) {
-  const howManyAreLeft = howMany - allGenerated.length;
+    for (let index = 0; index < howManyAreLeft; index++) {
+      allGenerated.push(parseInt(await getRandomIdRecursively()));
+    }
 
-  for (let index = 0; index < howManyAreLeft; index++) {
-    allGenerated.push(parseInt(await getRandomIdRecursively()));
+    return Astro.redirect(
+      `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}`,
+    );
   }
 
-  return Astro.redirect(
-    `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}`,
-  );
-}
-
-if (allGenerated.length > howMany) {
-  return Astro.redirect(
-    `/random_characters?all=${`${[...allGenerated].splice(0, howMany).join("-")}`}&howMany=${howMany}`,
-  );
+  if (allGenerated.length > howMany) {
+    return Astro.redirect(
+      `/random_characters?all=${`${[...allGenerated].splice(0, howMany).join("-")}`}&howMany=${howMany}`,
+    );
+  }
 }
 
 if (!all || all === "null" || all.includes("undefined")) {
@@ -71,11 +71,13 @@ const selectedCharacters = await collectionCharacters
       "id",
       "desc",
       0,
-      4,
+      howMany,
       [],
     ),
   )
   .toArray();
+
+console.log(selectedCharacters.length);
 
 function updateArrayExceptOne(indexToKeep: number) {
   return allGenerated.map((item, index) => {
