@@ -224,8 +224,16 @@ function makeNoneLockedIndexesUndefined() {
                   />
 
                   <a
-                    href={`/random_characters?all=${updateArrayExceptOne(index_allGenerated).join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
-                    class={"hover:underline"}
+                    href={
+                      lockedIndexes.length === howMany
+                        ? null
+                        : `/random_characters?all=${updateArrayExceptOne(index_allGenerated).join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`
+                    }
+                    class={
+                      lockedIndexes.length === howMany
+                        ? "opacity-45"
+                        : "hover:underline"
+                    }
                     transition:name={`random-${c.id}`}
                   >
                     Random all but {index_allGenerated + 1} character
