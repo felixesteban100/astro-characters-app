@@ -12,8 +12,10 @@ import ChangeHowManyInput from "src/components/random_characters/ChangeHowManyIn
 
 const all = Astro.url.searchParams.get("all");
 const howMany = parseInt(Astro.url.searchParams.get("howMany") ?? "4");
+const locked = Astro.url.searchParams.get("locked");
 
 let allArray = all ? all.split("-") : [];
+let lockedArray = locked ? locked.split("-") : [];
 
 if (all && allArray.includes("undefined")) {
   allArray = await Promise.all(
@@ -29,6 +31,9 @@ if (all && allArray.includes("undefined")) {
 let allGenerated: number[] =
   allArray.length > 0 ? allArray.map((c) => parseInt(c)) : [];
 
+let lockedIndexes: number[] =
+  lockedArray.length > 0 ? lockedArray.map((c) => parseInt(c)) : [];
+
 if (allGenerated.length === 0) {
   for (let i = 0; i < howMany; i++) {
     const element = await getRandomIdRecursively();
@@ -43,20 +48,20 @@ if (allGenerated.length === 0) {
     }
 
     return Astro.redirect(
-      `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}`,
+      `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}`,
     );
   }
 
   if (allGenerated.length > howMany) {
     return Astro.redirect(
-      `/random_characters?all=${`${[...allGenerated].splice(0, howMany).join("-")}`}&howMany=${howMany}`,
+      `/random_characters?all=${`${[...allGenerated].splice(0, howMany).join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}`,
     );
   }
 }
 
 if (!all || all === "null" || all.includes("undefined")) {
   return Astro.redirect(
-    `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}`,
+    `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}`,
   );
 }
 
@@ -77,12 +82,10 @@ const selectedCharacters = await collectionCharacters
   )
   .toArray();
 
-console.log(selectedCharacters.length);
-
 function updateArrayExceptOne(indexToKeep: number) {
   return allGenerated.map((item, index) => {
     // If the current index is the one we want to keep, return the original value
-    if (index === indexToKeep) {
+    if (index === indexToKeep || lockedIndexes.includes(index)) {
       return item;
     }
     // Otherwise, return the new value
@@ -101,7 +104,11 @@ function updateOneExceptArray(indexToKeep: number) {
   });
 }
 
-function swapItems(arr: number[], index1: number, index2: number) {
+function swapItems(
+  arr: number[],
+  /* arr2: number[], (lockedIndexes) */ index1: number,
+  index2: number,
+) {
   // Ensure indices are valid
   if (
     index1 < 0 ||
@@ -120,13 +127,43 @@ function swapItems(arr: number[], index1: number, index2: number) {
   // Return the modified global array
   return arr;
 }
+
+function lockOrUnlockedIndex(arr: number[], index: number) {
+  const indexPosition = arr.indexOf(index);
+
+  if (indexPosition === -1) {
+    // Add index if not found
+    arr.push(index);
+  } else {
+    // Remove index if found
+    arr.splice(indexPosition, 1);
+  }
+
+  return arr;
+}
+
+function makeNoneLockedIndexesUndefined() {
+  return allGenerated.map((item, index) => {
+    if (!lockedIndexes.includes(index)) {
+      return "undefined";
+    }
+    return item;
+  });
+}
 ---
 
 <Layout title={`Random Characters`}>
   <div slot="page_title_other_content" class="flex gap-2">
-    <ChangeHowManyInput {howMany} all={[...allGenerated]} client:load />
+    <ChangeHowManyInput
+      {howMany}
+      all={[...allGenerated]}
+      locked={lockedIndexes}
+      client:load
+    />
 
-    <a href={`/random_characters?howMany=${howMany}`}>
+    <a
+      href={`/random_characters?all=${makeNoneLockedIndexesUndefined().join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
+    >
       <Button variant="ghost" size="icon">
         <Shuffle />
       </Button>
@@ -160,43 +197,63 @@ function swapItems(arr: number[], index1: number, index2: number) {
                   />
 
                   <a
-                    href={`/random_characters?all=${updateArrayExceptOne(index_allGenerated).join("-")}&howMany=${howMany}`}
-                    class="hover:underline"
+                    href={`/random_characters?all=${updateArrayExceptOne(index_allGenerated).join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
+                    class={"hover:underline"}
                     transition:name={`random-${c.id}`}
                   >
-                    {/* Random all but {charactersDictionary[`${index}`]} character */}
                     Random all but {index_allGenerated + 1} character
                   </a>
 
-                  <a
-                    href={`/random_characters?all=${updateOneExceptArray(index_allGenerated).join("-")}&howMany=${howMany}`}
-                    class="hover:underline"
-                    transition:name={`random-self-${c.id}`}
-                  >
-                    Random {index_allGenerated + 1} character only
-                  </a>
+                  {!lockedIndexes.includes(index_allGenerated) ? (
+                    <a
+                      href={`/random_characters?all=${updateOneExceptArray(index_allGenerated).join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
+                      class="hover:underline"
+                      transition:name={`random-self-${c.id}`}
+                    >
+                      Random {index_allGenerated + 1} character only
+                    </a>
+                  ) : (
+                    <a
+                      class="opacity-45"
+                      transition:name={`random-self-${c.id}`}
+                    >
+                      Random {index_allGenerated + 1} character only
+                    </a>
+                  )}
 
-                  <div transition:name={`position-${c.id}`}>
-                    Swap {index_allGenerated + 1} with the position
-                    {allGenerated.map((_, i) => {
-                      if (i + 1 === index_allGenerated + 1) return;
+                  {!lockedIndexes.includes(index_allGenerated) ? (
+                    <div transition:name={`position-${c.id}`}>
+                      Swap {index_allGenerated + 1} with the position
+                      {allGenerated.map((_, i) => {
+                        if (i + 1 === index_allGenerated + 1) return;
 
-                      const result = swapItems(
-                        [...allGenerated],
-                        index_allGenerated,
-                        i,
-                      ).join("-");
+                        const result = swapItems(
+                          [...allGenerated],
+                          index_allGenerated,
+                          i,
+                        ).join("-");
 
-                      return (
-                        <a
-                          href={`/random_characters?all=${result}&howMany=${howMany}`}
-                          class="hover:underline"
-                        >
-                          {i + 1}
-                        </a>
-                      );
-                    })}
-                  </div>
+                        return (
+                          <a
+                            href={`/random_characters?all=${result}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
+                            class="hover:underline"
+                          >
+                            {i + 1}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div
+                      transition:name={`position-${c.id}`}
+                      class="flex gap-1 opacity-45"
+                    >
+                      Swap {index_allGenerated + 1} with the position
+                      {allGenerated.map((_, i) => {
+                        return <p class="hover:underline">{i + 1}</p>;
+                      })}
+                    </div>
+                  )}
 
                   <a
                     href={`/compare?first=${c.id}`}
@@ -204,6 +261,17 @@ function swapItems(arr: number[], index1: number, index2: number) {
                     transition:name={`compare-${c.id}`}
                   >
                     Compare using {index_allGenerated + 1} character
+                  </a>
+
+                  <a
+                    href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${lockOrUnlockedIndex([...lockedIndexes], index_allGenerated).join("-")}`}
+                    class="hover:underline"
+                    transition:name={`lock-${c.id}`}
+                  >
+                    {!lockedIndexes.includes(index_allGenerated)
+                      ? "Lock"
+                      : "Unlock"}{" "}
+                    {index_allGenerated + 1} character
                   </a>
                 </div>
               );
