@@ -71,6 +71,8 @@ const selectedCharacters = await collectionCharacters
     joinTeam_universe_power_toCharacter(
       {
         id: {
+          /* make mongodb query even if there are repeated ids in allGenerated  the same document several times*/
+
           $in: allGenerated,
         },
       },

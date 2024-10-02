@@ -73,30 +73,26 @@
       <PictureInPicture size={20} />
     </Tabs.Trigger>
   </Tabs.List>
-  <Tabs.Content class="h-full w-[90%]" value="Biography">
+  <Tabs.Content class="h-[90%] w-[90%]" value="Biography">
     <ScrollArea class="h-full">
       <Biography
         biography={characterInfo.biography}
         connections={characterInfo.connections}
         {character_added_by}
       />
-      <br />
-      <br />
     </ScrollArea>
   </Tabs.Content>
-  <Tabs.Content class="h-full w-[90%]" value="Stats">
+  <Tabs.Content class="h-[90%] w-[90%]" value="Stats">
     <ScrollArea class="h-full">
       <Stats powerstats={characterInfo.powerstats} showNameAtAll={true} />
       <slot name="powersRenderedElements" />
-      <br />
-      <br />
     </ScrollArea>
   </Tabs.Content>
-  <Tabs.Content class="h-full w-[90%]" value="Appereance">
+  <Tabs.Content class="h-[90%] w-[90%]" value="Appereance">
     <Appereance appereance={characterInfo.appearance} />
     <br />
   </Tabs.Content>
-  <Tabs.Content value="Connections">
+  <Tabs.Content class="h-[90%] w-[90%]" value="Connections">
     <div
       class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px] space-y-5 px-5"
     >
@@ -121,10 +117,8 @@
         {/each}
       </div>
     </div>
-    <br />
-    <br />
   </Tabs.Content>
-  <Tabs.Content value="Gallery">
+  <Tabs.Content class="h-[90%] w-[90%]" value="Gallery">
     <CharacterImagesDisplay
       characterInfoComics={characterInfo.comics}
       publisherComics={publisherInfo.comics}

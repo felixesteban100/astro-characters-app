@@ -23,9 +23,7 @@
   export let showNameAtAll: boolean = false;
 </script>
 
-<div
-  class=" whitespace-nowrap w-full flex justify-start items-center flex-col px-5"
->
+<div class=" whitespace-nowrap w-full flex justify-start items-center flex-col">
   <StatsNumber {showNameAtAll} statName="Combat" statValue={powerstats.combat}>
     <Sword slot="icon" />
   </StatsNumber>

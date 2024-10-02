@@ -123,7 +123,7 @@ const [
   collectionPowers.find({}).sort({ name: 1 }).toArray(),
   collectionTeams
     .find({
-      name: team,
+      value: team,
     })
     .toArray(),
 
@@ -146,7 +146,7 @@ const [
 const attritutesFilteredArr = Object.entries({
   ...valuesFilter,
   side: AlignmentTranslator(valuesFilter.side),
-}).filter(([key, value]) => value !== "All" && value !== "both");
+}).filter(([_, value]) => value !== "All" && value !== "both");
 
 function getTitle(): string {
   return attritutesFilteredArr.length > 0
@@ -167,24 +167,6 @@ const [universeSelected] = universesWithTeams.filter(
 
 const [powerSelected] =
   allPowers && power ? allPowers.filter((c) => c.value === power) : [undefined];
-
-// console.log(characterJoinTeamAndUniverse);
-
-const currentCharactersToUpdate: { [key: string]: string } = {};
-// {"db property of collection": "value I want to fill that property with"}
-
-for (let i = 0; i < Object.entries(currentCharactersToUpdate).length; i++) {
-  const [key, value] = Object.entries(currentCharactersToUpdate)[i];
-
-  const setData = await collectionCharacters.updateOne(
-    { name: key },
-    {
-      $set: {
-        "biography.origin": value,
-      },
-    },
-  );
-}
 ---
 
 <script>
@@ -196,7 +178,7 @@ for (let i = 0; i < Object.entries(currentCharactersToUpdate).length; i++) {
   });
 </script>
 
-<Layout title={/* getTitle() */ "Characters"}>
+<Layout title={`${getTitle()} (Characters)`}>
   <FilterCharacters
     characterName={characterName}
     nameField={nameField}

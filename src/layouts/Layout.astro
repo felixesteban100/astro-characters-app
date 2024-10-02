@@ -230,7 +230,7 @@ const customTransition = {
           transition:animate="none"
           transition:name={`title-animation`}
         >
-          <p class="font-bold text-3xl">{title}</p>
+          <p class="font-bold text-3xl">{title?.replace("(Characters)", "")}</p>
           <div>
             <div id="actionDoer">
               <slot name="page_title_other_content" />
