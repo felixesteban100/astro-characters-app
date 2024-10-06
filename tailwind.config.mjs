@@ -133,6 +133,7 @@ module.exports = {
         "loop-scroll2": "loop-scroll2 50s linear infinite",
         "logo-color-spin":
           /* "logo-color 8s linear infinite, */ "spin 8s linear infinite",
+        "logo-color-spin2": "spin 10s linear infinite",
         "logo-color-rocket":
           "logo-color 8s linear infinite, bounce 2s linear infinite",
         fadeIn: "fadeIn 0.5s ease-in-out",

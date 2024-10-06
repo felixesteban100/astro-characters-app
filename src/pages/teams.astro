@@ -7,6 +7,7 @@ import Layout from "src/layouts/Layout.astro";
 import Sheet from "src/components/Sheet.svelte";
 import { Filter } from "lucide-astro";
 import TeamCard from "src/components/team_page/TeamCard.astro";
+import LoaderAstro from "src/components/LoaderAstro.astro";
 
 const currentPage = Astro.url.searchParams.get("currentPage") ?? "1";
 const universe = Astro.url.searchParams.get("universe") ?? "All";
@@ -58,28 +59,26 @@ function getTitle() {
   );
 </script>
 
-<Layout title={getTitle()}>
+<Layout title={`${getTitle()} (Teams)`}>
   <Sheet
     variant={undefined}
     size={undefined}
     client:load
-    ButtonClassName=""
+    ButtonClassName="pointer-events-none"
     slot="page_title_other_content"
     buttonTriggerId={"teamsFilter"}
     from="teams"
     side="right"
   >
-    <div slot="trigger">
-      <Filter />
-    </div>
+    <Filter slot="trigger" class="h-[4rem] w-[4rem]" />
 
     <div slot="content">
-      <div class="flex flex-col justify-center items-center gap-5 my-5">
+      <div class="flex flex-col justify-center items-center gap-14 my-5">
         {
           universesWithTeams.map((uni) => (
             <astro--change-universe-teams class="w-fit">
               <button
-                class={`${uni === universe ? "underline" : ""}`}
+                class={`${uni === universe ? "underline" : ""} text-5xl`}
                 name={uni}
               >
                 {uni}
@@ -104,13 +103,18 @@ function getTitle() {
 
     {
       teamsLenght.length > CHARACTERS_PER_PAGE && (
-        <Pagination
-          currentPage={currentPage}
-          url={`/teams?universe=${universe}&currentPage=`}
-          countItems={teamsLenght.length}
-          howManyPerPage={CHARACTERS_PER_PAGE}
-          client:only
-        />
+        <div>
+          <LoaderAstro />
+          <div id="actionDoer">
+            <Pagination
+              currentPage={currentPage}
+              url={`/teams?universe=${universe}&currentPage=`}
+              countItems={teamsLenght.length}
+              howManyPerPage={CHARACTERS_PER_PAGE}
+              client:only
+            />
+          </div>
+        </div>
       )
     }
   </div>

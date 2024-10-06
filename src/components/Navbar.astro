@@ -10,6 +10,7 @@ import {
   Users,
   SmartphoneCharging,
   GitCompareArrows,
+  Atom,
 } from "lucide-astro";
 import LoaderAstro from "./LoaderAstro.astro";
 
@@ -27,7 +28,7 @@ const { currentPath, links, title } = Astro.props;
 ---
 
 <nav
-  class="flex items-center justify-center w-[90%] md:w-[80%] max-w-[1700px] min-h-[4rem] mx-auto gap-5"
+  class="flex items-center justify-center w-[90%] md:w-[80%] max-w-[1700px] min-h-[4rem] py-5 mx-auto gap-5"
 >
   <div class="flex justify-between items-center w-full">
     <LoaderAstro />
@@ -40,15 +41,20 @@ const { currentPath, links, title } = Astro.props;
     </a> -->
     <div id="actionDoer" class="flex justify-center">
       <Sheet
-        variant={"outline"}
-        ButtonClassName=""
+        variant={"ghost"}
+        ButtonClassName="pointer-events-none h-[4rem]"
         buttonTriggerId={"navbar"}
         client:load
         side={"left"}
         from="navbar"
         size="default"
       >
-        <p slot="trigger" class="font-bold">ASTRO-CHARACTERS</p>
+        <!-- <p slot="trigger" class="font-bold text-3xl">ASTRO-CHARACTERS</p> -->
+        <Atom
+          slot="trigger"
+          class="font-bold h-[4rem] w-[4rem] animate-logo-color-spin2"
+        />
+
         <!-- <Menu slot="trigger" className="w-full" /> -->
         <div
           slot="content"

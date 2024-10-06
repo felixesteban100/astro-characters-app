@@ -91,6 +91,15 @@ document.addEventListener('astro:before-preparation', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  document.querySelectorAll('a').forEach(anchor => {
+    anchor.addEventListener('click', function (event) {
+      event.preventDefault();
+    });
+    anchor.classList.add("pointer-events-none")
+    anchor.style.pointerEvents = 'none';  // Disable clicking
+    // anchor.style.color = 'gray';  // Optional: Change color to show it's disabled
+  });
+
   body?.classList.add('cursor-wait')
   loaders.forEach(loader => {
     loader?.classList.remove('hidden')

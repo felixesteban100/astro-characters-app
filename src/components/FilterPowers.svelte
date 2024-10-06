@@ -78,9 +78,10 @@
 <Sheet
   variant={undefined}
   size={"default"}
-  ButtonClassName=""
+  ButtonClassName="pointer-events-none"
   buttonTriggerId={"filterCharacters"}
   from="characters"
+  side="right"
 >
   <slot name="trigger" slot="trigger" />
 

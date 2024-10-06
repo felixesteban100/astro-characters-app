@@ -9,7 +9,6 @@
     NAME_FIELD_VALUES,
     SORT_BY_VALUES,
   } from "../lib/constants/constants";
-  import { Checkbox } from "../lib/components/ui/checkbox/index";
   import * as RadioGroup from "$lib/components/ui/radio-group/index";
   import type { WithId } from "mongodb";
   import { navigate } from "astro:transitions/client";
@@ -53,6 +52,15 @@
 
   let includesOrExactState =
     sortByState.value === "names_sended" ? false : includesOrExact;
+
+  // let selectedIncludesOrExactState;
+
+  $: selectedIncludesOrExactState =
+    sortByState.value === "names_sended"
+      ? "false"
+      : includesOrExactState
+        ? "true"
+        : "false";
 
   let genderState = getStateVariableFormatted(
     gender,
@@ -130,7 +138,7 @@
 <Sheet
   variant={undefined}
   size={"default"}
-  ButtonClassName=""
+  ButtonClassName="pointer-events-none"
   buttonTriggerId={"filterCharacters"}
   from="characters"
   side="right"
@@ -138,21 +146,20 @@
   <slot name="trigger" slot="trigger" />
 
   <div slot="content">
-    <div class="h-[850px] w-full overflow-y-scroll">
+    <div class="h-[44rem] w-full overflow-y-scroll">
       <div class="flex flex-col gap-10 p-2">
         <Label class="flex flex-col gap-5 capitalize">
-          {nameFieldState.label}
-          <!-- <Input
-            id="name"
-            placeholder={nameFieldState.value === "name"
-              ? "batman, superman, iron man, spider-man..."
-              : nameFieldState.value === "fullName"
-                ? "bruce wayne, clark kent, tony stark, peter parker..."
-                : nameFieldState.value === "aliases"
-                  ? "dark knight, man of steel, your friendly neighbor spider-man..."
-                  : "batman, superman, iron man, spider-man..."}
-            bind:value={characterNameState}
-          /> -->
+          <!-- {nameFieldState.label} -->
+          <SelectForFilter
+            bind:selectedValue={nameFieldState}
+            label_plural=""
+            allItems={NAME_FIELD_VALUES}
+            needsAnAllOption={false}
+            needsAnBothOption={false}
+            label={"Name field"}
+            onchangeFunction={() => {}}
+            showLabel={false}
+          />
           <Textarea
             id="name"
             placeholder={nameFieldState.value === "name"
@@ -166,36 +173,26 @@
           />
         </Label>
 
-        <SelectForFilter
-          bind:selectedValue={nameFieldState}
-          label_plural=""
-          allItems={NAME_FIELD_VALUES}
-          needsAnAllOption={false}
-          needsAnBothOption={false}
-          label={"Name field"}
-          onchangeFunction={() => {}}
-        />
-
-        <div class="flex flex-col gap-5">
-          <div class="flex gap-2 items-center">
-            {#if sortByState.value !== "names_sended"}
-              <Checkbox id="regex-ornot" bind:checked={includesOrExactState} />
-            {:else}
-              <Checkbox id="regex-ornot" checked={true} disabled={true} />
-            {/if}
-            <Label
-              for="regex-ornot"
-              class={`${sortByState.value === "names_sended" ? "text-primary" : ""} flex gap-5 items-center justify-start`}
-            >
-              {#if sortByState.value !== "names_sended"}
-                Include charactes in name (checked) and can use RegExp patterns
-                | Exact name (Unchecked)
-              {:else}
-                Write Exact name to find character
-              {/if}
-            </Label>
-          </div>
-        </div>
+        <Label class="flex flex-col gap-5">
+          Name Matching Options
+          <RadioGroup.Root
+            bind:value={selectedIncludesOrExactState}
+            onValueChange={(value) => {
+              includesOrExactState = value === "true";
+              selectedIncludesOrExactState = value;
+            }}
+            disabled={sortByState.value === "names_sended" ? true : false}
+          >
+            <div class="flex items-center space-x-2">
+              <RadioGroup.Item value={"true"} id="true" />
+              <Label for="true">Flexible Name (RegExp Allowed)</Label>
+            </div>
+            <div class="flex items-center space-x-2">
+              <RadioGroup.Item value="false" id="false" />
+              <Label for="false">Exact Name (No Patterns)</Label>
+            </div>
+          </RadioGroup.Root>
+        </Label>
 
         <SelectForFilter
           bind:selectedValue={sortByState}
@@ -205,6 +202,7 @@
           needsAnBothOption={false}
           label={"Sort By"}
           onchangeFunction={() => {}}
+          showLabel={true}
         />
 
         <Label class="flex flex-col gap-5">
@@ -229,6 +227,7 @@
           needsAnBothOption={false}
           label={"gender"}
           onchangeFunction={() => {}}
+          showLabel={true}
         />
 
         <SelectForFilter
@@ -239,6 +238,7 @@
           needsAnBothOption={false}
           label={"aligment"}
           onchangeFunction={() => {}}
+          showLabel={true}
         />
 
         <SelectForFilter
@@ -249,6 +249,7 @@
           needsAnBothOption={false}
           label={"race"}
           onchangeFunction={() => {}}
+          showLabel={true}
         />
 
         <SelectForFilter
@@ -259,6 +260,7 @@
           needsAnBothOption={false}
           label={"power"}
           onchangeFunction={() => {}}
+          showLabel={true}
         />
 
         <SelectForFilter
@@ -272,6 +274,7 @@
             teamState.value = "All";
             teamState.label = "All teams";
           }}
+          showLabel={true}
         />
 
         {#if universeInfo}
@@ -283,6 +286,7 @@
             needsAnBothOption={false}
             label={"team"}
             onchangeFunction={() => {}}
+            showLabel={true}
           />
         {/if}
 

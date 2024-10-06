@@ -18,6 +18,13 @@
 </script>
 
 <div class="flex gap-2">
-  <Input class="w-[5rem]" bind:value={howMany} />
-  <Button size="icon" on:click={changeHowMany}><Hash /></Button>
+  <Input class="w-[5rem] h-[4rem] text-2xl" bind:value={howMany} />
+  <Button
+    size="icon"
+    variant="ghost"
+    on:click={changeHowMany}
+    class="h-[4rem] w-[4rem]"
+  >
+    <Hash class="h-[2.5rem] w-[2.5rem]" />
+  </Button>
 </div>

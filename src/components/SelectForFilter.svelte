@@ -11,15 +11,18 @@
   export let needsAnAllOption: boolean;
   export let needsAnBothOption: boolean;
   export let label: string;
+  export let showLabel: boolean;
   export let onchangeFunction: () => void;
 
   // console.log(selectedValue);
 </script>
 
 <div class="flex flex-col justify-center items-start gap-5">
-  <Label class="flex flex-col gap-5 capitalize">
-    {label}
-  </Label>
+  {#if showLabel === true}
+    <Label class="flex flex-col gap-5 capitalize">
+      {label}
+    </Label>
+  {/if}
   <Select.Root
     bind:selected={selectedValue}
     onSelectedChange={() => onchangeFunction()}

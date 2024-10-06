@@ -44,7 +44,7 @@ const character_createdBy = new ObjectId(c._id).getTimestamp();
 <a
   href={withLink ? `/character?id=${c.id}` : undefined}
   transition:name={withTransitionName === true ? `photo-${c.id}` : undefined}
-  class={otherClasses}
+  class={`${otherClasses} characterCard `}
   id={withTransitionName === true ? undefined : `photo-${c.id}`}
 >
   <div class="group/character">

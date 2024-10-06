@@ -170,11 +170,11 @@ function makeNoneLockedIndexesUndefined() {
         : `/random_characters?all=${makeNoneLockedIndexesUndefined().join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
     >
       <Button
-        class={lockedIndexes.length === howMany ? "opacity-45" : ""}
+        class={`${lockedIndexes.length === howMany ? "opacity-45" : ""} h-[4rem] w-[4rem] `}
         variant="ghost"
         size="icon"
       >
-        <Shuffle />
+        <Shuffle class="h-[2.5rem] w-[2.5rem]" />
       </Button>
     </a>
 
@@ -183,16 +183,16 @@ function makeNoneLockedIndexesUndefined() {
         <a
           href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${Array.from({ length: howMany }, (_, index) => index).join("-")}`}
         >
-          <Button variant="ghost" size="icon">
-            <LockKeyhole />
+          <Button variant="ghost" size="icon" class="h-[4rem] w-[4rem] ">
+            <LockKeyhole class="h-[2.5rem] w-[2.5rem]" />
           </Button>
         </a>
       ) : (
         <a
           href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${[].join("-")}`}
         >
-          <Button variant="ghost" size="icon">
-            <LockKeyholeOpen />
+          <Button variant="ghost" size="icon" class="h-[4rem] w-[4rem] ">
+            <LockKeyholeOpen class="h-[2.5rem] w-[2.5rem]" />
           </Button>
         </a>
       )
