@@ -61,16 +61,16 @@ function getTitle() {
 
 <Layout title={`${getTitle()} (Teams)`}>
   <Sheet
-    variant={undefined}
+    variant={"secondary"}
     size={undefined}
     client:load
-    ButtonClassName="pointer-events-none"
+    ButtonClassName={/* "pointer-events-none" */ "h-[4rem] w-[4rem]"}
     slot="page_title_other_content"
     buttonTriggerId={"teamsFilter"}
     from="teams"
     side="right"
   >
-    <Filter slot="trigger" class="h-[4rem] w-[4rem]" />
+    <Filter slot="trigger" class="h-[2.5rem] w-[2.5rem]" />
 
     <div slot="content">
       <div class="flex flex-col justify-center items-center gap-14 my-5">
@@ -78,7 +78,7 @@ function getTitle() {
           universesWithTeams.map((uni) => (
             <astro--change-universe-teams class="w-fit">
               <button
-                class={`${uni === universe ? "underline" : ""} text-5xl`}
+                class={`${uni === universe ? "underline" : ""} text-3xl`}
                 name={uni}
               >
                 {uni}

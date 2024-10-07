@@ -14,7 +14,7 @@
       builders={[builder]}
       variant="outline"
       size="icon"
-      class="h-[4rem] w-[4rem] rounded-full"
+      class="h-[4rem] w-[4rem]"
     >
       <Sun
         class="h-[2.5rem] w-[2.5rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"

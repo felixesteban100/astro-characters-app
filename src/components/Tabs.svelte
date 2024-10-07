@@ -93,9 +93,8 @@
     <br />
   </Tabs.Content>
   <Tabs.Content class="h-[90%] w-[90%]" value="Connections">
-    <div
-      class="overflow-y-scroll whitespace-nowrap w-[500px] md:w-[500px] lg:w-[800px] h-[630px] space-y-5 px-5"
-    >
+    <!-- w-[500px] md:w-[500px] lg:w-[800px] -->
+    <div class="overflow-y-scroll whitespace-nowrap h-[630px] space-y-5 px-5">
       <div class="flex flex-col justify-center items-center">
         <p class="text-3xl font-bold">Teams</p>
         {#if teams.length < 1}

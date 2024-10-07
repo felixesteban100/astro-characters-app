@@ -58,13 +58,14 @@ document.addEventListener('astro:page-load', (e) => {
     (entries) => {
       entries.forEach((entry) => {
         const target = entry.target as HTMLImageElement
-        if (entry.intersectionRatio > 0) {
-          // @ts-ignore - viewTransitionName is not in the spec yet
-          target.style.viewTransitionName = target.id
-        } else {
-          // @ts-ignore - viewTransitionName is not in the spec yet
-          target.style.viewTransitionName = 'none'
-        }
+        // if (entry.intersectionRatio > 0) {
+        //   // @ts-ignore - viewTransitionName is not in the spec yet
+        //   target.style.viewTransitionName = target.id
+        // } else {
+        //   // @ts-ignore - viewTransitionName is not in the spec yet
+        //   target.style.viewTransitionName = 'none'
+        // }
+        target.style.viewTransitionName = target.id
       })
     },
     { threshold: 0 }

@@ -53,7 +53,7 @@ const [powers, powersLenght] = await Promise.all([
 ]);
 ---
 
-<Layout title={`Powers${tierRange ? `: Tier ${tierRange}` : ""}`}>
+<Layout title={`Powers${tierRange.length > 0 ? `: Tier ${tierRange}` : ""}`}>
   <FilterPowers
     howManyPerPage={howManyPerPage}
     powerName={powerName}
@@ -62,9 +62,9 @@ const [powers, powersLenght] = await Promise.all([
     slot="page_title_other_content"
   >
     <div class="flex gap-5" slot="trigger">
-      <Filter class="h-[3rem] w-[3rem]" />
-      <span class="text-primary hidden lg:flex text-3xl">|</span>
-      <span class="text-primary hidden lg:flex text-3xl">(Press T)</span>
+      <Filter slot="trigger" class="h-[2.5rem] w-[2.5rem]" />
+      <!-- <span class="text-primary hidden lg:flex text-3xl">|</span>
+      <span class="text-primary hidden lg:flex text-3xl">(Press T)</span> -->
     </div>
   </FilterPowers>
 

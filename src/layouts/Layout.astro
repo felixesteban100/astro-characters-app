@@ -198,7 +198,14 @@ const customTransition = {
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title?.replace("(Characters)", "")}</title>
+    <title>
+      {
+        title
+          ?.replace("(Characters)", "")
+          ?.replace("(Teams)", "")
+          ?.replace("(Compare)", "")
+      }
+    </title>
     <ViewTransitions fallback="swap" />
     <script src="../scripts/transitions.ts"></script>
   </head>
@@ -210,7 +217,7 @@ const customTransition = {
 
     <!-- sticky top-0 z-50  -->
     <div
-      class="flex bg-background/80 backdrop-blur-md border-b border-foreground/10"
+      class="flex bg-secondary/50 backdrop-blur-md border-b border-foreground/10"
     >
       <Navbar
         title={title ?? ""}
@@ -230,7 +237,14 @@ const customTransition = {
           transition:animate="none"
           transition:name={`title-animation`}
         >
-          <p class="font-bold text-3xl">{title?.replace("(Characters)", "")}</p>
+          <p class="font-bold text-4xl">
+            {
+              title
+                ?.replace("(Characters)", "")
+                .replace("(Teams)", "")
+                ?.replace("(Compare)", "")
+            }
+          </p>
           <div>
             <div id="actionDoer">
               <slot name="page_title_other_content" />

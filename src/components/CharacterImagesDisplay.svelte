@@ -25,10 +25,9 @@
 
 <!--  w-[31.25rem] md:w-[31.25rem] lg:w-[50rem] -->
 
-<ScrollArea
-  class="~w-[31.25rem]/[50rem] h-[630px] whitespace-nowrap "
-  orientation="vertical"
->
+<!-- ~w-[31.25rem]/[50rem] -->
+
+<ScrollArea class=" h-[630px] whitespace-nowrap " orientation="vertical">
   <div class="flex flex-col justify-center items-center gap-5 p-4">
     {#each images as image}
       <figure class="shrink-0">
