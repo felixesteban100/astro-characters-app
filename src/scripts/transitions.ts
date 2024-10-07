@@ -65,6 +65,7 @@ document.addEventListener('astro:page-load', (e) => {
         //   // @ts-ignore - viewTransitionName is not in the spec yet
         //   target.style.viewTransitionName = 'none'
         // }
+        // @ts-ignore
         target.style.viewTransitionName = target.id
       })
     },
