@@ -25,7 +25,7 @@
       <span class="sr-only">Toggle theme</span>
     </Button>
   </DropdownMenu.Trigger>
-  <DropdownMenu.Content align="end">
+  <DropdownMenu.Content align="end" class="p-2">
     <DropdownMenu.Item on:click={() => setMode("light")} class="text-2xl">
       Light
       {#if $userPrefersMode === "light"}

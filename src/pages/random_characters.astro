@@ -190,7 +190,7 @@ function makeNoneLockedIndexesUndefined() {
           href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${Array.from({ length: howMany }, (_, index) => index).join("-")}`}
         >
           <Button variant="ghost" size="icon" class="h-[4rem] w-[4rem] ">
-            <LockKeyhole class="h-[2.5rem] w-[2.5rem]" />
+            <Lock class="h-[2.5rem] w-[2.5rem]" />
           </Button>
         </a>
       ) : (
@@ -252,12 +252,15 @@ function makeNoneLockedIndexesUndefined() {
                       {!lockedIndexes.includes(index_allGenerated) ? (
                         <a
                           href={`/random_characters?all=${updateOneExceptArray(index_allGenerated).join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
-                          class="hover:underline"
                           transition:name={`random-self-${c.id}`}
                         >
                           {/* Random {index_allGenerated + 1} character only */}
-                          <Button variant="secondary">
+                          <Button
+                            variant="secondary"
+                            class="text-3xl flex items-center gap-2"
+                          >
                             <Shuffle />
+                            {index_allGenerated}
                           </Button>
                         </a>
                       ) : (
@@ -269,8 +272,10 @@ function makeNoneLockedIndexesUndefined() {
                           <Button
                             class="cursor-not-allowed"
                             variant="secondary"
+                            class="text-3xl flex items-center gap-2"
                           >
                             <Shuffle />
+                            {index_allGenerated}
                           </Button>
                         </a>
                       )}
@@ -297,14 +302,23 @@ function makeNoneLockedIndexesUndefined() {
                       {!lockedIndexes.includes(index_allGenerated) ? (
                         <div
                           transition:name={`position-${c.id}`}
-                          class="flex gap-1"
+                          class="flex flex-wrap gap-1"
                         >
                           <ArrowUpDown />{" "}
                           {/* Swap {index_allGenerated + 1} with the
                         position */}
                           {allGenerated.map((_, i) => {
                             if (i + 1 === index_allGenerated + 1) return;
-                            if (lockedIndexes.includes(i)) return;
+                            if (lockedIndexes.includes(i)) {
+                              return (
+                                <Button
+                                  variant="secondary"
+                                  class="text-2xl h-[1.5rem] w-[1.5rem] cursor-not-allowed opacity-45"
+                                >
+                                  {i + 1}
+                                </Button>
+                              );
+                            }
 
                             const result = swapItems(
                               [...allGenerated],
@@ -330,13 +344,11 @@ function makeNoneLockedIndexesUndefined() {
                       ) : (
                         <div
                           transition:name={`position-${c.id}`}
-                          class="flex gap-1 opacity-45"
+                          class="flex flex-wrap gap-1 opacity-45"
                         >
                           <ArrowUpDown />{" "}
-                          {/* Swap {index_allGenerated + 1} with the position */}
                           {allGenerated.map((_, i) => {
                             if (i + 1 === index_allGenerated + 1) return;
-                            if (lockedIndexes.includes(i)) return;
 
                             return (
                               <Button
