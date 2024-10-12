@@ -123,13 +123,54 @@ export function getQueryOptions({
   return queryOptions;
 }
 
-export async function getRandomIdRecursively() {
+export async function getRandomIdRecursively(queryOptions: QueryOptions) {
   try {
-    const randomCharacter = await collectionCharacters.findOne({ id: parseInt((Math.floor(Math.random() * 862) + 1).toString()) })
-    if (!randomCharacter) {
-      return getRandomIdRecursively()
-    }
+    // const randomCharacter = await collectionCharacters.findOne({
+    //   ...queryOptions,
+    //   id: parseInt((Math.floor(Math.random() * 862) + 1).toString()),
+    // })
+    const [randomCharacter] = await collectionCharacters
+      .aggregate<CharacterWithJoinTeamUniversePower>(
+        joinTeam_universe_power_toCharacter(
+          { ...queryOptions },
+          "random",
+          "desc",
+          0,
+          1,
+          [],
+        ),
+      )
+      .toArray()
+
+    // if (!randomCharacter) {
+    //   return getRandomIdRecursively(queryOptions)
+    // }
     return randomCharacter.id.toString()
+  } catch (error) {
+    console.error(error);
+    throw Error(`MongoDB Connection Error: ${error}`);
+  }
+}
+
+export async function getRandomIdsRecursively(queryOptions: QueryOptions, howMany: number) {
+  try {
+    const randomCharacters = await collectionCharacters
+      .aggregate<CharacterWithJoinTeamUniversePower>(
+        joinTeam_universe_power_toCharacter(
+          { ...queryOptions },
+          "random",
+          "desc",
+          0,
+          howMany,
+          [],
+        ),
+      )
+      .toArray()
+
+    // if (!randomCharacter) {
+    //   return getRandomIdRecursively(queryOptions)
+    // }
+    return randomCharacters.map(c => c.id.toString())
   } catch (error) {
     console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);
@@ -167,9 +208,6 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions, 
       },
     },
     { $match: { ...queryOptions } },
-    { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
-    { $skip: offset },
-    { $limit: howManyPerPage },
   ]
 
   if (sortBy === 'random') {
@@ -189,12 +227,20 @@ export const joinTeam_universe_power_toCharacter = (queryOptions: QueryOptions, 
         }
       },
       ...baseLookups,
+      { $skip: offset },
+      { $limit: howManyPerPage },
+      { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
     ]
   }
 
 
 
-  return baseLookups
+  return [
+    ...baseLookups,
+    { $sort: { [`${sortBy}`]: sortDirection === "desc" ? -1 : 1 } },
+    { $skip: offset },
+    { $limit: howManyPerPage },
+  ]
 }
 
 /* {

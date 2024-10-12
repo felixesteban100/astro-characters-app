@@ -1,38 +1,73 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import { collectionCharacters } from "../lib/mongodb";
-
-import { joinTeam_universe_power_toCharacter } from "../lib/charactersUtils";
-import { getRandomIdRecursively } from "../lib/charactersUtils";
-import { Button } from "$lib/components/ui/button";
 import {
-  LockKeyhole,
-  Lock,
-  Shuffle,
-  ArrowUpDown,
-  GitCompareArrows,
-} from "lucide-astro";
+  collectionCharacters,
+  collectionPowers,
+  collectionUniverses,
+} from "../lib/mongodb";
+
+import {
+  getQueryOptions,
+  joinTeam_universe_power_toCharacter,
+} from "../lib/charactersUtils";
+import { getRandomIdsRecursively } from "../lib/charactersUtils";
+import { Button } from "$lib/components/ui/button";
+import { Lock, Shuffle, ArrowUpDown, GitCompareArrows } from "lucide-astro";
 import CharacterCard from "src/components/characters_page/CharacterCard.astro";
 import ChangeHowManyInput from "src/components/random_characters/ChangeHowManyInput.svelte";
-import { LockKeyholeOpen } from "lucide-svelte";
+import { LockKeyholeOpen, Filter } from "lucide-svelte";
+import FilterCharactersRandom from "src/components/FilterCharactersRandom.svelte";
 
 const all = Astro.url.searchParams.get("all");
 const howMany = parseInt(Astro.url.searchParams.get("howMany") ?? "4");
 const locked = Astro.url.searchParams.get("locked");
 
+const side = Astro.url.searchParams.get("side") ?? "All";
+const universe = Astro.url.searchParams.get("universe") ?? "All";
+// const team = Astro.url.searchParams.get("team") ?? "All";
+const gender = Astro.url.searchParams.get("gender") ?? "both";
+const race = Astro.url.searchParams.get("race") ?? "All";
+const power = Astro.url.searchParams.get("power") ?? "All";
+
 let allArray = all ? all.split("-") : [];
 let lockedArray = locked ? locked.split("-") : [];
 
+// const valuesFilterParams = `&gender=${gender}&side=${side}&race=${race}&power=${power}&universe=${universe}&team=${team}`;
+const valuesFilterParams = `&gender=${gender}&side=${side}&race=${race}&power=${power}&universe=${universe}`;
+
+// console.log(valuesFilterParams);
+
+const valuesFilter = {
+  side,
+  universe,
+  // team,
+  gender,
+  race,
+  power,
+};
+
+const queryOptions: QueryOptions = getQueryOptions({
+  ...valuesFilter,
+  team: null,
+  characterName: "",
+  nameField: "",
+  includesOrExact: false,
+});
+
 if (all && allArray.includes("undefined")) {
-  allArray = await Promise.all(
-    allArray.map(async (c: string, index: number) => {
-      if (c === "undefined") {
-        return await getRandomIdRecursively();
-      }
-      return c;
-    }),
+  const randoms = await getRandomIdsRecursively(
+    queryOptions,
+    allArray.filter((c) => c === "undefined").length,
   );
+
+  allArray = allArray.map((c: string, index: number) => {
+    if (c === "undefined") {
+      const other = randoms.shift()!;
+      return other;
+    }
+    return c;
+  });
 }
 
 let allGenerated: number[] =
@@ -42,65 +77,102 @@ let lockedIndexes: number[] =
   lockedArray.length > 0 ? lockedArray.map((c) => parseInt(c)) : [];
 
 if (allGenerated.length === 0) {
-  for (let i = 0; i < howMany; i++) {
-    const element = await getRandomIdRecursively();
-    allGenerated.push(parseInt(element));
-  }
+  // for (let i = 0; i < howMany; i++) {
+  //   const element = await getRandomIdRecursively(queryOptions);
+  //   allGenerated.push(parseInt(element));
+  // }
+  const randoms = await getRandomIdsRecursively(queryOptions, howMany);
+
+  randoms.forEach((c) => {
+    allGenerated.push(parseInt(c));
+  });
 } else {
   if (allGenerated.length < howMany) {
     const howManyAreLeft = howMany - allGenerated.length;
 
-    for (let index = 0; index < howManyAreLeft; index++) {
-      allGenerated.push(parseInt(await getRandomIdRecursively()));
-    }
+    // for (let index = 0; index < howManyAreLeft; index++) {
+    //   allGenerated.push(parseInt(await getRandomIdRecursively(queryOptions)));
+    // }
+
+    const randoms = await getRandomIdsRecursively(queryOptions, howManyAreLeft);
+
+    randoms.forEach((c) => {
+      allGenerated.push(parseInt(c));
+    });
 
     return Astro.redirect(
-      `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}`,
+      `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}${valuesFilterParams}`,
     );
   }
 
   if (allGenerated.length > howMany) {
     return Astro.redirect(
-      `/random_characters?all=${`${[...allGenerated].splice(0, howMany).join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}`,
+      `/random_characters?all=${`${[...allGenerated].splice(0, howMany).join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}${valuesFilterParams}`,
     );
   }
 }
 
 if (!all || all === "null" || all.includes("undefined")) {
   return Astro.redirect(
-    `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}`,
+    `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}${valuesFilterParams}`,
   );
 }
 
-const selectedCharacters = await collectionCharacters
-  .aggregate<CharacterWithJoinTeamUniversePower>(
-    joinTeam_universe_power_toCharacter(
-      {
-        id: {
-          /* make mongodb query even if there are repeated ids in allGenerated  the same document several times*/
-
-          $in: allGenerated,
+const [selectedCharacters, universesWithTeams, allUniverses, allPowers] =
+  await Promise.all([
+    collectionCharacters
+      .aggregate<CharacterWithJoinTeamUniversePower>(
+        joinTeam_universe_power_toCharacter(
+          {
+            id: {
+              /* make mongodb query even if there are repeated ids in allGenerated  the same document several times*/
+              $in: allGenerated,
+            },
+          },
+          "id",
+          "desc",
+          0,
+          howMany,
+          [],
+        ),
+      )
+      .toArray(),
+    collectionUniverses
+      .aggregate<UniverseWithJoinTeams>([
+        {
+          $lookup: {
+            from: "teams",
+            localField: "id",
+            foreignField: "universe",
+            pipeline: [
+              {
+                $project: {
+                  universe: 0,
+                  comics: 0,
+                },
+              },
+              { $sort: { name: 1 } },
+            ],
+            as: "teams",
+          },
         },
-      },
-      "id",
-      "desc",
-      0,
-      howMany,
-      [],
-    ),
-  )
-  .toArray();
+        { $match: { teams: { $exists: true, $not: { $size: 0 } } } },
+      ])
+      .toArray(),
+    collectionUniverses.find({}).sort({ id: 1 }).toArray(),
+    collectionPowers.find({}).sort({ name: 1 }).toArray(),
+  ]);
 
-function updateArrayExceptOne(indexToKeep: number) {
-  return allGenerated.map((item, index) => {
-    // If the current index is the one we want to keep, return the original value
-    if (index === indexToKeep || lockedIndexes.includes(index)) {
-      return item;
-    }
-    // Otherwise, return the new value
-    return "undefined";
-  });
-}
+// function updateArrayExceptOne(indexToKeep: number) {
+//   return allGenerated.map((item, index) => {
+//     // If the current index is the one we want to keep, return the original value
+//     if (index === indexToKeep || lockedIndexes.includes(index)) {
+//       return item;
+//     }
+//     // Otherwise, return the new value
+//     return "undefined";
+//   });
+// }
 
 function updateOneExceptArray(indexToKeep: number) {
   return allGenerated.map((item, index) => {
@@ -167,13 +239,14 @@ function makeNoneLockedIndexesUndefined() {
       {howMany}
       all={[...allGenerated]}
       locked={lockedIndexes}
+      valuesFilterParams={valuesFilterParams}
       client:load
     />
 
     <a
       href={lockedIndexes.length === howMany
         ? null
-        : `/random_characters?all=${makeNoneLockedIndexesUndefined().join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
+        : `/random_characters?all=${makeNoneLockedIndexesUndefined().join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}${valuesFilterParams}`}
     >
       <Button
         class={`${lockedIndexes.length === howMany ? "opacity-45" : ""} h-[4rem] w-[4rem] `}
@@ -187,7 +260,7 @@ function makeNoneLockedIndexesUndefined() {
     {
       lockedIndexes.length === 0 ? (
         <a
-          href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${Array.from({ length: howMany }, (_, index) => index).join("-")}`}
+          href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${Array.from({ length: howMany }, (_, index) => index).join("-")}${valuesFilterParams}`}
         >
           <Button variant="ghost" size="icon" class="h-[4rem] w-[4rem] ">
             <Lock class="h-[2.5rem] w-[2.5rem]" />
@@ -195,7 +268,7 @@ function makeNoneLockedIndexesUndefined() {
         </a>
       ) : (
         <a
-          href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${[].join("-")}`}
+          href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${[].join("-")}${valuesFilterParams}`}
         >
           <Button variant="ghost" size="icon" class="h-[4rem] w-[4rem] ">
             <LockKeyholeOpen class="h-[2.5rem] w-[2.5rem]" />
@@ -203,6 +276,25 @@ function makeNoneLockedIndexesUndefined() {
         </a>
       )
     }
+    <!-- team={team} -->
+    <FilterCharactersRandom
+      href={`/random_characters?all=${makeNoneLockedIndexesUndefined().join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
+      gender={gender}
+      side={side}
+      race={race}
+      power={power}
+      universe={universe}
+      universesWithTeams={universesWithTeams}
+      allUniverses={allUniverses}
+      allPowers={allPowers}
+      client:load
+    >
+      <div class="flex gap-5" slot="trigger">
+        <Filter class="h-[2.5rem] w-[2.5rem]" />
+        <!-- <span class="text-primary hidden lg:flex text-3xl">|</span>
+      <span class="text-primary hidden lg:flex text-3xl">(Press T)</span> -->
+      </div>
+    </FilterCharactersRandom>
   </div>
 
   <main
@@ -260,7 +352,7 @@ function makeNoneLockedIndexesUndefined() {
                             class="text-3xl flex items-center gap-2"
                           >
                             <Shuffle />
-                            {index_allGenerated}
+                            {index_allGenerated + 1}
                           </Button>
                         </a>
                       ) : (
@@ -275,7 +367,7 @@ function makeNoneLockedIndexesUndefined() {
                             class="text-3xl flex items-center gap-2"
                           >
                             <Shuffle />
-                            {index_allGenerated}
+                            {index_allGenerated + 1}
                           </Button>
                         </a>
                       )}

@@ -11,8 +11,8 @@ const first = Astro.url.searchParams.get("first");
 const second = Astro.url.searchParams.get("second");
 
 const [firstGenerated, secondGenerated] = await Promise.all([
-  getRandomIdRecursively(),
-  getRandomIdRecursively(),
+  getRandomIdRecursively({}),
+  getRandomIdRecursively({}),
 ]);
 
 const firstId = first ?? firstGenerated;

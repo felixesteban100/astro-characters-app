@@ -9,10 +9,11 @@
   export let howMany: number;
   export let all: number[];
   export let locked: number[];
+  export let valuesFilterParams: string;
 
   function changeHowMany() {
     navigate(
-      `/random_characters?all=${all.join("-")}&howMany=${howMany}&locked=${locked.join("-")}`,
+      `/random_characters?all=${all.join("-")}&howMany=${howMany}&locked=${locked.join("-")}${valuesFilterParams}`,
     );
   }
 </script>
