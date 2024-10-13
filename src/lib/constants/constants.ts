@@ -83,6 +83,170 @@ export const COMICS_DEFAULT = [
   "https://img.freepik.com/free-vector/comics-poster-template_225004-800.jpg?w=2000",
 ]
 
+export const emptyCharacter: CharacterWithJoinTeamUniversePower = {
+  "_id": "63744cef81b33ddcb37e913e",
+  id: 0,
+  name: 'None',
+  slug: '0-None',
+  powerstats: {
+    intelligence: 60,
+    strength: 70,
+    speed: 60,
+    durability: 70,
+    power: 80,
+    combat: 70,
+    total: 79
+  },
+  appearance: {
+    gender: 'Male',
+    race: 'Human',
+    height: ['', '- cm'],
+    weight: ['- lb', '- kg'],
+    eyeColor: '-',
+    hairColor: '-',
+    age: 'Age not available',
+    description: ''
+  },
+  biography: {
+    fullName: '-',
+    alterEgos: '-',
+    aliases: ['-'],
+    placeOfBirth: '-',
+    firstAppearance: '-',
+    publisher: {
+      value: 'None',
+      name: 'None',
+      comics: [],
+      logo: 'https://flagsusa.com/wp-content/uploads/2018/01/products-dominicanrepublicgovPS__68148.1514879325.1280.1280.jpg',
+      id: 0,
+      description: 'None'
+    },
+    alignment: 'good',
+    origin: 'The White Ranger is a powerful version of Tommy Oliver in the Power Rangers franchise, wielding new powers and leading the team with his Tigerzord.'
+  },
+  work: { occupation: '-', base: '-' },
+  connections: {
+    groupAffiliation: [
+      /* {
+        name: 'Power Rangers',
+        value: 'Power Rangers',
+        description:'A group of teenagers with attitude who morph into superheroes known as the Power Rangers, using their Zords to defend Earth from evil forces, led by villains like Rita Repulsa and Lord Zedd.',
+        comics: [],
+        id: 58,
+        logo:'https://static.wikia.nocookie.net/logopedia/images/7/71/MMPR_Era_Logo.png',
+        leaders: []
+      } */
+    ],
+    relatives: '-',
+  },
+  images: {
+    xs: '',
+    sm: '',
+    md: 'https://i1.sndcdn.com/avatars-PkAmzSOLCdxklQgS-AokumA-t240x240.jpg',
+    lg: ''
+  },
+
+  powers: [
+    /* {
+      "_id": "5f6c9b3a3a3a3a3",
+      value: 'Enhanced Senses',
+      name: 'Enhanced Senses 👀',
+      img: 'https://media1.tenor.com/m/0t75i6InJi0AAAAC/reflexes.gif',
+      id: 16,
+      description: 'Heightened sensory perception.',
+      score: 50000,
+      tier: 5
+    },
+    {
+      "_id": "5f6c9b3a3a3a3a3",
+      value: 'Martial Arts',
+      name: 'Martial Arts 🥋',
+      img: 'https://media1.tenor.com/m/YqrAOUwcnscAAAAC/dragon-ball-z-dbz.gif',
+      id: 58,
+      description: 'Expertise in martial arts.',
+      score: 60000,
+      tier: 6
+    } */
+  ],
+  character_class: 0,
+  logo: '',
+  tier: 0,
+  weaknesses: []
+} /* {
+  "_id": "5f6c9b3a3a3a3a3",
+  "id": 0,
+  "name": "None",
+  "slug": "0-None",
+  "powerstats": {
+    "intelligence": 0,
+    "strength": 0,
+    "speed": 0,
+    "durability": 0,
+    "power": 0,
+    "combat": 0,
+    "total": 0
+  },
+  "appearance": {
+    "gender": "None",
+    "race": "None",
+    "height": [
+      "0'00",
+      "0 cm"
+    ],
+    "weight": [
+      "0 lb",
+      "0 kg"
+    ],
+    "eyeColor": "None",
+    "hairColor": "None",
+    "age": "0-0 years old",
+    "description": "No one"
+  },
+  "biography": {
+    "fullName": "None",
+    "alterEgos": "No alter egos.",
+    "aliases": [
+
+    ],
+    "placeOfBirth": "None",
+    "firstAppearance": "None",
+    "publisher": {
+      "id": 0,
+      name: "None",
+      value: "None",
+      logo: "",
+      comics: [],
+      description: ""
+    },
+    "alignment": "None",
+    "origin": "None"
+  },
+  "work": {
+    "occupation": "None",
+    "base": "None"
+  },
+  "connections": {
+    "groupAffiliation": [
+
+    ],
+    "relatives": "None"
+  },
+  "images": {
+    "xs": "",
+    "sm": "",
+    "md": "https://i1.sndcdn.com/avatars-PkAmzSOLCdxklQgS-AokumA-t240x240.jpg",
+    "lg": ""
+  },
+  "powers": [
+
+  ],
+  "character_class": 0,
+  "logo": "",
+  "tier": 0,
+  "weaknesses": []
+} */
+
+
 // const dc = [
 //   37,
 //   44,

@@ -167,10 +167,14 @@ export async function getRandomIdsRecursively(queryOptions: QueryOptions, howMan
       )
       .toArray()
 
+
     // if (!randomCharacter) {
     //   return getRandomIdRecursively(queryOptions)
     // }
-    return randomCharacters.map(c => c.id.toString())
+    return randomCharacters.map(c => {
+      if (c.id.toString() === "NaN") return "0"
+      return c.id.toString()
+    })
   } catch (error) {
     console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);

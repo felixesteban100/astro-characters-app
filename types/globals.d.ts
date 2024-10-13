@@ -25,7 +25,7 @@ declare type Character = {
         aliases: string[];
         placeOfBirth: string;
         firstAppearance: string;
-        publisher: string;
+        // publisher: string;
         alignment: string;
         origin: string
     };
@@ -48,7 +48,7 @@ declare type Character = {
         [key: string]: string;
     };
     _id: string;
-    id: number;
+    id: number | typeof NaN;
     name: string;
     slug: string;
     comics?: string[];
