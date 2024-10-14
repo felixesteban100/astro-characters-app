@@ -19,6 +19,7 @@ import ChangeHowManyInput from "src/components/random_characters/ChangeHowManyIn
 import { LockKeyholeOpen, Filter } from "lucide-svelte";
 import FilterCharactersRandom from "src/components/FilterCharactersRandom.svelte";
 import { emptyCharacter } from "$lib/constants/constants";
+import { navigate } from "astro:transitions/client";
 
 const all = Astro.url.searchParams.get("all");
 const howMany = parseInt(Astro.url.searchParams.get("howMany") ?? "4");
@@ -31,13 +32,12 @@ const gender = Astro.url.searchParams.get("gender") ?? "both";
 const race = Astro.url.searchParams.get("race") ?? "All";
 const power = Astro.url.searchParams.get("power") ?? "All";
 
-let allArray = all ? all.split("-") : [];
-let lockedArray = locked ? locked.split("-") : [];
+let allGenerated = all ? all.split("/").map((c) => parseInt(c)) : [];
+let lockedIndexes = locked ? locked.split("/").map((c) => parseInt(c)) : [];
 
 // const valuesFilterParams = `&gender=${gender}&side=${side}&race=${race}&power=${power}&universe=${universe}&team=${team}`;
 const valuesFilterParams = `&gender=${gender}&side=${side}&race=${race}&power=${power}&universe=${universe}`;
-
-// console.log(valuesFilterParams);
+const restOfUrl = `&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}${valuesFilterParams}`;
 
 const valuesFilter = {
   side,
@@ -56,66 +56,37 @@ const queryOptions: QueryOptions = getQueryOptions({
   includesOrExact: false,
 });
 
-if (all && allArray.includes("0")) {
+if (allGenerated.includes(0)) {
+  const howManyEmptyThereAre = allGenerated.filter((c) => c === 0).length;
+
   const randoms = await getRandomIdsRecursively(
     queryOptions,
-    allArray.filter((c) => c === "0").length,
+    howManyEmptyThereAre,
   );
 
-  allArray = allArray.map((c: string, index: number) => {
-    if (c === "0") {
-      const other = randoms.shift()!;
-      return other;
+  allGenerated.forEach((c: number, index: number) => {
+    if (c === 0) {
+      const other = randoms.shift();
+      if (other && !allGenerated.includes(other)) {
+        allGenerated[index] = other;
+      } else {
+        allGenerated[index] = -1;
+      }
     }
-    return c;
   });
 }
 
-let allGenerated: number[] =
-  allArray.length > 0 ? allArray.map((c) => parseInt(c)) : [];
-
-let lockedIndexes: number[] =
-  lockedArray.length > 0 ? lockedArray.map((c) => parseInt(c)) : [];
-
 if (allGenerated.length === 0) {
-  // for (let i = 0; i < howMany; i++) {
-  //   const element = await getRandomIdRecursively(queryOptions);
-  //   allGenerated.push(parseInt(element));
-  // }
   const randoms = await getRandomIdsRecursively(queryOptions, howMany);
 
   randoms.forEach((c) => {
-    allGenerated.push(parseInt(c));
+    allGenerated.push(c);
   });
-} else {
-  if (allGenerated.length < howMany) {
-    const howManyAreLeft = howMany - allGenerated.length;
-
-    // for (let index = 0; index < howManyAreLeft; index++) {
-    //   allGenerated.push(parseInt(await getRandomIdRecursively(queryOptions)));
-    // }
-
-    const randoms = await getRandomIdsRecursively(queryOptions, howManyAreLeft);
-
-    randoms.forEach((c) => {
-      allGenerated.push(parseInt(c));
-    });
-
-    return Astro.redirect(
-      `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}${valuesFilterParams}`,
-    );
-  }
-
-  if (allGenerated.length > howMany) {
-    return Astro.redirect(
-      `/random_characters?all=${`${[...allGenerated].splice(0, howMany).join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}${valuesFilterParams}`,
-    );
-  }
 }
 
-if (!all || all === "null" || all.includes("0")) {
+if (all && all.split("/").includes("0")) {
   return Astro.redirect(
-    `/random_characters?all=${`${allGenerated.join("-")}`}&howMany=${howMany}${lockedIndexes.length > 0 ? `&locked=${lockedIndexes.join("-")}` : ""}${valuesFilterParams}`,
+    `/random_characters?all=${`${allGenerated.join("/")}`}${restOfUrl}`,
   );
 }
 
@@ -174,6 +145,14 @@ const [selectedCharacters, universesWithTeams, allUniverses, allPowers] =
 //     return "undefined";
 //   });
 // }
+
+/* function refresPageWithNewArrayOfIndexes() {
+  // navigate(`/random_characters?all=${`${allGenerated.join("/")}`}${restOfUrl}`);
+  // Astro.redirect(
+  //   `/random_characters?all=${`${allGenerated.join("/")}`}${restOfUrl}`,
+  // );
+  Astro.url.searchParams.set("all", allGenerated.join("/"));
+} */
 
 function updateOneExceptArray(indexToKeep: number) {
   return allGenerated.map((item, index) => {
@@ -244,24 +223,21 @@ function organizeByIds(
     characterMap.set(character.id, character);
   });
 
-  // Create a new array with items sorted according to the ids array
-  /* return  */ ids.map((id, index) => {
-    if (isNaN(id)) {
-      // return emptyCharacter; // Insert empty object for NaN
+  ids.map((id, index) => {
+    if (id === -1) {
       selectedCharacters.push({ ...emptyCharacter, id: index }); // 💫
     }
-    // return characterMap.get(id) || emptyCharacter; // Fallback to empty object if no match is found
   });
 
   return selectedCharacters; // 💫
 }
 
-function changeNaNforO(allGenerated: number[]) {
-  return allGenerated.map((c, index) => {
-    if (isNaN(c)) return index;
-    return c;
-  });
-}
+// function changeNaNforO(allGenerated: number[]) {
+//   return allGenerated.map((c, index) => {
+//     if (isNaN(c)) return index;
+//     return c;
+//   });
+// }
 
 const charactersToDisplay =
   allGenerated.length !== selectedCharacters.length
@@ -273,7 +249,7 @@ const charactersToDisplay =
   <div slot="page_title_other_content" class="flex gap-2">
     <ChangeHowManyInput
       {howMany}
-      all={[...allGenerated]}
+      allGenerated={[...allGenerated]}
       locked={lockedIndexes}
       valuesFilterParams={valuesFilterParams}
       client:load
@@ -282,7 +258,7 @@ const charactersToDisplay =
     <a
       href={lockedIndexes.length === howMany
         ? null
-        : `/random_characters?all=${makeNoneLockedIndexesUndefined().join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}${valuesFilterParams}`}
+        : `/random_characters?all=${makeNoneLockedIndexesUndefined().join("/")}${restOfUrl}`}
     >
       <Button
         class={`${lockedIndexes.length === howMany ? "opacity-45" : ""} h-[4rem] w-[4rem] `}
@@ -296,7 +272,7 @@ const charactersToDisplay =
     {
       lockedIndexes.length === 0 ? (
         <a
-          href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${Array.from({ length: howMany }, (_, index) => index).join("-")}${valuesFilterParams}`}
+          href={`/random_characters?all=${allGenerated.join("/")}&howMany=${howMany}&locked=${Array.from({ length: howMany }, (_, index) => index).join("/")}${valuesFilterParams}`}
         >
           <Button variant="ghost" size="icon" class="h-[4rem] w-[4rem] ">
             <Lock class="h-[2.5rem] w-[2.5rem]" />
@@ -304,7 +280,7 @@ const charactersToDisplay =
         </a>
       ) : (
         <a
-          href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${[].join("-")}${valuesFilterParams}`}
+          href={`/random_characters?all=${allGenerated.join("/")}&howMany=${howMany}&locked=${[].join("-")}${valuesFilterParams}`}
         >
           <Button variant="ghost" size="icon" class="h-[4rem] w-[4rem] ">
             <LockKeyholeOpen class="h-[2.5rem] w-[2.5rem]" />
@@ -314,7 +290,7 @@ const charactersToDisplay =
     }
     <!-- team={team} -->
     <FilterCharactersRandom
-      href={`/random_characters?all=${makeNoneLockedIndexesUndefined().join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
+      href={`/random_characters?all=${makeNoneLockedIndexesUndefined().join("/")}&howMany=${howMany}&locked=${lockedIndexes.join("/")}`}
       gender={gender}
       side={side}
       race={race}
@@ -344,8 +320,8 @@ const charactersToDisplay =
         charactersToDisplay
           .sort(
             (a, b) =>
-              changeNaNforO(allGenerated).indexOf(a.id) -
-              changeNaNforO(allGenerated).indexOf(b.id),
+              /* changeNaNforO(allGenerated) */ allGenerated.indexOf(a.id) -
+              /* changeNaNforO(allGenerated) */ allGenerated.indexOf(b.id),
           )
           .map(
             (
@@ -365,7 +341,7 @@ const charactersToDisplay =
                     href={
                       lockedIndexes.length === howMany
                         ? null
-                        : `/random_characters?all=${updateArrayExceptOne(index_allGenerated).join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`
+                        : `/random_characters?all=${updateArrayExceptOne(index_allGenerated).join("/")}&howMany=${howMany}&locked=${lockedIndexes.join("/")}`
                     }
                     class={
                       lockedIndexes.length === howMany
@@ -381,7 +357,7 @@ const charactersToDisplay =
                     <div class="flex flex-row justify-between">
                       {!lockedIndexes.includes(index_allGenerated) ? (
                         <a
-                          href={`/random_characters?all=${updateOneExceptArray(index_allGenerated).join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
+                          href={`/random_characters?all=${updateOneExceptArray(index_allGenerated).join("-")}&howMany=${howMany}&locked=${lockedIndexes.join("/")}`}
                           transition:name={`random-self-${c.id}`}
                         >
                           {/* Random {index_allGenerated + 1} character only */}
@@ -411,7 +387,7 @@ const charactersToDisplay =
                       )}
 
                       <a
-                        href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${lockOrUnlockedIndex([...lockedIndexes], index_allGenerated).join("-")}`}
+                        href={`/random_characters?all=${allGenerated.join("-")}&howMany=${howMany}&locked=${lockOrUnlockedIndex([...lockedIndexes], index_allGenerated).join("/")}`}
                         class="hover:underline"
                         transition:name={`lock-${c.id}`}
                       >
@@ -454,11 +430,11 @@ const charactersToDisplay =
                               [...allGenerated],
                               index_allGenerated,
                               i,
-                            ).join("-");
+                            ).join("/");
 
                             return (
                               <a
-                                href={`/random_characters?all=${result}&howMany=${howMany}&locked=${lockedIndexes.join("-")}`}
+                                href={`/random_characters?all=${result}&howMany=${howMany}&locked=${lockedIndexes.join("/")}`}
                                 class="hover:underline"
                               >
                                 <Button

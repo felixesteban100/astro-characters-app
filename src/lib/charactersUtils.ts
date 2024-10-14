@@ -172,8 +172,8 @@ export async function getRandomIdsRecursively(queryOptions: QueryOptions, howMan
     //   return getRandomIdRecursively(queryOptions)
     // }
     return randomCharacters.map(c => {
-      if (c.id.toString() === "NaN") return "0"
-      return c.id.toString()
+      if (Number.isNaN(c.id)) return 0
+      return c.id
     })
   } catch (error) {
     console.error(error);

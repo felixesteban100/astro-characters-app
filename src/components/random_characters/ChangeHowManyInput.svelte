@@ -7,14 +7,28 @@
 
 <script lang="ts">
   export let howMany: number;
-  export let all: number[];
+  export let allGenerated: number[];
   export let locked: number[];
   export let valuesFilterParams: string;
 
   function changeHowMany() {
-    navigate(
-      `/random_characters?all=${all.join("-")}&howMany=${howMany}&locked=${locked.join("-")}${valuesFilterParams}`,
-    );
+    if (allGenerated.length < howMany) {
+      const howManyAreLeft = howMany - allGenerated.length;
+
+      for (let i = 0; i < howManyAreLeft; i++) {
+        allGenerated.push(0); // Add 0 to the end of the array
+      }
+    }
+
+    if (allGenerated.length > howMany) {
+      allGenerated.splice(howMany);
+    }
+
+    if (howMany > 0 && howMany < 40) {
+      navigate(
+        `/random_characters?all=${allGenerated.join("/")}&howMany=${howMany}&locked=${locked.join("/")}${valuesFilterParams}`,
+      );
+    }
   }
 </script>
 
