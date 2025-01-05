@@ -18,7 +18,9 @@
   export let teams: Omit<Team, "members" | "universe">[];
   export let character_added_by: Date;
 
-  const relativesArr = characterInfo.connections.relatives.split(",");
+  const relativesArr = characterInfo.connections.relatives
+    .toString()
+    .split(",");
 </script>
 
 <Tabs.Root
