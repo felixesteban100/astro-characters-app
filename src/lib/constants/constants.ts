@@ -114,6 +114,7 @@ export const emptyCharacter: CharacterWithJoinTeamUniversePower = {
     placeOfBirth: '-',
     firstAppearance: '-',
     publisher: {
+      _id: "5f6c9b3a3a3a3a3",
       value: 'None',
       name: 'None',
       comics: [],

@@ -1,0 +1,45 @@
+---
+import { ObjectId } from "mongodb";
+import Tooltip from "./Tooltip.svelte";
+
+interface Props {
+  _id: string;
+}
+
+const { _id } = Astro.props;
+
+const createdBy = new ObjectId(_id).getTimestamp();
+
+function isNew(date: Date) {
+  const now = new Date();
+  // const fiveDaysFromNow = new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000);
+  // return date <= fiveDaysFromNow;
+  // const twentyDaysFromNow = new Date(now.getTime() + 20 * 24 * 60 * 60 * 1000);
+  // return date <= twentyDaysFromNow;
+  const twentyDaysAgo = new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000);
+  return date >= twentyDaysAgo;
+}
+---
+
+{
+  isNew(createdBy) === true ? (
+    <Tooltip client:load>
+      <div
+        class={`group-hover/character:scale-125 px-2 bg-primary rounded-full font-semibold transition-all`}
+        slot="trigger"
+      >
+        <p class="text-primary-foreground">New</p>
+      </div>
+      <div slot="content">
+        <p class="text-primary">
+          Created by: {createdBy}. (
+          {Math.ceil(
+            (createdBy.getTime() - new Date().getTime()) /
+              (1000 * 60 * 60 * 24),
+          )}
+          days ago)
+        </p>
+      </div>
+    </Tooltip>
+  ) : null
+}

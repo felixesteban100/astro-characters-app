@@ -24,9 +24,11 @@ const { character } = Astro.props;
     class="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"
   >
   </div>
-  <h2
-    class="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white"
-  >
-    {character.id} - {character.name}
-  </h2>
+  <a href={`/character?id=${character.id}`}>
+    <h2
+      class="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white"
+    >
+      {character.id} - {character.name}
+    </h2>
+  </a>
 </div>

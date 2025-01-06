@@ -2,6 +2,7 @@
 import Drawer from "src/components/Drawer.svelte";
 import { ScrollArea } from "$lib/components/ui/scroll-area";
 import { ArrowUpFromLine } from "lucide-svelte";
+import IsNewTag from "../IsNewTag.astro";
 
 interface Props {
   universe: UniverseWithJoinTeams;
@@ -23,6 +24,8 @@ const { universe, unableLink } = Astro.props;
       <span class="text-primary">{universe.id} |</span>{" "}
       {universe.name}
     </p>
+    <!-- is this necessary? I don't know -->
+    <!-- <IsNewTag _id={universe._id} /> -->
   </a>
   {
     universe.logo !== "" && (

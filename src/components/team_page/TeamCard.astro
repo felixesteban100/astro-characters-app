@@ -1,7 +1,8 @@
 ---
 import Drawer from "src/components/Drawer.svelte";
-import { ScrollArea } from "$lib/components/ui/scroll-area";
+// import { ScrollArea } from "$lib/components/ui/scroll-area";
 import { ArrowUpFromLine } from "lucide-svelte";
+import IsNewTag from "../IsNewTag.astro";
 
 interface Props {
   team: TeamWithJoinCharacterUniverse | Team;
@@ -21,12 +22,13 @@ const { team, unableLink, unableMoreInfo } = Astro.props;
       href={unableLink
         ? undefined
         : `/characters?universe=${team.universe.value}&team=${team.value}`}
-      class={unableLink ? "" : "hover:underline"}
+      class={`${unableLink ? "" : "hover:underline"} flex flex-col gap-5 justify-center items-center`}
     >
       <p class="text-xl font-bold">
         <span class="text-primary">{team.id} |</span>
         {team.name}
       </p>
+      <IsNewTag _id={team._id} />
     </a>
 
     {

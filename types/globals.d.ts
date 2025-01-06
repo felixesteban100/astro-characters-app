@@ -71,6 +71,7 @@ declare type CharacterWithJoinTeamUniversePower = Omit<Character, "biography.pub
 
 /* TEAM */
 declare type Team = {
+    _id: string;
     id: number;
     name: string,
     value: string,
@@ -87,6 +88,7 @@ declare type TeamWithJoinCharacterUniverse = Omit<Team, "universe"> & {
 
 /* UNIVERSE */
 declare type Universe = {
+    _id: string;
     id: number;
     name: string,
     value: string,
