@@ -8,7 +8,7 @@ import ImageCharacter from "../ImageCharacter.astro";
 import IsNewTag from "../IsNewTag.astro";
 
 interface Props {
-  c: CharacterWithJoinTeamUniversePower;
+  c: CharacterWithJoinTeamUniversePower | Character;
   imageSizes?: string;
   showName?: boolean;
   otherClasses: string;
@@ -61,7 +61,7 @@ const {
       </div>
       <div class="flex flex-col gap-2 w-full">
         <div class="flex justify-between items-center gap-2">
-          <Image
+          <!-- <Image
             src={teamSelected
               ? c.connections.groupAffiliation.find(
                   (x) => x.name === teamSelected,
@@ -71,7 +71,7 @@ const {
             width={800}
             height={800}
             class="h-10 w-auto"
-          />
+          /> -->
           <div
             class={`px-2 ${BackgroundColorAligment(c.biography.alignment)} rounded-full font-semibold transition-all`}
           >

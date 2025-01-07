@@ -7,11 +7,40 @@ import Marquee from "$lib/components/magicui/marquee.astro";
 
 const repeat = 4;
 
+// const randomCharacters = await collectionCharacters
+//   .aggregate<Character>([{ $sample: { size: 12 } }])
+//   // .find()
+//   // .sort({ id: "desc" })
+//   // .limit(10)
+//   .toArray();
+
+const dateSeed = new Date().toISOString().slice(0, 10); // e.g., "2025-01-07"
+
+// Hash the seed or use it directly
+const hash = dateSeed
+  .split("")
+  .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+// MongoDB aggregation query
 const randomCharacters = await collectionCharacters
-  .aggregate<Character>([{ $sample: { size: 12 } }])
-  // .find()
-  // .sort({ id: "desc" })
-  // .limit(10)
+  .aggregate<Character>([
+    {
+      $addFields: {
+        randomField: {
+          $mod: [
+            {
+              $toLong: {
+                $toDate: "$_id", // Get the timestamp from the ObjectId and convert it to a Date
+              },
+            },
+            hash, // Use the hash to introduce daily randomness
+          ],
+        },
+      },
+    },
+    { $sort: { randomField: 1 } },
+    { $limit: 12 },
+  ])
   .toArray();
 
 function divideArray<T>(arr: T[], numChunks: number): T[][] {
@@ -26,7 +55,10 @@ function divideArray<T>(arr: T[], numChunks: number): T[][] {
 
   return result;
 }
-const [firstRow, secondRow, thirdRow] = divideArray(randomCharacters, 3);
+const [firstRow, secondRow, thirdRow] = divideArray<Character>(
+  randomCharacters,
+  3,
+);
 const reverse_1_marquee = false;
 const reverse_2_marquee = true;
 const reverse_3_marquee = false;

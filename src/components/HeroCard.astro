@@ -9,7 +9,10 @@ const { character } = Astro.props;
 ---
 
 <div class={"group/product h-56 w-[20rem] relative flex-shrink-0"}>
-  <div class="block group-hover/product:shadow-2xl character-image">
+  <div
+    class={`block group-hover/product:shadow-2xl character-image`}
+    id={undefined}
+  >
     <ImageCharacter
       src={character.images.md}
       height={600}
