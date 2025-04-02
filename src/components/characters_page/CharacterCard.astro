@@ -26,6 +26,13 @@ const {
   otherClasses,
   teamSelected,
 } = Astro.props;
+
+const iconLogo =
+  teamSelected &&
+  c.connections.groupAffiliation.find((x) => x.name === teamSelected)!.logo !==
+    undefined
+    ? c.connections.groupAffiliation.find((x) => x.name === teamSelected)!.logo
+    : c.biography.publisher.logo;
 ---
 
 <a
@@ -62,11 +69,7 @@ const {
       <div class="flex flex-col gap-2 w-full">
         <div class="flex justify-between items-center gap-2">
           <Image
-            src={/* teamSelected
-              ? c.connections.groupAffiliation.find(
-                  (x) => x.name === teamSelected,
-                )!.logo
-              :  */ c.biography.publisher.logo}
+            src={iconLogo}
             alt="team_logo_or_publisher_logo"
             width={800}
             height={800}
