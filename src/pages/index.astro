@@ -39,7 +39,7 @@ const randomCharacters = await collectionCharacters
       },
     },
     { $sort: { randomField: 1 } },
-    { $limit: 12 },
+    { $limit: 50 },
   ])
   .toArray();
 
@@ -55,13 +55,28 @@ function divideArray<T>(arr: T[], numChunks: number): T[][] {
 
   return result;
 }
-const [firstRow, secondRow, thirdRow] = divideArray<Character>(
-  randomCharacters,
-  3,
-);
+const [
+  firstRow,
+  secondRow,
+  thirdRow,
+  fourthRow,
+  fifthRow,
+  sixthRow,
+  seventhRow,
+  eigthRow,
+  ninthRow,
+  tenthRow,
+] = divideArray<Character>(randomCharacters, 10);
 const reverse_1_marquee = false;
 const reverse_2_marquee = true;
 const reverse_3_marquee = false;
+const reverse_4_marquee = true;
+const reverse_5_marquee = false;
+const reverse_6_marquee = true;
+const reverse_7_marquee = false;
+const reverse_8_marquee = true;
+const reverse_9_marquee = false;
+const reverse_10_marquee = true;
 ---
 
 <Layout title="Welcome to Characters.">
@@ -152,24 +167,65 @@ const reverse_3_marquee = false;
       </OrbitingCircles>
     </div> -->
 
-    <div
-      class="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-background/10"
-    >
-      <Marquee
-        repeat={repeat}
-        reverse={reverse_1_marquee}
-        rowElements={firstRow}
-      />
-      <Marquee
-        repeat={repeat}
-        reverse={reverse_2_marquee}
-        rowElements={secondRow}
-      />
-      <Marquee
-        repeat={repeat}
-        reverse={reverse_3_marquee}
-        rowElements={thirdRow}
-      />
+    <!-- https://ui.aceternity.com/components/3d-marquee -->
+    <div class="overflow-hidden">
+      <div
+        class="relative flex flex-row h-[45rem] w-full items-center justify-center bg-background/10 flex-nowrap"
+        style={{
+          transform: "rotateX(55deg) rotateY(0deg) rotateZ(-40deg)",
+        }}
+      >
+        <Marquee
+          repeat={repeat}
+          reverse={reverse_1_marquee}
+          rowElements={firstRow}
+        />
+        <Marquee
+          repeat={repeat}
+          reverse={reverse_2_marquee}
+          rowElements={secondRow}
+        />
+        <Marquee
+          repeat={repeat}
+          reverse={reverse_3_marquee}
+          rowElements={thirdRow}
+        />
+        <Marquee
+          repeat={repeat}
+          reverse={reverse_4_marquee}
+          rowElements={fourthRow}
+        />
+        <Marquee
+          repeat={repeat}
+          reverse={reverse_5_marquee}
+          rowElements={fifthRow}
+        />
+        <Marquee
+          repeat={repeat}
+          reverse={reverse_6_marquee}
+          rowElements={sixthRow}
+        />
+        <Marquee
+          repeat={repeat}
+          reverse={reverse_7_marquee}
+          rowElements={seventhRow}
+        />
+        <Marquee
+          repeat={repeat}
+          reverse={reverse_8_marquee}
+          rowElements={eigthRow}
+        />
+        <Marquee
+          repeat={repeat}
+          reverse={reverse_9_marquee}
+          rowElements={ninthRow}
+        />
+        <Marquee
+          repeat={repeat}
+          reverse={reverse_10_marquee}
+          rowElements={tenthRow}
+        />
+      </div>
     </div>
   </div>
 </Layout>

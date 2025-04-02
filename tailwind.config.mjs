@@ -114,6 +114,11 @@ module.exports = {
           to: { transform: "translateX(calc(-100% - var(--gap)))" },
         },
 
+        "marquee-horizontal": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
+
         orbit: {
           "0%": {
             transform:
@@ -140,6 +145,8 @@ module.exports = {
         fadeOut: "fadeOut 0.5s ease-in-out",
 
         marquee: "marquee var(--duration) linear infinite",
+        "marquee-horizontal":
+          "marquee-horizontal var(--duration) linear infinite",
         orbit: "orbit calc(var(--duration)*1s) linear infinite",
       },
     },
