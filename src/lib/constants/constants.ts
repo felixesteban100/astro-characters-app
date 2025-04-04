@@ -1,4 +1,4 @@
-export const CHARACTERS_PER_PAGE = 16;
+export const CHARACTERS_PER_PAGE = 4;
 
 export const ALLRACES = [
   { value: "All", name: "All races" },
