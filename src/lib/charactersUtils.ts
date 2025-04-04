@@ -111,10 +111,13 @@ export function getQueryOptions({
     queryOptions["biography.publisher.value"] = universe;
     if (team && team !== "All")
       // fix this so that the filters like the avengers doesn't add characters like green goblin because he has the dark avengers
-      queryOptions["connections.groupAffiliation.value"] = new RegExp(
-        team,
-        "g"
-      ); /* new RegExp(`^(\\b${team}\\b|[ ,]${team}\\b)`, "i"); */
+      // queryOptions["connections.groupAffiliation.value"] = new RegExp(
+      //   team,
+      //   "g"
+      // );
+
+      queryOptions["connections.groupAffiliation.value"] = team
+    /* new RegExp(`^(\\b${team}\\b|[ ,]${team}\\b)`, "i"); */
   }
   if (gender && gender !== "both") queryOptions["appearance.gender"] = gender;
   if (race && race !== "All") queryOptions["appearance.race"] = new RegExp(race, "ig");

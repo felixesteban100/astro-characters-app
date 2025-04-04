@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
+import Image from "astro/components/Image.astro";
+// import { Image } from "astro:assets";
 ---
 
 <Layout title={`Characters-Not-Found`}>
@@ -9,10 +11,11 @@ import "../styles/globals.css";
     slot="content"
   >
     Not Found 404
-    <img
+    <!-- <Image
       src="https://media2.giphy.com/media/9J7tdYltWyXIY/200w.gif?cid=6c09b952bj6xy0jvzdnjvykdtprwbiamv0m2yqgd82ldk75m&ep=v1_gifs_search&rid=200w.gif&ct=g"
       class="h-96 w-auto"
-    />
+      alt="not-found-logo"
+    /> -->
   </main>
 </Layout>
 

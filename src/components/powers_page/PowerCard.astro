@@ -7,6 +7,7 @@ import { ArrowUpFromLine } from "lucide-svelte";
 // import { ObjectId } from "mongodb";
 import Drawer from "src/components/Drawer.svelte";
 import IsNewTag from "../IsNewTag.astro";
+import Image from "astro/components/Image.astro";
 
 interface Props {
   power: Power;
@@ -35,7 +36,7 @@ const { power, unableLink } = Astro.props;
 
     {
       power.img !== "" && (
-        <img
+        <Image
           src={power.img}
           height={500}
           width={500}
@@ -71,7 +72,7 @@ const { power, unableLink } = Astro.props;
               <p class="font-bold text-3xl">{power.name}</p>
               <div class="w-auto h-[50%] overflow-hidden flex flex-col justify-center items-center gap-5">
                 {power.img !== "" && (
-                  <img
+                  <Image
                     src={power.img}
                     height={500}
                     width={500}

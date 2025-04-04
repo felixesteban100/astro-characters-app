@@ -33,13 +33,13 @@
       <figure class="shrink-0">
         <div class="overflow-hidden rounded-md">
           <Lightbox>
-            <img
+            <!-- <img
               src={image}
               alt={`Photo by`}
               class="h-[600px] w-[400px] object-cover"
               width={800}
               height={800}
-            />
+            /> -->
           </Lightbox>
         </div>
         <figcaption class="pt-2 text-xs text-muted-foreground">
@@ -54,13 +54,13 @@
       <figure class="shrink-0">
         <div class="overflow-hidden rounded-md">
           <Lightbox>
-            <img
+            <!-- <img
               src={comic}
               alt={`Photo by`}
               class="h-[600px] w-[400px] object-cover"
               width={300}
               height={400}
-            />
+            /> -->
           </Lightbox>
         </div>
         <figcaption class="pt-2 text-xs text-muted-foreground">

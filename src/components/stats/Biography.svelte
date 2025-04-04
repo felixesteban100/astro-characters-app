@@ -76,12 +76,12 @@
   </StatsString>
   <StatsString statName="Publisher" statValue={biography.publisher.name}>
     <Pencil slot="icon" />
-    <img
+    <!-- <img
       src={biography.publisher.logo}
       class="h-10 w-auto"
       slot="publisher"
       alt=""
-    />
+    /> -->
   </StatsString>
   <StatsString
     statName="Aligment"

@@ -4,6 +4,7 @@ import {
   BackgroundColorAligment,
 } from "$lib/charactersUtils";
 import Image from "astro/components/Image.astro";
+// import { Image } from "astro:assets";
 import ImageCharacter from "../ImageCharacter.astro";
 import IsNewTag from "../IsNewTag.astro";
 
@@ -29,7 +30,7 @@ const {
 
 const iconLogo =
   teamSelected &&
-  c.connections.groupAffiliation.find((x) => x.name === teamSelected)!.logo !==
+  c.connections.groupAffiliation.find((x) => x.name === teamSelected) !==
     undefined
     ? c.connections.groupAffiliation.find((x) => x.name === teamSelected)!.logo
     : c.biography.publisher.logo;

@@ -3,6 +3,7 @@ import Drawer from "src/components/Drawer.svelte";
 // import { ScrollArea } from "$lib/components/ui/scroll-area";
 import { ArrowUpFromLine } from "lucide-svelte";
 import IsNewTag from "../IsNewTag.astro";
+import Image from "astro/components/Image.astro";
 
 interface Props {
   team: TeamWithJoinCharacterUniverse | Team;
@@ -33,7 +34,7 @@ const { team, unableLink, unableMoreInfo } = Astro.props;
 
     {
       team.logo !== "" && (
-        <img
+        <Image
           src={team.logo}
           height={500}
           width={500}
@@ -53,7 +54,7 @@ const { team, unableLink, unableMoreInfo } = Astro.props;
             slot="content"
           >
             {team.logo !== "" && (
-              <img
+              <Image
                 src={team.logo}
                 height={500}
                 width={500}
@@ -65,7 +66,7 @@ const { team, unableLink, unableMoreInfo } = Astro.props;
               <div class="flex justify-between items-center gap-5 w-full">
                 <p class="font-bold text-3xl">{team.name}</p>
                 {/* @ts-expect-error */}
-                <img src={team.universe.logo} class="h-10 w-auto" alt="" />
+                <Image src={team.universe.logo} class="h-10 w-auto" alt="" />
               </div>
               <p>{team.description}</p>
               <div class="self-center" slot="close">
