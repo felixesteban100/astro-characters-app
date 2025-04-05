@@ -125,6 +125,7 @@
       publisherComics={publisherInfo.comics}
       characterInfoImages={characterInfo.images}
       characterInfoName={characterInfo.name}
+      characterPublisherName={publisherInfo.name}
     />
     <br />
   </Tabs.Content>

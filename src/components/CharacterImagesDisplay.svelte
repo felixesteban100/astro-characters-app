@@ -7,6 +7,7 @@
   export let characterInfoComics: string[] | undefined;
   export let publisherComics: string[] | undefined;
   export let characterInfoName: string;
+  export let characterPublisherName: string;
 
   const images = Object.entries(characterInfoImages)
     .filter(
@@ -33,17 +34,17 @@
       <figure class="shrink-0">
         <div class="overflow-hidden rounded-md">
           <Lightbox>
-            <!-- <img
+            <img
               src={image}
-              alt={`Photo by`}
+              alt={`Photo of ${characterInfoName}`}
               class="h-[600px] w-[400px] object-cover"
               width={800}
               height={800}
-            /> -->
+            />
           </Lightbox>
         </div>
         <figcaption class="pt-2 text-xs text-muted-foreground">
-          Photo by
+          Photo of
           <span class="font-semibold text-foreground">
             {characterInfoName}
           </span>
@@ -54,19 +55,19 @@
       <figure class="shrink-0">
         <div class="overflow-hidden rounded-md">
           <Lightbox>
-            <!-- <img
+            <img
               src={comic}
-              alt={`Photo by`}
+              alt={`Photo of ${characterInfoName} in ${characterPublisherName}`}
               class="h-[600px] w-[400px] object-cover"
               width={300}
               height={400}
-            /> -->
+            />
           </Lightbox>
         </div>
         <figcaption class="pt-2 text-xs text-muted-foreground">
-          Photo by
+          {characterInfoName} in
           <span class="font-semibold text-foreground">
-            {characterInfoName}
+            {characterPublisherName}
           </span>
         </figcaption>
       </figure>
