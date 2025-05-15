@@ -215,54 +215,36 @@ const customTransition = {
       <Sparkles client:only />
     </div>
 
-    <!-- sticky top-0 z-50  -->
-    <div
-      class="flex bg-secondary/50 backdrop-blur-md border-b border-foreground/10"
-    >
-      <Navbar
-        title={title ?? ""}
-        currentPath={currentPath}
-        links={links}
-        transition:animate="none"
-        transition:name={`title-animation`}
-      />
-    </div>
-
-    <main
-      class={`${title === "Welcome to Characters." ? "mt-10" : "w-[90vw] md:w-[80vw] mx-auto overflow-hidden max-w-[1700px]"}`}
-    >
+    <div class={`${title === "Welcome to Characters." ? "relative" : ""}`}>
       <div
-        class={`mx-auto mb-10 ${title !== "Welcome to Characters." ? "mt-5 lg:mt-10" : "mt-5"} ${currentPath.includes("/compare") && "flex flex-col items-center"}`}
+        class={`flex bg-transparent ${title === "Welcome to Characters." ? "absolute z-10 w-full" : ""}`}
       >
-        <div
-          class={title === "Welcome to Characters."
-            ? "w-[90vw] md:w-[80vw] mx-auto overflow-hidden max-w-[1700px] flex justify-between items-center mb-10"
-            : "flex justify-between items-center w-full mb-5"}
+        <Navbar
+          title={title ?? ""}
+          currentPath={currentPath}
+          links={links}
           transition:animate="none"
           transition:name={`title-animation`}
         >
-          <p class="font-bold text-4xl">
-            {
-              title
-                ?.replace("(Characters)", "")
-                .replace("(Teams)", "")
-                ?.replace("(Compare)", "")
-            }
-          </p>
-          <div class="flex">
+          <div class="flex items-center" slot="page_title_other_content">
             <div id="actionDoer">
               <slot name="page_title_other_content" />
             </div>
             <LoaderAstro />
           </div>
-        </div>
+        </Navbar>
+      </div>
+
+      <main
+        class={`${title === "Welcome to Characters." ? "" : "w-[90vw] md:w-[80vw] mx-auto overflow-hidden max-w-[1700px]"}`}
+      >
         <div
           transition:animate={customTransition}
           transition:name={`page-animation`}
         >
           <slot name="content" />
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   </body>
 </html>

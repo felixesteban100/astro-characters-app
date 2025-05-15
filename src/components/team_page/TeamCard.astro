@@ -65,8 +65,13 @@ const { team, unableLink, unableMoreInfo } = Astro.props;
             <div class="flex flex-col justify-center gap-5 items-start max-w-[400px]">
               <div class="flex justify-between items-center gap-5 w-full">
                 <p class="font-bold text-3xl">{team.name}</p>
-                {/* @ts-expect-error */}
-                <Image src={team.universe.logo} class="h-10 w-auto" alt="" />
+                <Image
+                  src={team.universe.logo}
+                  class="h-10 w-auto"
+                  alt=""
+                  width={100}
+                  height={100}
+                />
               </div>
               <p>{team.description}</p>
               <div class="self-center" slot="close">

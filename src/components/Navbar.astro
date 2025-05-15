@@ -92,6 +92,7 @@ const { currentPath, links, title } = Astro.props;
     </div>
     <!-- id="actionDoer" -->
     <div class="flex items-center gap-2">
+      <slot name="page_title_other_content" />
       <ModeToggle client:load />
     </div>
   </div>

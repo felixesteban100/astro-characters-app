@@ -76,7 +76,7 @@
 </script>
 
 <Sheet
-  variant={"secondary"}
+  variant={"ghost"}
   size={"default"}
   ButtonClassName={/* "pointer-events-none" */ "h-[4rem] w-[4rem]"}
   buttonTriggerId={"filterCharacters"}

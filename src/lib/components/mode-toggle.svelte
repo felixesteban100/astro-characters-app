@@ -12,7 +12,7 @@
   <DropdownMenu.Trigger asChild let:builder>
     <Button
       builders={[builder]}
-      variant="outline"
+      variant="default"
       size="icon"
       class="h-[4rem] w-[4rem]"
     >

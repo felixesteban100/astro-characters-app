@@ -76,7 +76,7 @@ declare type Team = {
     name: string,
     value: string,
     description: string,
-    universe: { name: string, value: string }, // OLD
+    universe: { name: string, value: string, logo: string }, // OLD
     logo: string,
     comics: string[]
     leaders: string[]

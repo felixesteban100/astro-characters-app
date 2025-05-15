@@ -36,7 +36,7 @@
   <Input class="w-[5rem] h-[4rem] text-2xl" bind:value={howMany} />
   <Button
     size="icon"
-    variant="secondary"
+    variant="ghost"
     on:click={changeHowMany}
     class="h-[4rem] w-[4rem]"
   >
